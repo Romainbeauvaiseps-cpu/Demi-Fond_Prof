@@ -232,6 +232,104 @@
             text-transform: uppercase;
         }
 
+        /* --- ADAPTATION TABLETTE POUR LA PAGE D'ACCUEIL --- */
+        @media (max-width: 1024px) {
+            .prof-header {
+                max-width: 380px;
+                padding: 16px 20px;
+                border-radius: 18px;
+                margin-bottom: 15px;
+            }
+
+            .prof-header h1 {
+                font-size: 24px;
+                margin-bottom: 4px;
+            }
+
+            .prof-header p {
+                font-size: 13px;
+            }
+
+            .prof-main-btn {
+                max-width: 380px;
+                padding: 14px 20px;
+                font-size: 15px;
+                border-radius: 16px;
+                margin-bottom: 14px;
+                gap: 12px;
+            }
+
+            .prof-main-btn .btn-icon {
+                font-size: 22px;
+            }
+
+            .prof-main-btn:nth-of-type(1) {
+                transform: translateX(250px);
+                margin-top: 45px;
+            }
+
+            .prof-main-btn:nth-of-type(2) {
+                transform: translateX(190px);
+            }
+
+            .prof-main-btn:nth-of-type(1):hover {
+                transform: translateX(250px) scale(1.02);
+            }
+
+            .prof-main-btn:nth-of-type(2):hover {
+                transform: translateX(190px) scale(1.02);
+            }
+
+            .prof-stats-bar {
+                transform: translateX(140px);
+                margin-top: 18px;
+                max-width: 380px;
+                gap: 10px;
+            }
+
+            .prof-stat-box {
+                padding: 10px 12px;
+                border-radius: 12px;
+            }
+
+            .prof-stat-box .num {
+                font-size: 20px;
+            }
+
+            .prof-stat-box .lbl {
+                font-size: 10px;
+            }
+
+            .btn-reset-prof {
+                transform: translateX(90px);
+                margin-top: 30px;
+                padding: 8px 14px;
+                font-size: 11px;
+                border-radius: 12px;
+            }
+
+            .btn-reset-prof:hover {
+                transform: translateX(130px) scale(1.03);
+            }
+        }
+
+        @media (max-width: 680px) {
+
+            .prof-header,
+            .prof-main-btn,
+            .prof-stats-bar {
+                max-width: 100%;
+            }
+
+            .prof-main-btn:nth-of-type(1),
+            .prof-main-btn:nth-of-type(2),
+            .prof-stats-bar,
+            .btn-reset-prof {
+                transform: none;
+                margin-top: 15px;
+            }
+        }
+
         /* --- LISTE DES BINÔMES --- */
         .back-btn {
             background: rgba(255, 255, 255, 0.85);
