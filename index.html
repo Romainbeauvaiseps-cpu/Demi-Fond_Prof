@@ -8,6 +8,8 @@
     <title>Demi-Fond 3e - Espace Professeur</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/png" href="image/icone.png">
+    <link rel="apple-touch-icon" href="image/icone.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -52,10 +54,16 @@
             left: -15px;
             right: -15px;
             bottom: -15px;
-            background: url('image/fdprof.png') no-repeat center center / cover;
+            background: #FFFFFF url('image/fdprof.png') no-repeat center center / cover;
             z-index: -1;
             transition: filter 0.4s ease, transform 0.4s ease;
             pointer-events: none;
+        }
+
+        @media (max-aspect-ratio: 16/9) {
+            #app-bg {
+                background-size: contain;
+            }
         }
 
         #app-bg.blurred-bg,
