@@ -768,12 +768,12 @@
             background: #64748B;
         }
 
-        /* --- NOUVEAU DESIGN ENCARTS BINÔMES HORIZONTAUX --- */
+        /* --- NOUVEAU DESIGN ENCARTS BINÔMES HORIZONTAUX (COMPACT) --- */
         .obs-live-grid {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            margin-bottom: 95px;
+            gap: 10px;
+            margin-bottom: 90px;
             width: 100%;
         }
 
@@ -781,62 +781,62 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-radius: 20px;
-            padding: 18px 22px;
-            border: 2px solid rgba(184, 59, 29, 0.2);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 14px;
+            padding: 10px 14px;
+            border: 1.5px solid rgba(184, 59, 29, 0.2);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
             display: grid;
-            grid-template-columns: minmax(280px, 1.2fr) minmax(360px, 1.8fr) minmax(180px, 0.8fr);
+            grid-template-columns: minmax(260px, 1.25fr) minmax(310px, 1.55fr) minmax(140px, 0.75fr);
             align-items: center;
-            gap: 20px;
+            gap: 12px;
             transition: all 0.2s ease;
         }
 
         @media (max-width: 1024px) {
             .obs-live-card {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 12px;
             }
         }
 
         .obs-live-card:hover {
             border-color: #B83B1D;
-            box-shadow: 0 10px 28px rgba(184, 59, 29, 0.12);
+            box-shadow: 0 6px 18px rgba(184, 59, 29, 0.1);
         }
 
-        /* 1. Colonne gauche : Nom binôme, choix coureur, projet */
+        /* 1. Colonne gauche : Nom binôme, choix coureur, intensité, projet */
         .obs-card-left {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 5px;
         }
 
         .obs-binome-name {
             font-family: var(--font-sport);
-            font-size: 22px;
+            font-size: 15px;
             font-weight: 900;
             color: #1C1C1E;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
 
         .obs-runner-switch-horizontal {
             display: flex;
-            gap: 8px;
+            gap: 5px;
             background: #F1F5F9;
-            padding: 5px;
-            border-radius: 14px;
+            padding: 3px;
+            border-radius: 9px;
         }
 
         .obs-runner-pill {
             flex: 1;
-            padding: 8px 10px;
+            padding: 4px 8px;
             border: none;
-            border-radius: 10px;
+            border-radius: 7px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 2px;
+            gap: 1px;
             transition: all 0.2s ease;
             background: transparent;
             color: #64748B;
@@ -845,7 +845,7 @@
         .obs-runner-pill.is-runner {
             background: #B83B1D;
             color: #FFFFFF;
-            box-shadow: 0 4px 12px rgba(184, 59, 29, 0.35);
+            box-shadow: 0 2px 8px rgba(184, 59, 29, 0.3);
         }
 
         .obs-runner-pill.is-observer {
@@ -859,65 +859,125 @@
         }
 
         .obs-runner-pill .badge-role {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 900;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             text-transform: uppercase;
         }
 
         .obs-runner-pill .name {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 140px;
+            max-width: 130px;
+        }
+
+        /* Liste déroulante intensité (50% à 150%) */
+        .obs-intensity-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 3px 7px;
+            width: fit-content;
+            flex-wrap: wrap;
+        }
+
+        .obs-intensity-label {
+            font-size: 10.5px;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .obs-intensity-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: #FFFFFF;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B83B1D' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+            background-size: 11px 11px;
+            border: 1.5px solid #CBD5E1;
+            border-radius: 6px;
+            padding: 2px 20px 2px 6px;
+            font-size: 11.5px;
+            font-weight: 900;
+            color: #B83B1D;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .obs-intensity-select:focus {
+            border-color: #B83B1D;
+            box-shadow: 0 0 0 2px rgba(184, 59, 29, 0.15);
+        }
+
+        .obs-vma-badge {
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748B;
+            background: #E2E8F0;
+            padding: 1px 5px;
+            border-radius: 4px;
+            white-space: nowrap;
         }
 
         .obs-projet-display {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             background: #F8FAFC;
-            border: 1.5px solid #E2E8F0;
-            border-radius: 10px;
-            padding: 6px 12px;
-            font-size: 13px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 3px 8px;
+            font-size: 11.5px;
             color: #1E293B;
             width: fit-content;
         }
 
         .obs-projet-display .target-icon {
-            font-size: 16px;
+            font-size: 13px;
         }
 
         .obs-projet-display strong {
             color: #B83B1D;
         }
 
-        /* 2. Colonne centrale : Gros boutons TOURS & PLOTS */
+        /* 2. Colonne centrale : Compteurs TOURS & PLOTS */
         .obs-card-center {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 4px;
         }
 
         .obs-big-counters-row {
             display: flex;
-            gap: 14px;
+            gap: 8px;
             align-items: center;
         }
 
         .obs-counter-box {
             flex: 1;
             background: #F8FAFC;
-            border: 2px solid #E2E8F0;
-            border-radius: 16px;
-            padding: 10px 14px;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 10px;
+            padding: 5px 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 2px;
             transition: all 0.2s ease;
         }
 
@@ -932,32 +992,32 @@
         }
 
         .obs-counter-box-title {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
             color: #475569;
         }
 
         .obs-counter-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
         }
 
         .btn-big-touch {
-            width: 46px;
-            height: 46px;
-            border-radius: 14px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
             border: none;
-            font-size: 24px;
+            font-size: 17px;
             font-weight: 900;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.15s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
             user-select: none;
         }
 
@@ -967,7 +1027,7 @@
 
         .btn-big-minus {
             background: #FFFFFF;
-            border: 2px solid #CBD5E1;
+            border: 1.5px solid #CBD5E1;
             color: #475569;
         }
 
@@ -983,7 +1043,7 @@
 
         .btn-big-plus-tours:hover {
             background: #962E15;
-            box-shadow: 0 6px 14px rgba(184, 59, 29, 0.35);
+            box-shadow: 0 4px 10px rgba(184, 59, 29, 0.3);
         }
 
         .btn-big-plus-plots {
@@ -993,14 +1053,14 @@
 
         .btn-big-plus-plots:hover {
             background: #0369A1;
-            box-shadow: 0 6px 14px rgba(2, 132, 199, 0.35);
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);
         }
 
         .big-val-text {
             font-family: var(--font-sport);
-            font-size: 26px;
+            font-size: 18px;
             font-weight: 900;
-            min-width: 48px;
+            min-width: 32px;
             text-align: center;
             color: #1E293B;
         }
@@ -1009,10 +1069,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
-            padding: 4px 6px;
+            font-size: 11.5px;
+            padding: 2px 4px;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 4px;
         }
 
         .obs-realise-dist {
@@ -1022,14 +1082,14 @@
 
         .obs-realise-dist strong {
             color: #B83B1D;
-            font-size: 16px;
+            font-size: 13px;
         }
 
         .obs-diff-badge {
             font-weight: 800;
-            font-size: 12px;
-            padding: 2px 8px;
-            border-radius: 8px;
+            font-size: 10.5px;
+            padding: 2px 6px;
+            border-radius: 6px;
         }
 
         .obs-diff-badge.on-target {
@@ -1052,17 +1112,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 5px;
         }
 
         .btn-marche-big {
             background: #F8FAFC;
-            border: 2px solid #CBD5E1;
-            border-radius: 16px;
-            padding: 12px 18px;
+            border: 1.5px solid #CBD5E1;
+            border-radius: 10px;
+            padding: 6px 10px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
             width: 100%;
@@ -1072,15 +1132,15 @@
         .btn-marche-big:hover {
             background: #FEF3C7;
             border-color: #F59E0B;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(245, 158, 11, 0.2);
         }
 
         .btn-marche-big.active {
             background: #FEF3C7;
             border-color: #D97706;
             color: #92400E;
-            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
+            box-shadow: 0 3px 10px rgba(217, 119, 6, 0.2);
         }
 
         .btn-marche-big .marche-content {
@@ -1090,7 +1150,7 @@
         }
 
         .btn-marche-big .marche-lbl {
-            font-size: 11px;
+            font-size: 9.5px;
             font-weight: 900;
             text-transform: uppercase;
             color: #475569;
@@ -1101,8 +1161,8 @@
         }
 
         .btn-marche-big .marche-count {
-            font-size: 17px;
-            font-weight: 900;
+            font-size: 11.5px;
+            font-weight: 800;
             color: #1E293B;
         }
 
@@ -1112,20 +1172,20 @@
 
         .btn-marche-big .btn-add-tag {
             background: rgba(0, 0, 0, 0.08);
-            padding: 4px 8px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: 900;
         }
 
         .btn-marche-sub-mini {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
             border: 1.5px solid #CBD5E1;
             background: #FFFFFF;
             color: #64748B;
-            font-size: 20px;
+            font-size: 14px;
             font-weight: 900;
             cursor: pointer;
             display: flex;
@@ -2064,6 +2124,10 @@
             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 12px;">
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                 <button class="back-btn" onclick="nav('view-classes-prof')">◀ Choisir une classe</button>
+                <button type="button" class="back-btn" onclick="openModalAddBinome()"
+                    style="background: #10B981; color: #FFFFFF; border-color: #10B981; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+                    ➕ Ajouter un binôme
+                </button>
             </div>
             <input type="text" id="binome-search" placeholder="🔍 Rechercher un élève..." oninput="renderBinomesList()"
                 style="padding: 10px 16px; border-radius: 12px; border: 1.5px solid #CBD5E1; font-size: 14px; width: 280px; outline: none;">
@@ -2102,22 +2166,25 @@
             <!-- Card Profil Élève -->
             <div class="fiche-card">
                 <div class="fiche-card-title"
-                    style="display: flex; justify-content: space-between; align-items: center;">
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                     <span>Profil Élève</span>
-                    <button type="button" class="btn-edit-classe" onclick="openModalEditClasse()"
-                        title="Modifier la classe">✏️ Modifier la classe</button>
+                    <button type="button" class="btn-edit-classe" onclick="openModalEditEleve()"
+                        title="Modifier les informations de l'élève (nom, prénom, classe, VMA)">✏️ Modifier la
+                        fiche</button>
                 </div>
-                <div class="fiche-student-name" id="fiche-prof-fullname">-</div>
+                <div class="fiche-student-name" id="fiche-prof-fullname" onclick="openModalEditEleve()"
+                    style="cursor: pointer;" title="Cliquer pour modifier">-</div>
                 <div>
-                    <div class="fiche-student-class" id="fiche-prof-class" onclick="openModalEditClasse()"
-                        title="Cliquer pour modifier la classe">
+                    <div class="fiche-student-class" id="fiche-prof-class" onclick="openModalEditEleve()"
+                        title="Cliquer pour modifier la classe ou les infos">
                         Classe : 3e A ✏️
                     </div>
                 </div>
-                <div class="fiche-vma-box">
+                <div class="fiche-vma-box" onclick="openModalEditEleve()" style="cursor: pointer;"
+                    title="Cliquer pour modifier la VMA">
                     <span>VMA :</span>
                     <span class="value" id="fiche-prof-vma">12.5</span>
-                    <span>km/h</span>
+                    <span>km/h ✏️</span>
                 </div>
             </div>
 
@@ -2570,6 +2637,178 @@
         </div>
     </div>
 
+    <!-- MODALE AJOUT MANUEL D'UN BINÔME -->
+    <div class="modal-overlay" id="modal-add-binome">
+        <div class="modal-card" style="max-width: 560px; width: 92%; text-align: left;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
+                <h3 style="margin: 0; font-size: 20px; font-family: var(--font-sport); color: #B83B1D;">➕ Ajouter un
+                    binôme</h3>
+                <button onclick="closeModal('modal-add-binome')"
+                    style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748B;">✕</button>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+                <label
+                    style="display: block; font-size: 12px; font-weight: 700; color: #64748B; text-transform: uppercase; margin-bottom: 6px;">
+                    Classe :
+                </label>
+                <div id="add-binome-existing-pills"
+                    style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;"></div>
+                <input type="text" id="add-binome-classe" placeholder="Ex: 3A, 3B, 3C..."
+                    style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 14px; font-weight: 700; color: #1C1C1E; outline: none; box-sizing: border-box;">
+            </div>
+
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-bottom: 20px;">
+                <!-- Coureur 1 -->
+                <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px;">
+                    <div
+                        style="font-size: 13px; font-weight: 800; color: #B83B1D; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                        🏃 Coureur 1
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Prénom
+                            *</label>
+                        <input type="text" id="add-binome-p1" placeholder="Ex: Lucas"
+                            style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Nom</label>
+                        <input type="text" id="add-binome-n1" placeholder="Ex: Dupont"
+                            style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">VMA
+                            (km/h)</label>
+                        <input type="number" id="add-binome-vma1" placeholder="Ex: 12.5" step="0.1" min="5" max="25"
+                            style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
+                    </div>
+                </div>
+
+                <!-- Coureur 2 -->
+                <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px;">
+                    <div
+                        style="font-size: 13px; font-weight: 800; color: #0284C7; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                        🏃 Coureur 2
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Prénom
+                            *</label>
+                        <input type="text" id="add-binome-p2" placeholder="Ex: Emma"
+                            style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Nom</label>
+                        <input type="text" id="add-binome-n2" placeholder="Ex: Martin"
+                            style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
+                    </div>
+                    <div>
+                        <label
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">VMA
+                            (km/h)</label>
+                        <input type="number" id="add-binome-vma2" placeholder="Ex: 11.0" step="0.1" min="5" max="25"
+                            style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="back-btn" onclick="closeModal('modal-add-binome')"
+                    style="padding: 10px 18px; font-size: 14px;">Annuler</button>
+                <button type="button" class="back-btn" onclick="saveNewBinome()"
+                    style="background: #10B981; color: #FFFFFF; border-color: #10B981; padding: 10px 22px; font-size: 14px; font-weight: 800;">
+                    ➕ Créer le binôme
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE MODIFICATION COMPLÈTE DE LA FICHE ÉLÈVE -->
+    <div class="modal-overlay" id="modal-edit-eleve">
+        <div class="modal-card" style="max-width: 480px; width: 92%; text-align: left;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
+                <h3 style="margin: 0; font-size: 20px; font-family: var(--font-sport); color: #B83B1D;">✏️ Modifier la
+                    fiche élève</h3>
+                <button onclick="closeModal('modal-edit-eleve')"
+                    style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748B;">✕</button>
+            </div>
+
+            <!-- Onglets de bascule rapide entre Coureur 1 et Coureur 2 -->
+            <div class="runner-selector-tab" style="margin-bottom: 16px;">
+                <button type="button" id="modal-edit-eleve-tab-1" class="tab-btn active"
+                    onclick="switchModalEditEleveRunner(1)">1. Coureur 1</button>
+                <button type="button" id="modal-edit-eleve-tab-2" class="tab-btn"
+                    onclick="switchModalEditEleveRunner(2)">2. Coureur 2</button>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+                <label
+                    style="display: block; font-size: 11px; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 4px;">
+                    Prénom :
+                </label>
+                <input type="text" id="modal-edit-eleve-prenom" placeholder="Prénom"
+                    style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 14px; font-weight: 700; color: #1C1C1E; outline: none; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 12px;">
+                <label
+                    style="display: block; font-size: 11px; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 4px;">
+                    Nom :
+                </label>
+                <input type="text" id="modal-edit-eleve-nom" placeholder="Nom de famille"
+                    style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 14px; font-weight: 700; color: #1C1C1E; outline: none; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 12px;">
+                <label
+                    style="display: block; font-size: 11px; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 4px;">
+                    Classe :
+                </label>
+                <div id="modal-edit-eleve-existing-pills"
+                    style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px;"></div>
+                <input type="text" id="modal-edit-eleve-classe" placeholder="Ex: 3A"
+                    style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 14px; font-weight: 700; color: #1C1C1E; outline: none; box-sizing: border-box;">
+            </div>
+
+            <div
+                style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px 12px; margin-bottom: 14px;">
+                <label
+                    style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 12.5px; font-weight: 700; color: #334155;">
+                    <input type="checkbox" id="modal-edit-eleve-apply-both" checked
+                        style="width: 16px; height: 16px; accent-color: #B83B1D; cursor: pointer;">
+                    <span>Appliquer aussi la classe à l'autre coureur du binôme</span>
+                </label>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label
+                    style="display: block; font-size: 11px; font-weight: 800; color: #64748B; text-transform: uppercase; margin-bottom: 4px;">
+                    VMA (km/h) :
+                </label>
+                <input type="number" id="modal-edit-eleve-vma" placeholder="Ex: 12.5" step="0.1" min="5" max="25"
+                    style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #CBD5E1; font-size: 14px; font-weight: 700; color: #1C1C1E; outline: none; box-sizing: border-box;">
+                <p style="font-size: 11px; color: #94A3B8; margin-top: 4px;">Cette VMA servira aux calculs des projets
+                    et allures cibles.</p>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="back-btn" onclick="closeModal('modal-edit-eleve')"
+                    style="padding: 10px 18px; font-size: 14px;">Annuler</button>
+                <button type="button" class="back-btn" onclick="saveEditedEleve()"
+                    style="background: #B83B1D; color: #FFFFFF; border-color: #B83B1D; padding: 10px 22px; font-size: 14px; font-weight: 800;">
+                    💾 Enregistrer
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // --- DONNÉES GLOBALES ESPACE PROF ---
         let importedBinomes = JSON.parse(localStorage.getItem('df_prof_binomes')) || [];
@@ -2762,6 +3001,263 @@
                 "Classe Mise à Jour",
                 `La classe a été attribuée avec succès : <strong>${newClasse}</strong>.`,
                 "✏️"
+            );
+        }
+
+        // --- AJOUT MANUEL D'UN BINÔME ---
+        function openModalAddBinome() {
+            let distinctClasses = getDistinctClasses();
+            let defaultClass = (selectedClasse && selectedClasse !== 'ALL')
+                ? selectedClasse
+                : (distinctClasses.length > 0 ? distinctClasses[0].name : '3A');
+
+            let inputClasse = document.getElementById('add-binome-classe');
+            if (inputClasse) inputClasse.value = defaultClass;
+
+            let pillsContainer = document.getElementById('add-binome-existing-pills');
+            if (pillsContainer) {
+                if (distinctClasses.length === 0) {
+                    pillsContainer.innerHTML = '<span style="font-size:12px; color:#94A3B8;">Aucune classe existante. Indiquez la classe ci-dessous (ex: 3A).</span>';
+                } else {
+                    let html = '';
+                    distinctClasses.forEach(c => {
+                        let isCur = (c.name === defaultClass);
+                        html += `<button type="button" class="class-pill ${isCur ? 'active' : ''}" onclick="setAddBinomeClasseInput('${c.name.replace(/'/g, "\\'")}')">${c.name}</button>`;
+                    });
+                    pillsContainer.innerHTML = html;
+                }
+            }
+
+            let p1 = document.getElementById('add-binome-p1');
+            let n1 = document.getElementById('add-binome-n1');
+            let vma1 = document.getElementById('add-binome-vma1');
+            let p2 = document.getElementById('add-binome-p2');
+            let n2 = document.getElementById('add-binome-n2');
+            let vma2 = document.getElementById('add-binome-vma2');
+
+            if (p1) p1.value = '';
+            if (n1) n1.value = '';
+            if (vma1) vma1.value = '';
+            if (p2) p2.value = '';
+            if (n2) n2.value = '';
+            if (vma2) vma2.value = '';
+
+            openModal('modal-add-binome');
+            setTimeout(() => {
+                if (p1) p1.focus();
+            }, 100);
+        }
+
+        function setAddBinomeClasseInput(classeName) {
+            let inputEl = document.getElementById('add-binome-classe');
+            if (inputEl) inputEl.value = classeName;
+            document.querySelectorAll('#add-binome-existing-pills .class-pill').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.trim() === classeName);
+            });
+        }
+
+        function saveNewBinome() {
+            let inputClasse = document.getElementById('add-binome-classe');
+            let classeRaw = inputClasse ? inputClasse.value.trim() : '';
+            if (!classeRaw) {
+                showAppAlert("Classe requise", "Veuillez renseigner un nom de classe (ex: 3A).", "⚠️");
+                return;
+            }
+            let classeNorm = normalizeClasse(classeRaw);
+
+            let p1 = (document.getElementById('add-binome-p1').value || '').trim();
+            let n1 = (document.getElementById('add-binome-n1').value || '').trim();
+            let vma1Raw = parseFloat(document.getElementById('add-binome-vma1').value);
+
+            let p2 = (document.getElementById('add-binome-p2').value || '').trim();
+            let n2 = (document.getElementById('add-binome-n2').value || '').trim();
+            let vma2Raw = parseFloat(document.getElementById('add-binome-vma2').value);
+
+            if (!p1 && !n1 && !p2 && !n2) {
+                showAppAlert("Coureurs requis", "Veuillez renseigner au moins le prénom d'un coureur.", "⚠️");
+                return;
+            }
+
+            let newBinome = {
+                classe: classeNorm,
+                coureurs: {
+                    1: {
+                        prenom: p1 || 'Coureur 1',
+                        nom: n1 || '',
+                        classe: classeNorm,
+                        vma: (!isNaN(vma1Raw) && vma1Raw > 0) ? parseFloat(vma1Raw.toFixed(1)) : null,
+                        seances: []
+                    },
+                    2: {
+                        prenom: p2 || 'Coureur 2',
+                        nom: n2 || '',
+                        classe: classeNorm,
+                        vma: (!isNaN(vma2Raw) && vma2Raw > 0) ? parseFloat(vma2Raw.toFixed(1)) : null,
+                        seances: []
+                    }
+                }
+            };
+
+            importedBinomes.push(newBinome);
+            localStorage.setItem('df_prof_binomes', JSON.stringify(importedBinomes));
+
+            selectedClasse = classeNorm;
+            closeModal('modal-add-binome');
+
+            updateProfHomeStats();
+            renderClassesList();
+            renderBinomesList();
+
+            showAppAlert(
+                "Binôme Ajouté",
+                `Le binôme <strong>${newBinome.coureurs[1].prenom} & ${newBinome.coureurs[2].prenom}</strong> a été créé avec succès dans la classe <strong>${classeNorm}</strong>.`,
+                "✅"
+            );
+        }
+
+        // --- ÉDITION COMPLÈTE DE LA FICHE ÉLÈVE (NOM, PRÉNOM, CLASSE, VMA) ---
+        let editingEleveBinomeIdx = null;
+        let editingEleveRunnerId = 1;
+
+        function openModalEditEleve(binomeIdx, runnerId) {
+            if (binomeIdx !== undefined && binomeIdx !== null) {
+                editingEleveBinomeIdx = binomeIdx;
+                editingEleveRunnerId = runnerId || 1;
+            } else {
+                editingEleveBinomeIdx = selectedBinomeIndex;
+                editingEleveRunnerId = activeRunnerId || 1;
+            }
+
+            if (editingEleveBinomeIdx === null || !importedBinomes[editingEleveBinomeIdx]) return;
+
+            populateModalEditEleveFields();
+            openModal('modal-edit-eleve');
+        }
+
+        function switchModalEditEleveRunner(runnerId) {
+            editingEleveRunnerId = runnerId;
+            populateModalEditEleveFields();
+        }
+
+        function populateModalEditEleveFields() {
+            if (editingEleveBinomeIdx === null || !importedBinomes[editingEleveBinomeIdx]) return;
+            let b = importedBinomes[editingEleveBinomeIdx];
+            if (!b.coureurs) b.coureurs = {};
+            let coureur = b.coureurs[editingEleveRunnerId] || {};
+
+            let tab1 = document.getElementById('modal-edit-eleve-tab-1');
+            let tab2 = document.getElementById('modal-edit-eleve-tab-2');
+            let c1 = b.coureurs[1] || {};
+            let c2 = b.coureurs[2] || {};
+            if (tab1) {
+                tab1.innerText = `1. ${(c1.prenom || 'Coureur 1').trim()}`;
+                tab1.classList.toggle('active', editingEleveRunnerId === 1);
+            }
+            if (tab2) {
+                tab2.innerText = `2. ${(c2.prenom || 'Coureur 2').trim()}`;
+                tab2.classList.toggle('active', editingEleveRunnerId === 2);
+            }
+
+            let inputPrenom = document.getElementById('modal-edit-eleve-prenom');
+            let inputNom = document.getElementById('modal-edit-eleve-nom');
+            let inputClasse = document.getElementById('modal-edit-eleve-classe');
+            let inputVma = document.getElementById('modal-edit-eleve-vma');
+
+            if (inputPrenom) inputPrenom.value = coureur.prenom || '';
+            if (inputNom) inputNom.value = coureur.nom || '';
+
+            let curClasse = normalizeClasse(coureur.classe || b.classe || '');
+            if (inputClasse) inputClasse.value = curClasse === 'Sans Classe' ? '' : curClasse;
+            if (inputVma) inputVma.value = (coureur.vma !== undefined && coureur.vma !== null) ? coureur.vma : '';
+
+            // Pills classes
+            let pillsContainer = document.getElementById('modal-edit-eleve-existing-pills');
+            if (pillsContainer) {
+                let distinctClasses = getDistinctClasses();
+                if (distinctClasses.length === 0) {
+                    pillsContainer.innerHTML = '<span style="font-size:12px; color:#94A3B8;">Aucune classe existante.</span>';
+                } else {
+                    let html = '';
+                    distinctClasses.forEach(c => {
+                        let isCur = (c.name === curClasse);
+                        html += `<button type="button" class="class-pill ${isCur ? 'active' : ''}" onclick="setEditEleveClasseInput('${c.name.replace(/'/g, "\\'")}')">${c.name}</button>`;
+                    });
+                    pillsContainer.innerHTML = html;
+                }
+            }
+
+            let applyBothCb = document.getElementById('modal-edit-eleve-apply-both');
+            if (applyBothCb) applyBothCb.checked = true;
+        }
+
+        function setEditEleveClasseInput(classeName) {
+            let inputEl = document.getElementById('modal-edit-eleve-classe');
+            if (inputEl) inputEl.value = classeName;
+            document.querySelectorAll('#modal-edit-eleve-existing-pills .class-pill').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.trim() === classeName);
+            });
+        }
+
+        function saveEditedEleve() {
+            if (editingEleveBinomeIdx === null || !importedBinomes[editingEleveBinomeIdx]) return;
+
+            let b = importedBinomes[editingEleveBinomeIdx];
+            if (!b.coureurs) b.coureurs = {};
+            if (!b.coureurs[editingEleveRunnerId]) b.coureurs[editingEleveRunnerId] = {};
+            let coureur = b.coureurs[editingEleveRunnerId];
+
+            let inputPrenom = document.getElementById('modal-edit-eleve-prenom');
+            let inputNom = document.getElementById('modal-edit-eleve-nom');
+            let inputClasse = document.getElementById('modal-edit-eleve-classe');
+            let inputVma = document.getElementById('modal-edit-eleve-vma');
+            let applyBoth = document.getElementById('modal-edit-eleve-apply-both').checked;
+
+            let prenom = inputPrenom ? inputPrenom.value.trim() : '';
+            let nom = inputNom ? inputNom.value.trim() : '';
+            let classeRaw = inputClasse ? inputClasse.value.trim() : '';
+            let vmaRaw = inputVma ? parseFloat(inputVma.value) : null;
+
+            if (!prenom && !nom) {
+                showAppAlert("Champ requis", "Veuillez renseigner au moins le prénom ou le nom de l'élève.", "⚠️");
+                return;
+            }
+
+            coureur.prenom = prenom || `Coureur ${editingEleveRunnerId}`;
+            coureur.nom = nom;
+            if (vmaRaw && !isNaN(vmaRaw) && vmaRaw > 0) {
+                coureur.vma = parseFloat(vmaRaw.toFixed(1));
+            } else {
+                coureur.vma = null;
+            }
+
+            if (classeRaw) {
+                let newClasse = normalizeClasse(classeRaw);
+                coureur.classe = newClasse;
+                b.classe = newClasse;
+                if (applyBoth) {
+                    let otherId = editingEleveRunnerId === 1 ? 2 : 1;
+                    if (b.coureurs[otherId]) {
+                        b.coureurs[otherId].classe = newClasse;
+                    }
+                }
+            }
+
+            localStorage.setItem('df_prof_binomes', JSON.stringify(importedBinomes));
+            closeModal('modal-edit-eleve');
+
+            updateProfHomeStats();
+            renderClassesList();
+            renderBinomesList();
+
+            let activeFiche = document.getElementById('view-fiche-prof');
+            if (activeFiche && activeFiche.classList.contains('active') && selectedBinomeIndex === editingEleveBinomeIdx) {
+                renderFicheProf();
+            }
+
+            showAppAlert(
+                "Fiche Mise à Jour",
+                `Les informations de <strong>${coureur.prenom} ${coureur.nom || ''}</strong> ont été enregistrées avec succès.`,
+                "✅"
             );
         }
 
@@ -3213,8 +3709,11 @@
                 if (subEl) subEl.innerText = '0 binôme importé';
                 container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: rgba(255,255,255,0.85); border-radius: 20px;">
                     <div style="font-size: 36px; margin-bottom: 10px;">📋</div>
-                    <h3 style="font-size: 18px; font-weight: 800; color: #1C1C1E; margin-bottom: 6px;">Aucun binôme importé</h3>
-                    <p style="color: #64748B; font-size: 14px;">Retournez à l'accueil et cliquez sur <strong>"📥 Importer les fichiers élèves"</strong> pour charger les données de votre classe.</p>
+                    <h3 style="font-size: 18px; font-weight: 800; color: #1C1C1E; margin-bottom: 6px;">Aucun binôme pour le moment</h3>
+                    <p style="color: #64748B; font-size: 14px; margin-bottom: 16px;">Vous pouvez créer un binôme manuellement ou importer les fichiers élèves.</p>
+                    <button type="button" class="back-btn" onclick="openModalAddBinome()" style="background: #10B981; color: #FFFFFF; border-color: #10B981; font-weight: 800; padding: 12px 24px; font-size: 14px;">
+                        ➕ Ajouter un premier binôme
+                    </button>
                 </div>`;
                 return;
             }
@@ -3258,15 +3757,18 @@
                     <div class="binome-card" onclick="openFicheProf(${realIdx})">
                         <div class="binome-card-header">
                             <span class="binome-card-title">Binôme n°${realIdx + 1}</span>
-                            <span class="binome-badge-class" onclick="event.stopPropagation(); openModalEditClasse(${realIdx})" title="Cliquer pour modifier ou réattribuer la classe">${classe} ✏️</span>
+                            <div style="display: flex; gap: 6px; align-items: center;">
+                                <span class="binome-badge-class" onclick="event.stopPropagation(); openModalEditEleve(${realIdx}, 1)" title="Cliquer pour modifier">${classe} ✏️</span>
+                                <button type="button" onclick="event.stopPropagation(); openModalEditEleve(${realIdx}, 1)" title="Modifier les informations (nom, prénom, classe, VMA)" style="background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 8px; padding: 3px 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; color: #475569; transition: all 0.2s;">✏️ Modifier</button>
+                            </div>
                         </div>
                         <div class="binome-runners-row">
-                            <div class="runner-pill">
-                                <div class="r-label">Coureur 1</div>
+                            <div class="runner-pill" onclick="event.stopPropagation(); openFicheProf(${realIdx}, 1)">
+                                <div class="r-label">Coureur 1 ${c1.vma ? '• VMA ' + c1.vma : ''}</div>
                                 <div class="r-name">${p1} ${n1}</div>
                             </div>
-                            <div class="runner-pill">
-                                <div class="r-label">Coureur 2</div>
+                            <div class="runner-pill" onclick="event.stopPropagation(); openFicheProf(${realIdx}, 2)">
+                                <div class="r-label">Coureur 2 ${c2.vma ? '• VMA ' + c2.vma : ''}</div>
                                 <div class="r-name">${p2} ${n2}</div>
                             </div>
                         </div>
@@ -3315,16 +3817,21 @@
                     <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: rgba(255,255,255,0.85); border-radius: 20px;">
                         <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
                         <h3 style="font-size: 16px; font-weight: 800; color: #1C1C1E; margin-bottom: 4px;">Aucun binôme trouvé</h3>
-                        <p style="color: #64748B; font-size: 13px;">Aucun binôme ne correspond à votre recherche dans ${selectedClasse === 'ALL' ? 'vos classes' : 'la classe ' + selectedClasse}.</p>
+                        <p style="color: #64748B; font-size: 13px; margin-bottom: 14px;">Aucun binôme ne correspond à votre recherche dans ${selectedClasse === 'ALL' ? 'vos classes' : 'la classe ' + selectedClasse}.</p>
+                        <button type="button" class="back-btn" onclick="openModalAddBinome()" style="background: #10B981; color: #FFFFFF; border-color: #10B981; font-weight: 800; padding: 10px 18px; font-size: 13px;">➕ Ajouter un binôme dans cette classe</button>
                     </div>` + obsCardHtml;
             }
         }
 
         // --- OUVERTURE DE LA FICHE COUREUR PROF ---
-        function openFicheProf(binomeIndex) {
+        function openFicheProf(binomeIndex, runnerId) {
             selectedBinomeIndex = binomeIndex;
-            activeRunnerId = 1;
+            activeRunnerId = runnerId || 1;
             nav('view-fiche-prof');
+            let tab1 = document.getElementById('tab-c1');
+            let tab2 = document.getElementById('tab-c2');
+            if (tab1) tab1.classList.toggle('active', activeRunnerId === 1);
+            if (tab2) tab2.classList.toggle('active', activeRunnerId === 2);
             renderFicheProf();
         }
 
@@ -4305,53 +4812,61 @@
         }
 
         // 9. Calcul de l'objectif individuel de chaque coureur
-        function getRunnerObjective(coureur, durationMin) {
-            if (!coureur) return { distance: 600, speed: 6.0, pctVma: 70 };
+        function getRunnerDefaultIntensity(coureur, durationMin) {
+            if (!coureur) return 80;
+            let dur = parseFloat(durationMin) || 6;
 
-            // 1. Si un objectif explicite est déjà renseigné dans sa fiche
-            if (coureur.objectif && parseFloat(coureur.objectif) > 0) {
-                let dist = parseFloat(coureur.objectif);
-                let speed = durationMin > 0 ? (dist / (durationMin * 60)) * 3.6 : 10;
-                let pct = coureur.vma ? Math.round((speed / coureur.vma) * 100) : 75;
-                return { distance: Math.round(dist), speed: parseFloat(speed.toFixed(1)), pctVma: pct };
-            }
-
-            // 2. Si le coureur a un projet de course enregistré
-            if (coureur.projet && coureur.projet.distance && parseFloat(coureur.projet.distance) > 0) {
-                let dist = parseFloat(coureur.projet.distance);
-                let speed = durationMin > 0 ? (dist / (durationMin * 60)) * 3.6 : 10;
-                let pct = coureur.vma ? Math.round((speed / coureur.vma) * 100) : 75;
-                return { distance: Math.round(dist), speed: parseFloat(speed.toFixed(1)), pctVma: pct };
-            }
-
-            // 3. Calcul à partir de la VMA et d'un pourcentage cible (ou historique séance précédente)
-            let vma = parseFloat(coureur.vma) || 11.0;
-            let targetPct = 80; // Standard 3e en demi-fond (80% VMA sur 6 min)
-
+            // 1. Historique de course de l'élève
             let seances = getCoureurSeances(coureur);
-            if (seances.length > 0) {
+            if (seances && seances.length > 0) {
                 let lastSeance = seances[seances.length - 1];
                 if (lastSeance.runs && lastSeance.runs.length > 0) {
                     let lastRun = lastSeance.runs[lastSeance.runs.length - 1];
-                    if (lastRun.pctVMA || lastRun.pctVma) {
-                        targetPct = lastRun.pctVMA || lastRun.pctVma;
-                    }
-                    if (lastRun.objectif && lastRun.duree === durationMin) {
-                        let speed = (lastRun.objectif / (durationMin * 60)) * 3.6;
-                        return { distance: lastRun.objectif, speed: parseFloat(speed.toFixed(1)), pctVma: targetPct };
+                    let pct = lastRun.pctVMA || lastRun.pctVma;
+                    if (pct && !isNaN(pct) && pct >= 50 && pct <= 150) {
+                        return Math.max(50, Math.min(150, Math.round(pct / 5) * 5));
                     }
                 }
             }
 
-            let speed = (vma * targetPct) / 100;
-            let rawDist = (speed * (durationMin / 60)) * 1000;
-            let roundedDist = Math.round(rawDist / 25) * 25; // Arrondi aux 25m
+            // 2. Si un objectif explicite ou un projet est déjà enregistré
+            let vma = (coureur.vma && parseFloat(coureur.vma) > 0) ? parseFloat(coureur.vma) : null;
+            let recordedObj = coureur.objectif || (coureur.projet && coureur.projet.distance);
+            if (vma && recordedObj && parseFloat(recordedObj) > 0) {
+                let dist = parseFloat(recordedObj);
+                let speed = dur > 0 ? (dist / (dur * 60)) * 3.6 : 10;
+                let pct = Math.round((speed / vma) * 100);
+                if (pct >= 50 && pct <= 150) {
+                    return Math.max(50, Math.min(150, Math.round(pct / 5) * 5));
+                }
+            }
+
+            // 3. Valeur standard
+            return 80;
+        }
+
+        // Calcul du projet en fonction de la VMA de l'élève, du temps de course et de l'intensité sélectionnée
+        function calculateRunnerProject(coureur, durationMin, intensityPct) {
+            let vma = (coureur && coureur.vma && parseFloat(coureur.vma) > 0) ? parseFloat(coureur.vma) : 11.0;
+            let dur = parseFloat(durationMin) || 6;
+            let pct = parseInt(intensityPct, 10) || 80;
+            pct = Math.max(50, Math.min(150, pct));
+
+            let speed = (vma * pct) / 100;
+            let rawDist = (speed * (dur / 60)) * 1000;
+            let dist = Math.round(rawDist);
 
             return {
-                distance: roundedDist,
+                distance: dist,
                 speed: parseFloat(speed.toFixed(1)),
-                pctVma: targetPct
+                pctVma: pct,
+                vmaUsed: vma,
+                hasRealVma: !!(coureur && coureur.vma && parseFloat(coureur.vma) > 0)
             };
+        }
+
+        function getRunnerObjective(coureur, durationMin) {
+            return calculateRunnerProject(coureur, durationMin, 80);
         }
 
         // 10. Lancement de la course en direct depuis le paramétrage
@@ -4398,9 +4913,17 @@
                         }
                     }
 
+                    let c1 = (b.coureurs && b.coureurs[1]) || null;
+                    let c2 = (b.coureurs && b.coureurs[2]) || null;
+                    let initIntensities = {
+                        1: getRunnerDefaultIntensity(c1, durationMin),
+                        2: getRunnerDefaultIntensity(c2, durationMin)
+                    };
+
                     filteredBinomes.push({
                         binomeIdx: idx,
                         activeRunner: defaultRunner,
+                        intensities: initIntensities,
                         tours: 0,
                         plots: 0,
                         marcheCount: 0,
@@ -4470,14 +4993,30 @@
                 let c1 = (binome.coureurs && binome.coureurs[1]) || { prenom: 'Coureur 1', nom: '', vma: null };
                 let c2 = (binome.coureurs && binome.coureurs[2]) || { prenom: 'Coureur 2', nom: '', vma: null };
 
-                let activeRunner = item.activeRunner === 1 ? c1 : c2;
+                if (!item.intensities) {
+                    item.intensities = {};
+                }
+                if (!item.intensities[1]) {
+                    item.intensities[1] = getRunnerDefaultIntensity(c1, currentLiveCourseState.durationMin);
+                }
+                if (!item.intensities[2]) {
+                    item.intensities[2] = getRunnerDefaultIntensity(c2, currentLiveCourseState.durationMin);
+                }
 
-                // Calcul de l'objectif individuel de ce coureur (distance en mètres)
-                let obj = getRunnerObjective(activeRunner, currentLiveCourseState.durationMin);
+                let activeRunnerId = item.activeRunner || 1;
+                let activeRunner = activeRunnerId === 1 ? c1 : c2;
+                let currentIntensity = item.intensities[activeRunnerId] || 80;
 
-                // Conversion du projet UNIQUEMENT en tours / plots et en mètres (PAS de vitesse cible affichée)
+                // Calcul du projet en fonction de la VMA, du temps de course et de l'intensité sélectionnée
+                let obj = calculateRunnerProject(activeRunner, currentLiveCourseState.durationMin, currentIntensity);
+
+                // Conversion du projet en tours / plots et en mètres
                 let targetTours = Math.floor(obj.distance / lapDist);
                 let targetPlots = Math.round((obj.distance % lapDist) / interDist);
+                if (targetPlots >= plotsPerLap) {
+                    targetTours += 1;
+                    targetPlots = 0;
+                }
 
                 // Calculs en temps réel du réalisé
                 let totalDist = (item.tours * lapDist) + (item.plots * interDist);
@@ -4499,9 +5038,20 @@
 
                 let marcheCount = item.marcheCount || (item.marche ? 1 : 0);
 
+                // Options de l'intensité de 50% à 150% avec incrément de 5%
+                let intensityOptions = '';
+                for (let pct = 50; pct <= 150; pct += 5) {
+                    let isSel = pct === currentIntensity ? 'selected' : '';
+                    intensityOptions += `<option value="${pct}" ${isSel}>${pct}%</option>`;
+                }
+
+                let vmaDisplay = (activeRunner.vma && parseFloat(activeRunner.vma) > 0)
+                    ? `VMA ${parseFloat(activeRunner.vma)} km/h`
+                    : `VMA ~11 km/h (défaut)`;
+
                 html += `
                     <div class="obs-live-card">
-                        <!-- Colonne 1 : En haut à gauche Nom du binôme, en dessous choix du coureur, et affichage du projet (tours/plots et m uniquement) -->
+                        <!-- Colonne 1 : Nom du binôme, choix du coureur, liste déroulante intensité et projet -->
                         <div class="obs-card-left">
                             <div class="obs-binome-name">Binôme ${item.binomeIdx + 1}</div>
                             
@@ -4517,14 +5067,25 @@
                                 </button>
                             </div>
 
-                            <!-- Projet en tours/plots et en mètres (PAS de vitesse cible) -->
+                            <!-- Petite liste déroulante d'intensité (50% à 150% par pas de 5%) -->
+                            <div class="obs-intensity-row">
+                                <label class="obs-intensity-label" for="obs-intensity-select-${itemIdx}">
+                                    <span>⚡ Intensité :</span>
+                                </label>
+                                <select id="obs-intensity-select-${itemIdx}" class="obs-intensity-select" onchange="setObsRunnerIntensity(${itemIdx}, this.value)" title="Choisir l'intensité de course pour ${activeRunner.prenom || 'l\'élève'}">
+                                    ${intensityOptions}
+                                </select>
+                                <span class="obs-vma-badge" title="VMA utilisée pour le calcul du projet">${vmaDisplay}</span>
+                            </div>
+
+                            <!-- Projet en tours/plots et en mètres -->
                             <div class="obs-projet-display">
                                 <span class="target-icon">🎯</span>
                                 <span>Projet : <strong>${targetTours} tour${targetTours > 1 ? 's' : ''} + ${targetPlots} plot${targetPlots > 1 ? 's' : ''}</strong> (${obj.distance} m)</span>
                             </div>
                         </div>
 
-                        <!-- Colonne 2 : Gros boutons tactiles et colorés pour TOURS (+ et -) et PLOTS (+ et -) -->
+                        <!-- Colonne 2 : Boutons pour TOURS (+ et -) et PLOTS (+ et -) -->
                         <div class="obs-card-center">
                             <div class="obs-big-counters-row">
                                 <!-- TOURS -->
@@ -4542,7 +5103,7 @@
                                     <div class="obs-counter-box-title">Plots (+${interDist} m)</div>
                                     <div class="obs-counter-controls">
                                         <button type="button" class="btn-big-touch btn-big-minus" onclick="changeObsPlots(${itemIdx}, -1)" title="Enlever 1 plot">−</button>
-                                        <span class="big-val-text">${item.plots} <span style="font-size:14px; font-weight:700; color:#64748B;">/ ${plotsPerLap}</span></span>
+                                        <span class="big-val-text">${item.plots} <span style="font-size:11px; font-weight:700; color:#64748B;">/ ${plotsPerLap}</span></span>
                                         <button type="button" class="btn-big-touch btn-big-plus-plots" onclick="changeObsPlots(${itemIdx}, 1)" title="Ajouter 1 plot">+</button>
                                     </div>
                                 </div>
@@ -4555,18 +5116,18 @@
                             </div>
                         </div>
 
-                        <!-- Colonne 3 : Bouton Marche qui comptabilise le nombre de fois où l'élève marche -->
+                        <!-- Colonne 3 : Bouton Marche comptabilisé -->
                         <div class="obs-card-right">
                             <button type="button" class="btn-marche-big ${marcheCount > 0 ? 'active' : ''}" onclick="incrementObsMarche(${itemIdx})" title="Appuyer pour comptabiliser un passage en marche">
-                                <span style="font-size: 26px;">🚶</span>
+                                <span style="font-size: 18px;">🚶</span>
                                 <div class="marche-content">
                                     <span class="marche-lbl">A marché</span>
                                     <span class="marche-count">${marcheCount > 0 ? marcheCount + ' fois' : '0 fois'}</span>
                                 </div>
-                                <span style="font-size: 20px; font-weight: 900; color: ${marcheCount > 0 ? '#D97706' : '#94A3B8'};">+1</span>
+                                <span style="font-size: 14px; font-weight: 900; color: ${marcheCount > 0 ? '#D97706' : '#94A3B8'};">+1</span>
                             </button>
                             ${marcheCount > 0 ? `
-                                <button type="button" class="btn-big-touch btn-big-minus" style="width:40px; height:40px; font-size:18px; border-radius:12px; flex-shrink:0;" onclick="decrementObsMarche(${itemIdx})" title="Décrémenter / corriger le nombre de marches">−</button>
+                                <button type="button" class="btn-marche-sub-mini" onclick="decrementObsMarche(${itemIdx})" title="Décrémenter / corriger le nombre de marches">−</button>
                             ` : ''}
                         </div>
                     </div>
@@ -4580,8 +5141,21 @@
         function setObsActiveRunner(itemIdx, runnerId) {
             if (currentLiveCourseState.liveBinomes[itemIdx]) {
                 currentLiveCourseState.liveBinomes[itemIdx].activeRunner = runnerId;
+                saveActiveCourseState();
                 renderObsLiveGrid();
             }
+        }
+
+        // Modification de l'intensité d'un élève
+        function setObsRunnerIntensity(itemIdx, intensityVal) {
+            let item = currentLiveCourseState.liveBinomes[itemIdx];
+            if (!item) return;
+            if (!item.intensities) {
+                item.intensities = {};
+            }
+            item.intensities[item.activeRunner || 1] = parseInt(intensityVal, 10);
+            saveActiveCourseState();
+            renderObsLiveGrid();
         }
 
         // Incrémentation des tours
@@ -4861,7 +5435,8 @@
                 let observerId = item.activeRunner === 1 ? 2 : 1;
                 let observer = (binome.coureurs && binome.coureurs[observerId]) || {};
 
-                let obj = getRunnerObjective(runner, currentLiveCourseState.durationMin);
+                let runnerIntensity = (item.intensities && item.intensities[item.activeRunner]) || 80;
+                let obj = calculateRunnerProject(runner, currentLiveCourseState.durationMin, runnerIntensity);
 
                 let totalPlots = (item.tours * currentLiveCourseState.plotsPerLap) + item.plots;
                 let totalDist = (item.tours * currentLiveCourseState.lapDist) + (item.plots * currentLiveCourseState.interplotDist);
@@ -4875,6 +5450,7 @@
                     runnerName: `${runner.prenom || ''} ${runner.nom || ''}`.trim() || `Coureur ${item.activeRunner}`,
                     observerName: `${observer.prenom || ''} ${observer.nom || ''}`.trim() || `Observateur`,
                     runnerVma: runner.vma || null,
+                    targetIntensity: runnerIntensity,
                     objectifMeters: obj.distance,
                     vitesseCible: obj.speed,
                     tours: item.tours,
