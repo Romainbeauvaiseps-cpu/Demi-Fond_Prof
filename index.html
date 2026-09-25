@@ -537,6 +537,18 @@
             box-shadow: 0 16px 36px rgba(51, 65, 85, 0.18);
         }
 
+        .class-card-add {
+            border-color: #10B981 !important;
+            background: rgba(16, 185, 129, 0.04) !important;
+        }
+
+        .class-card-add:hover {
+            border-color: #059669 !important;
+            background: rgba(16, 185, 129, 0.1) !important;
+            box-shadow: 0 16px 36px rgba(16, 185, 129, 0.2) !important;
+            transform: translateY(-4px) !important;
+        }
+
         /* Pilules de bascule rapide de classe dans la liste */
         .classes-fast-pills {
             display: flex;
@@ -768,78 +780,154 @@
             background: #64748B;
         }
 
-        /* --- NOUVEAU DESIGN ENCARTS BINÔMES HORIZONTAUX (COMPACT) --- */
-        .obs-live-grid {
+        /* --- BARRE DE TRI DES CARTES D'OBSERVATION --- */
+        .obs-sort-control-bar {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(184, 59, 29, 0.2);
+            border-radius: 14px;
+            padding: 10px 16px;
+            margin-bottom: 18px;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        }
+
+        .obs-sort-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .obs-sort-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .obs-sort-pill {
+            background: #F1F5F9;
+            border: 1.5px solid #CBD5E1;
+            color: #475569;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+
+        .obs-sort-pill:hover {
+            background: #FFFFFF;
+            border-color: #B83B1D;
+            color: #B83B1D;
+            transform: translateY(-1px);
+        }
+
+        .obs-sort-pill.active {
+            background: #B83B1D;
+            border-color: #B83B1D;
+            color: #FFFFFF;
+            box-shadow: 0 3px 10px rgba(184, 59, 29, 0.3);
+        }
+
+        /* --- DESIGN CARTES BINÔMES CARRÉES (MAX 2 PAR LIGNE) --- */
+        .obs-live-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
             margin-bottom: 90px;
             width: 100%;
         }
 
-        .obs-live-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 14px;
-            padding: 10px 14px;
-            border: 1.5px solid rgba(184, 59, 29, 0.2);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-            display: grid;
-            grid-template-columns: minmax(260px, 1.25fr) minmax(310px, 1.55fr) minmax(140px, 0.75fr);
-            align-items: center;
-            gap: 12px;
-            transition: all 0.2s ease;
+        @media (max-width: 820px) {
+            .obs-live-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
         }
 
-        @media (max-width: 1024px) {
-            .obs-live-card {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
+        .obs-live-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 18px;
+            padding: 16px;
+            border: 1.5px solid rgba(184, 59, 29, 0.2);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            position: relative;
         }
 
         .obs-live-card:hover {
             border-color: #B83B1D;
-            box-shadow: 0 6px 18px rgba(184, 59, 29, 0.1);
+            box-shadow: 0 8px 22px rgba(184, 59, 29, 0.12);
         }
 
-        /* 1. Colonne gauche : Nom binôme, choix coureur, intensité, projet */
-        .obs-card-left {
+        /* 1. En-tête de carte : Nom du binôme & switch coureur */
+        .obs-card-header {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
+        }
+
+        .obs-card-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .obs-binome-name {
             font-family: var(--font-sport);
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 900;
             color: #1C1C1E;
             letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .obs-runner-switch-horizontal {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             background: #F1F5F9;
-            padding: 3px;
-            border-radius: 9px;
+            padding: 4px;
+            border-radius: 10px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .obs-runner-pill {
             flex: 1;
-            padding: 4px 8px;
+            padding: 6px 10px;
             border: none;
-            border-radius: 7px;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 1px;
+            gap: 2px;
             transition: all 0.2s ease;
             background: transparent;
             color: #64748B;
+            min-width: 0;
         }
 
         .obs-runner-pill.is-runner {
@@ -859,45 +947,49 @@
         }
 
         .obs-runner-pill .badge-role {
-            font-size: 9px;
+            font-size: 9.5px;
             font-weight: 900;
             letter-spacing: 0.4px;
             text-transform: uppercase;
         }
 
         .obs-runner-pill .name {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 800;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 130px;
+            width: 100%;
         }
 
-        /* Liste déroulante intensité (50% à 150%) */
+        /* 2. Paramètres coureur : Intensité et Projet */
+        .obs-card-params {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
         .obs-intensity-row {
-            display: inline-flex;
+            display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 6px;
             background: #F8FAFC;
             border: 1px solid #E2E8F0;
             border-radius: 8px;
-            padding: 3px 7px;
-            width: fit-content;
+            padding: 4px 8px;
             flex-wrap: wrap;
         }
 
         .obs-intensity-label {
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 800;
             color: #475569;
             text-transform: uppercase;
             letter-spacing: 0.3px;
             display: inline-flex;
             align-items: center;
-            gap: 3px;
-            cursor: pointer;
-            user-select: none;
+            gap: 4px;
         }
 
         .obs-intensity-select {
@@ -910,8 +1002,8 @@
             background-size: 11px 11px;
             border: 1.5px solid #CBD5E1;
             border-radius: 6px;
-            padding: 2px 20px 2px 6px;
-            font-size: 11.5px;
+            padding: 3px 20px 3px 8px;
+            font-size: 12px;
             font-weight: 900;
             color: #B83B1D;
             cursor: pointer;
@@ -925,46 +1017,47 @@
         }
 
         .obs-vma-badge {
-            font-size: 10px;
+            font-size: 10.5px;
             font-weight: 700;
             color: #64748B;
             background: #E2E8F0;
-            padding: 1px 5px;
-            border-radius: 4px;
+            padding: 2px 6px;
+            border-radius: 5px;
             white-space: nowrap;
         }
 
         .obs-projet-display {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             background: #F8FAFC;
             border: 1px solid #E2E8F0;
             border-radius: 8px;
-            padding: 3px 8px;
-            font-size: 11.5px;
+            padding: 5px 9px;
+            font-size: 12px;
             color: #1E293B;
-            width: fit-content;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .obs-projet-display .target-icon {
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .obs-projet-display strong {
             color: #B83B1D;
         }
 
-        /* 2. Colonne centrale : Compteurs TOURS & PLOTS */
-        .obs-card-center {
+        /* 3. Compteurs TOURS & PLOTS */
+        .obs-card-counters {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .obs-big-counters-row {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
         }
 
@@ -972,12 +1065,12 @@
             flex: 1;
             background: #F8FAFC;
             border: 1.5px solid #E2E8F0;
-            border-radius: 10px;
-            padding: 5px 8px;
+            border-radius: 12px;
+            padding: 8px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
+            gap: 4px;
             transition: all 0.2s ease;
         }
 
@@ -992,7 +1085,7 @@
         }
 
         .obs-counter-box-title {
-            font-size: 10px;
+            font-size: 10.5px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.3px;
@@ -1002,15 +1095,15 @@
         .obs-counter-controls {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .btn-big-touch {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
             border: none;
-            font-size: 17px;
+            font-size: 19px;
             font-weight: 900;
             cursor: pointer;
             display: flex;
@@ -1058,9 +1151,9 @@
 
         .big-val-text {
             font-family: var(--font-sport);
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 900;
-            min-width: 32px;
+            min-width: 34px;
             text-align: center;
             color: #1E293B;
         }
@@ -1069,10 +1162,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 11.5px;
+            font-size: 12px;
             padding: 2px 4px;
             flex-wrap: wrap;
-            gap: 4px;
+            gap: 6px;
         }
 
         .obs-realise-dist {
@@ -1082,13 +1175,30 @@
 
         .obs-realise-dist strong {
             color: #B83B1D;
-            font-size: 13px;
+            font-size: 14px;
+        }
+
+        .import-choice-card {
+            border-radius: 14px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .import-choice-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .import-choice-card:active {
+            transform: scale(0.99);
         }
 
         .obs-diff-badge {
             font-weight: 800;
-            font-size: 10.5px;
-            padding: 2px 6px;
+            font-size: 11px;
+            padding: 3px 8px;
             border-radius: 6px;
         }
 
@@ -1107,25 +1217,25 @@
             color: #475569;
         }
 
-        /* 3. Colonne droite : Bouton Marche comptabilisé */
-        .obs-card-right {
+        /* 4. Ligne inférieure : Bouton Marche comptabilisé */
+        .obs-card-bottom {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 5px;
+            gap: 8px;
+            margin-top: 2px;
         }
 
         .btn-marche-big {
             background: #F8FAFC;
             border: 1.5px solid #CBD5E1;
             border-radius: 10px;
-            padding: 6px 10px;
+            padding: 6px 12px;
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
-            width: 100%;
+            flex: 1;
             justify-content: space-between;
         }
 
@@ -2042,8 +2152,8 @@
                 <button type="button" class="btn-resume-session" onclick="openActiveSessionHub()">
                     ▶ Reprendre la séance
                 </button>
-                <button type="button" class="btn-discard-session" onclick="confirmDiscardActiveSession()"
-                    title="Abandonner la séance en cours">
+                <button type="button" class="btn-discard-session" onclick="handleDiscardActiveSessionOrCourse()"
+                    title="Abandonner la course ou la séance en cours">
                     ✕
                 </button>
             </div>
@@ -2102,10 +2212,15 @@
 
     <!-- VUE INTERMÉDIAIRE : SÉLECTION DE LA CLASSE (PRÉ-PAGE) -->
     <div id="view-classes-prof" class="view">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 12px;">
             <button class="back-btn" onclick="nav('view-accueil-prof')">◀ Retour Accueil</button>
-            <span id="badge-total-classes" class="binome-badge-class" style="font-size: 13px; padding: 6px 14px;">0
-                classe</span>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <button type="button" class="back-btn" onclick="openModalAddBinome()"
+                    style="background: #10B981; color: #FFFFFF; border-color: #10B981; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+                    ➕ Créer une fiche binôme
+                </button>
+                <span id="badge-total-classes" class="binome-badge-class" style="font-size: 13px; padding: 6px 14px;">0 classe</span>
+            </div>
         </div>
 
         <div class="classes-view-header">
@@ -2144,6 +2259,8 @@
         <!-- Pilules de sélection rapide de classe -->
         <div id="classes-fast-pills" class="classes-fast-pills"></div>
 
+        <div id="binomes-duplicate-alert" style="display:none; margin-bottom:15px;"></div>
+
         <div id="binomes-container" class="binomes-grid">
             <!-- Rempli dynamiquement -->
         </div>
@@ -2151,8 +2268,13 @@
 
     <!-- VUE 3 : FICHE COUREUR & AUTO-ÉVALUATION PROF -->
     <div id="view-fiche-prof" class="view">
-        <div style="display: flex; justify-content: flex-start; margin-bottom: 15px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
             <button class="back-btn" onclick="nav('view-binomes-prof')">◀ Retour aux binômes</button>
+            <button type="button" class="back-btn" onclick="confirmDeleteBinome(selectedBinomeIndex)"
+                style="background: #FEF2F2; color: #DC2626; border-color: #FCA5A5; font-size: 12.5px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;"
+                title="Supprimer définitivement ce binôme">
+                🗑️ Supprimer ce binôme
+            </button>
         </div>
 
         <!-- Toggle entre Coureur 1 et Coureur 2 du binôme -->
@@ -2357,6 +2479,25 @@
             💡 <strong>Rôles :</strong> Le nom surligné en rouge est le <strong>coureur</strong>, l'autre élève est
             l'<strong>observateur</strong>. Le minuteur s'adapte à la durée de la course et tourne en tâche de fond même
             si vous quittez la vue.
+        </div>
+
+        <!-- Option de tri des cartes binômes -->
+        <div class="obs-sort-control-bar">
+            <div class="obs-sort-label">
+                <span>🔄 <strong>Trier les cartes par :</strong></span>
+            </div>
+            <div class="obs-sort-pills">
+                <button type="button" id="btn-sort-binome" class="obs-sort-pill active"
+                    onclick="setObsSortCriteria('binome')">
+                    🔢 N° Binôme
+                </button>
+                <button type="button" id="btn-sort-name" class="obs-sort-pill" onclick="setObsSortCriteria('name')">
+                    🔤 Prénom du coureur (A-Z)
+                </button>
+                <button type="button" id="btn-sort-vma" class="obs-sort-pill" onclick="setObsSortCriteria('vma')">
+                    ⚡ VMA décroissante
+                </button>
+            </div>
         </div>
 
         <!-- Grille des binômes en direct -->
@@ -2639,13 +2780,15 @@
 
     <!-- MODALE AJOUT MANUEL D'UN BINÔME -->
     <div class="modal-overlay" id="modal-add-binome">
-        <div class="modal-card" style="max-width: 560px; width: 92%; text-align: left;">
+        <div class="modal-card" style="max-width: 580px; width: 92%; text-align: left;">
             <div
-                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
-                <h3 style="margin: 0; font-size: 20px; font-family: var(--font-sport); color: #B83B1D;">➕ Ajouter un
-                    binôme</h3>
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
+                <div>
+                    <h3 style="margin: 0; font-size: 20px; font-family: var(--font-sport); color: #B83B1D;">📋 Inscrire une Fiche Binôme</h3>
+                    <p style="margin: 4px 0 0 0; font-size: 12.5px; color: #64748B;">Renseignez la classe, le nom, prénom et VMA de chaque coureur. Si la classe n'existe pas encore, une carte de classe sera créée automatiquement.</p>
+                </div>
                 <button onclick="closeModal('modal-add-binome')"
-                    style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748B;">✕</button>
+                    style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748B; align-self: flex-start;">✕</button>
             </div>
 
             <div style="margin-bottom: 16px;">
@@ -2660,7 +2803,7 @@
             </div>
 
             <div
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-bottom: 20px;">
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 20px;">
                 <!-- Coureur 1 -->
                 <div style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px;">
                     <div
@@ -2669,21 +2812,19 @@
                     </div>
                     <div style="margin-bottom: 10px;">
                         <label
-                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Prénom
-                            *</label>
-                        <input type="text" id="add-binome-p1" placeholder="Ex: Lucas"
-                            style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label
                             style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Nom</label>
                         <input type="text" id="add-binome-n1" placeholder="Ex: Dupont"
                             style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
                     </div>
+                    <div style="margin-bottom: 10px;">
+                        <label
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Prénom *</label>
+                        <input type="text" id="add-binome-p1" placeholder="Ex: Lucas"
+                            style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
+                    </div>
                     <div>
                         <label
-                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">VMA
-                            (km/h)</label>
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">VMA (km/h)</label>
                         <input type="number" id="add-binome-vma1" placeholder="Ex: 12.5" step="0.1" min="5" max="25"
                             style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
                     </div>
@@ -2697,21 +2838,19 @@
                     </div>
                     <div style="margin-bottom: 10px;">
                         <label
-                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Prénom
-                            *</label>
-                        <input type="text" id="add-binome-p2" placeholder="Ex: Emma"
-                            style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label
                             style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Nom</label>
                         <input type="text" id="add-binome-n2" placeholder="Ex: Martin"
                             style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
                     </div>
+                    <div style="margin-bottom: 10px;">
+                        <label
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Prénom *</label>
+                        <input type="text" id="add-binome-p2" placeholder="Ex: Emma"
+                            style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
+                    </div>
                     <div>
                         <label
-                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">VMA
-                            (km/h)</label>
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">VMA (km/h)</label>
                         <input type="number" id="add-binome-vma2" placeholder="Ex: 11.0" step="0.1" min="5" max="25"
                             style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
                     </div>
@@ -2722,8 +2861,8 @@
                 <button type="button" class="back-btn" onclick="closeModal('modal-add-binome')"
                     style="padding: 10px 18px; font-size: 14px;">Annuler</button>
                 <button type="button" class="back-btn" onclick="saveNewBinome()"
-                    style="background: #10B981; color: #FFFFFF; border-color: #10B981; padding: 10px 22px; font-size: 14px; font-weight: 800;">
-                    ➕ Créer le binôme
+                    style="background: #10B981; color: #FFFFFF; border-color: #10B981; padding: 10px 22px; font-size: 14px; font-weight: 800; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
+                    💾 Enregistrer la fiche binôme
                 </button>
             </div>
         </div>
@@ -2798,12 +2937,82 @@
                     et allures cibles.</p>
             </div>
 
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <button type="button" class="back-btn" onclick="confirmDeleteBinomeFromEditModal()"
+                    style="background: #FEF2F2; color: #DC2626; border-color: #FCA5A5; font-size: 12.5px; font-weight: 800; padding: 10px 16px;"
+                    title="Supprimer définitivement ce binôme">
+                    🗑️ Supprimer le binôme
+                </button>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="back-btn" onclick="closeModal('modal-edit-eleve')"
+                        style="padding: 10px 18px; font-size: 14px;">Annuler</button>
+                    <button type="button" class="back-btn" onclick="saveEditedEleve()"
+                        style="background: #B83B1D; color: #FFFFFF; border-color: #B83B1D; padding: 10px 22px; font-size: 14px; font-weight: 800;">
+                        💾 Enregistrer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE CONFLIT IMPORTATION CLASSE / BINÔMES (FUSION OU REMPLACEMENT) -->
+    <div class="modal-overlay" id="modal-import-conflict">
+        <div class="modal-card" style="max-width: 540px; width: 92%; text-align: left; max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size: 26px;">🔄</span>
+                    <h3 style="margin: 0; font-size: 20px; font-family: var(--font-sport); color: #B83B1D;">Données déjà existantes</h3>
+                </div>
+                <button type="button" onclick="cancelPendingImport()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748B;">✕</button>
+            </div>
+
+            <p style="font-size: 14px; color: #334155; margin-bottom: 14px; line-height: 1.5;">
+                Des données pour cette classe ou ces binômes sont <strong>déjà présentes</strong> dans l'application (séance précédente ou saisie existante).
+            </p>
+
+            <!-- Récapitulatif de détection -->
+            <div id="import-conflict-summary" style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; margin-bottom: 20px; font-size: 13px;">
+                <!-- Injecté dynamiquement -->
+            </div>
+
+            <div style="font-size: 12px; font-weight: 800; color: #64748B; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                Choisissez le mode d'intégration :
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                <!-- Option 1 : Fusionner -->
+                <div class="import-choice-card" onclick="executePendingImport('merge')" style="border: 2px solid #10B981; background: #F0FDF4;">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <span style="font-size: 24px; line-height: 1;">🔄</span>
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <strong style="font-size: 15px; color: #065F46;">Fusionner les données</strong>
+                                <span style="background: #10B981; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; text-transform: uppercase;">Recommandé</span>
+                            </div>
+                            <div style="font-size: 12.5px; color: #047857; margin-top: 4px; line-height: 1.4;">
+                                Conserve les binômes existants et leurs séances actuelles. Ajoute les nouveaux binômes et complète les nouvelles séances sans créer aucun doublon.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Option 2 : Remplacer -->
+                <div class="import-choice-card" onclick="executePendingImport('replace')" style="border: 2px solid #CBD5E1; background: #FFFFFF;">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <span style="font-size: 24px; line-height: 1;">⚠️</span>
+                        <div style="flex: 1;">
+                            <strong style="font-size: 15px; color: #1E293B;">Remplacer les données existantes</strong>
+                            <div style="font-size: 12.5px; color: #64748B; margin-top: 4px; line-height: 1.4;">
+                                Écrase et remplace les données des binômes existants par le contenu des nouveaux fichiers importés.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button type="button" class="back-btn" onclick="closeModal('modal-edit-eleve')"
-                    style="padding: 10px 18px; font-size: 14px;">Annuler</button>
-                <button type="button" class="back-btn" onclick="saveEditedEleve()"
-                    style="background: #B83B1D; color: #FFFFFF; border-color: #B83B1D; padding: 10px 22px; font-size: 14px; font-weight: 800;">
-                    💾 Enregistrer
+                <button type="button" class="back-btn" onclick="cancelPendingImport()" style="background: #F1F5F9; color: #475569; border-color: #CBD5E1; font-weight: 700; padding: 9px 18px;">
+                    ✕ Annuler l'importation
                 </button>
             </div>
         </div>
@@ -2851,8 +3060,207 @@
             if (!b) return 'Sans Classe';
             let c1 = (b.coureurs && b.coureurs[1]) || {};
             let c2 = (b.coureurs && b.coureurs[2]) || {};
-            let rawCl = (c1.classe || c2.classe || '').trim();
+            let rawCl = (b.classe || c1.classe || c2.classe || '').trim();
             return normalizeClasse(rawCl);
+        }
+
+        // Récupère un objet coureur qu'il soit dans un objet ou un tableau
+        function getRunnerFromData(coureurs, id) {
+            if (!coureurs) return {};
+            if (Array.isArray(coureurs)) {
+                if (coureurs.length === 2) return coureurs[id - 1] || {};
+                return coureurs[id] || coureurs[id - 1] || {};
+            }
+            return coureurs[id] || coureurs[String(id)] || {};
+        }
+
+        // Compare deux coureurs par prénom (et nom si présent)
+        function areRunnersMatching(r1, r2) {
+            if (!r1 || !r2) return false;
+            let p1 = (r1.prenom || '').trim().toLowerCase();
+            let p2 = (r2.prenom || '').trim().toLowerCase();
+            let n1 = (r1.nom || '').trim().toLowerCase();
+            let n2 = (r2.nom || '').trim().toLowerCase();
+
+            if (!p1 && !n1 && !p2 && !n2) return false;
+            if (p1 !== p2) return false;
+            if (n1 && n2 && n1 !== n2) return false;
+            return true;
+        }
+
+        // Compare deux binômes : vérifie la classe et l'association des deux coureurs (direct ou inversé)
+        function areBinomesMatching(b1, b2) {
+            if (!b1 || !b2) return { match: false, inverted: false };
+            let cl1 = getBinomeClasse(b1);
+            let cl2 = getBinomeClasse(b2);
+            if (cl1 !== cl2) return { match: false, inverted: false };
+
+            let b1_c1 = getRunnerFromData(b1.coureurs, 1);
+            let b1_c2 = getRunnerFromData(b1.coureurs, 2);
+            let b2_c1 = getRunnerFromData(b2.coureurs, 1);
+            let b2_c2 = getRunnerFromData(b2.coureurs, 2);
+
+            // Correspondance directe : 1 avec 1 et 2 avec 2
+            let directMatch = areRunnersMatching(b1_c1, b2_c1) && areRunnersMatching(b1_c2, b2_c2);
+            if (directMatch) return { match: true, inverted: false };
+
+            // Correspondance inversée : 1 avec 2 et 2 avec 1
+            let invertedMatch = areRunnersMatching(b1_c1, b2_c2) && areRunnersMatching(b1_c2, b2_c1);
+            if (invertedMatch) return { match: true, inverted: true };
+
+            // Cas d'un binôme avec un seul coureur enregistré
+            let b1Has1 = !!(b1_c1.prenom || b1_c1.nom);
+            let b1Has2 = !!(b1_c2.prenom || b1_c2.nom);
+            let b2Has1 = !!(b2_c1.prenom || b2_c1.nom);
+            let b2Has2 = !!(b2_c2.prenom || b2_c2.nom);
+
+            if (b1Has1 && !b1Has2) {
+                if (b2Has1 && !b2Has2 && areRunnersMatching(b1_c1, b2_c1)) return { match: true, inverted: false };
+                if (!b2Has1 && b2Has2 && areRunnersMatching(b1_c1, b2_c2)) return { match: true, inverted: true };
+            }
+            if (!b1Has1 && b1Has2) {
+                if (!b2Has1 && b2Has2 && areRunnersMatching(b1_c2, b2_c2)) return { match: true, inverted: false };
+                if (b2Has1 && !b2Has2 && areRunnersMatching(b1_c2, b2_c1)) return { match: true, inverted: true };
+            }
+
+            return { match: false, inverted: false };
+        }
+
+        // Trouve l'index d'un binôme correspondant dans une liste
+        function findMatchingBinomeIndex(binomesList, data) {
+            if (!binomesList || !data) return null;
+            let c1 = getRunnerFromData(data.coureurs, 1);
+            let c2 = getRunnerFromData(data.coureurs, 2);
+            let testBinome = {
+                classe: normalizeClasse(data.classe || c1.classe || c2.classe || ''),
+                coureurs: { 1: c1, 2: c2 }
+            };
+
+            for (let idx = 0; idx < binomesList.length; idx++) {
+                let matchResult = areBinomesMatching(binomesList[idx], testBinome);
+                if (matchResult && matchResult.match) {
+                    return { index: idx, inverted: matchResult.inverted };
+                }
+            }
+            return null;
+        }
+
+        // Fusionne les données d'un binôme source vers un binôme cible sans créer de doublon
+        function mergeBinomeData(targetBinome, sourceData, inverted = false) {
+            let newSeancesCount = 0;
+            let ignoredCount = 0;
+
+            [1, 2].forEach(srcRunnerId => {
+                let tgtRunnerId = inverted ? (srcRunnerId === 1 ? 2 : 1) : srcRunnerId;
+                let srcRunner = getRunnerFromData(sourceData.coureurs, srcRunnerId);
+
+                if (!targetBinome.coureurs) targetBinome.coureurs = {};
+                if (!targetBinome.coureurs[tgtRunnerId]) targetBinome.coureurs[tgtRunnerId] = {};
+                let tgtRunner = targetBinome.coureurs[tgtRunnerId];
+
+                // Remplir les informations manquantes
+                if ((!tgtRunner.nom || !tgtRunner.nom.trim()) && srcRunner.nom) {
+                    tgtRunner.nom = srcRunner.nom.trim();
+                }
+                if ((!tgtRunner.prenom || !tgtRunner.prenom.trim()) && srcRunner.prenom) {
+                    tgtRunner.prenom = srcRunner.prenom.trim();
+                }
+                if ((!tgtRunner.vma || tgtRunner.vma <= 0) && (srcRunner.vma && srcRunner.vma > 0)) {
+                    tgtRunner.vma = srcRunner.vma;
+                }
+                if (!tgtRunner.classe && srcRunner.classe) {
+                    tgtRunner.classe = srcRunner.classe;
+                }
+
+                // Fusion des séances
+                let srcSeances = getCoureurSeances(srcRunner);
+                let tgtSeances = getCoureurSeances(tgtRunner);
+                tgtRunner.seances = tgtSeances;
+
+                srcSeances.forEach(srcS => {
+                    let srcNum = parseInt(srcS.num) || 1;
+                    let tgtSIdx = tgtRunner.seances.findIndex(s => (parseInt(s.num) || 1) === srcNum);
+
+                    if (tgtSIdx < 0) {
+                        // Nouvelle séance non présente chez le binôme : ajout
+                        tgtRunner.seances.push(JSON.parse(JSON.stringify(srcS)));
+                        newSeancesCount++;
+                    } else {
+                        // Séance déjà présente : vérifier les courses pour ne pas faire de doublons
+                        let tgtS = tgtRunner.seances[tgtSIdx];
+                        if (!tgtS.runs) tgtS.runs = [];
+
+                        if (Array.isArray(srcS.runs)) {
+                            srcS.runs.forEach(srcRun => {
+                                let srcRunNum = parseInt(srcRun.num) || 1;
+                                let tgtRunExists = tgtS.runs.some(tr => (parseInt(tr.num) || 1) === srcRunNum);
+                                if (!tgtRunExists) {
+                                    tgtS.runs.push(JSON.parse(JSON.stringify(srcRun)));
+                                    newSeancesCount++;
+                                } else {
+                                    ignoredCount++;
+                                }
+                            });
+                        }
+                    }
+                });
+
+                tgtRunner.seances.sort((a, b) => (parseInt(a.num) || 0) - (parseInt(b.num) || 0));
+            });
+
+            return { newSeancesCount, ignoredCount };
+        }
+
+        // Détection des doublons existants dans l'application
+        function findExistingDuplicatesInApp() {
+            let duplicates = [];
+            for (let i = 0; i < importedBinomes.length; i++) {
+                for (let j = i + 1; j < importedBinomes.length; j++) {
+                    let match = areBinomesMatching(importedBinomes[i], importedBinomes[j]);
+                    if (match && match.match) {
+                        duplicates.push({ primaryIdx: i, duplicateIdx: j, inverted: match.inverted });
+                    }
+                }
+            }
+            return duplicates;
+        }
+
+        // Nettoyage et fusion des doublons existants dans l'application
+        function cleanExistingDuplicates() {
+            let toRemoveIndices = new Set();
+            let mergedCount = 0;
+
+            for (let i = 0; i < importedBinomes.length; i++) {
+                if (toRemoveIndices.has(i)) continue;
+                let primary = importedBinomes[i];
+
+                for (let j = i + 1; j < importedBinomes.length; j++) {
+                    if (toRemoveIndices.has(j)) continue;
+                    let duplicate = importedBinomes[j];
+
+                    let match = areBinomesMatching(primary, duplicate);
+                    if (match && match.match) {
+                        mergeBinomeData(primary, duplicate, match.inverted);
+                        toRemoveIndices.add(j);
+                        mergedCount++;
+                    }
+                }
+            }
+
+            if (mergedCount > 0) {
+                importedBinomes = importedBinomes.filter((_, idx) => !toRemoveIndices.has(idx));
+                localStorage.setItem('df_prof_binomes', JSON.stringify(importedBinomes));
+                updateProfHomeStats();
+                renderClassesList();
+                renderBinomesList();
+                showAppAlert(
+                    "Doublons Nettoyés !",
+                    `<strong>${mergedCount}</strong> binôme(s) en doublon ont été fusionnés avec succès sans aucune perte de données.`,
+                    "🧹"
+                );
+            } else {
+                showAppAlert("Aucun doublon", "Aucun binôme en doublon n'a été détecté.", "ℹ️");
+            }
         }
 
         function getDistinctClasses() {
@@ -3060,7 +3468,7 @@
             let inputClasse = document.getElementById('add-binome-classe');
             let classeRaw = inputClasse ? inputClasse.value.trim() : '';
             if (!classeRaw) {
-                showAppAlert("Classe requise", "Veuillez renseigner un nom de classe (ex: 3A).", "⚠️");
+                showAppAlert("Classe requise", "Veuillez renseigner un nom de classe (ex: 3A, 3B, 4C...).", "⚠️");
                 return;
             }
             let classeNorm = normalizeClasse(classeRaw);
@@ -3074,11 +3482,17 @@
             let vma2Raw = parseFloat(document.getElementById('add-binome-vma2').value);
 
             if (!p1 && !n1 && !p2 && !n2) {
-                showAppAlert("Coureurs requis", "Veuillez renseigner au moins le prénom d'un coureur.", "⚠️");
+                showAppAlert("Coureurs requis", "Veuillez renseigner au moins le prénom ou le nom d'un élève.", "⚠️");
                 return;
             }
 
+            // Détecter si la classe est nouvelle avant l'enregistrement
+            let classesBefore = getDistinctClasses().map(c => c.name);
+            let isNewClass = !classesBefore.includes(classeNorm);
+
             let newBinome = {
+                id: Date.now() + Math.random(),
+                importDate: new Date().toLocaleDateString('fr-FR'),
                 classe: classeNorm,
                 coureurs: {
                     1: {
@@ -3095,7 +3509,10 @@
                         vma: (!isNaN(vma2Raw) && vma2Raw > 0) ? parseFloat(vma2Raw.toFixed(1)) : null,
                         seances: []
                     }
-                }
+                },
+                seanceConfig: {},
+                activeSessionRuns: {},
+                activeEvalGrid: []
             };
 
             importedBinomes.push(newBinome);
@@ -3108,11 +3525,12 @@
             renderClassesList();
             renderBinomesList();
 
-            showAppAlert(
-                "Binôme Ajouté",
-                `Le binôme <strong>${newBinome.coureurs[1].prenom} & ${newBinome.coureurs[2].prenom}</strong> a été créé avec succès dans la classe <strong>${classeNorm}</strong>.`,
-                "✅"
-            );
+            let titleAlert = isNewClass ? "Nouvelle Classe & Binôme Créés !" : "Fiche Binôme Enregistrée !";
+            let msgAlert = isNewClass
+                ? `La fiche du binôme <strong>${newBinome.coureurs[1].prenom} & ${newBinome.coureurs[2].prenom}</strong> a été enregistrée avec succès.<br><br>✨ La nouvelle classe <strong>${classeNorm}</strong> a été automatiquement créée avec sa carte dédiée !`
+                : `La fiche du binôme <strong>${newBinome.coureurs[1].prenom} & ${newBinome.coureurs[2].prenom}</strong> a été enregistrée avec succès dans la classe <strong>${classeNorm}</strong>.`;
+
+            showAppAlert(titleAlert, msgAlert, "✅");
         }
 
         // --- ÉDITION COMPLÈTE DE LA FICHE ÉLÈVE (NOM, PRÉNOM, CLASSE, VMA) ---
@@ -3259,6 +3677,57 @@
                 `Les informations de <strong>${coureur.prenom} ${coureur.nom || ''}</strong> ont été enregistrées avec succès.`,
                 "✅"
             );
+        }
+
+        // --- SUPPRESSION D'UN BINÔME EXISTANT ---
+        function confirmDeleteBinome(binomeIdx) {
+            if (binomeIdx === undefined || binomeIdx === null || !importedBinomes[binomeIdx]) return;
+            let b = importedBinomes[binomeIdx];
+            let c1 = (b.coureurs && b.coureurs[1]) || {};
+            let c2 = (b.coureurs && b.coureurs[2]) || {};
+            let nom1 = `${c1.prenom || 'Coureur 1'} ${c1.nom || ''}`.trim();
+            let nom2 = `${c2.prenom || 'Coureur 2'} ${c2.nom || ''}`.trim();
+            let classe = getBinomeClasse(b);
+
+            let msg = `Êtes-vous sûr de vouloir supprimer définitivement le binôme :\n\n• ${nom1}\n• ${nom2}\n(Classe : ${classe})\n\nCette action supprimera également les données associées à ce binôme.`;
+            if (!confirm(msg)) {
+                return;
+            }
+
+            // Supprimer le binôme de la liste
+            importedBinomes.splice(binomeIdx, 1);
+            localStorage.setItem('df_prof_binomes', JSON.stringify(importedBinomes));
+
+            // Fermer la modale si elle était ouverte
+            closeModal('modal-edit-eleve');
+
+            // Si la classe active n'existe plus, basculer sur une classe restante ou sur 'ALL'
+            let remainingClasses = getDistinctClasses();
+            if (selectedClasse && selectedClasse !== 'ALL' && !remainingClasses.some(c => c.name === selectedClasse)) {
+                selectedClasse = remainingClasses.length > 0 ? remainingClasses[0].name : 'ALL';
+            }
+
+            // Si on était sur la vue fiche de ce binôme, revenir à la liste des binômes
+            let activeView = document.querySelector('.view.active');
+            if (activeView && activeView.id === 'view-fiche-prof') {
+                nav('view-binomes-prof');
+            }
+
+            updateProfHomeStats();
+            renderClassesList();
+            renderBinomesList();
+
+            showAppAlert(
+                "Binôme Supprimé",
+                `Le binôme <strong>${nom1} & ${nom2}</strong> (${classe}) a été supprimé avec succès.`,
+                "🗑️"
+            );
+        }
+
+        function confirmDeleteBinomeFromEditModal() {
+            if (editingEleveBinomeIdx !== null && editingEleveBinomeIdx !== undefined) {
+                confirmDeleteBinome(editingEleveBinomeIdx);
+            }
         }
 
         function nav(viewId) {
@@ -3506,13 +3975,12 @@
             let hasObs = (JSON.parse(localStorage.getItem('df_prof_observations')) || []).length > 0;
             if (!hasBinomes && !hasObs) return;
             if (confirm("Voulez-vous vraiment effacer l'ensemble des données de l'application (fiches élèves et observations enseignant) ?\n\nConseil : Vous pouvez d'abord cliquer sur 'Sauvegarder' pour exporter vos données.")) {
+                stopAndDiscardActiveCourse(false);
                 importedBinomes = [];
                 selectedClasse = null;
                 localStorage.removeItem('df_prof_binomes');
                 localStorage.removeItem('df_prof_observations');
                 localStorage.removeItem('df_prof_active_session');
-                localStorage.removeItem('df_prof_active_course');
-                if (currentLiveCourseState) currentLiveCourseState.isInProgress = false;
                 updateProfHomeStats();
                 renderClassesList();
                 renderBinomesList();
@@ -3520,12 +3988,14 @@
             }
         }
 
-        // --- IMPORTATION DES FICHIERS JSON ÉLÈVES ---
+        // --- IMPORTATION DES FICHIERS JSON ÉLÈVES (AVEC DÉTECTION CONFLITS, FUSION OU REMPLACEMENT) ---
+        let pendingImportBatch = null;
+
         function handleMultiJSONImport(event) {
             let files = event.target.files;
             if (!files || files.length === 0) return;
 
-            let loadedCount = 0;
+            let validDataList = [];
             let errorCount = 0;
             let readPromises = [];
 
@@ -3537,9 +4007,10 @@
                         try {
                             let data = JSON.parse(e.target.result);
                             if (data && data.coureurs) {
-                                // Add or update binôme list
-                                addOrUpdateBinome(data);
-                                loadedCount++;
+                                validDataList.push({
+                                    filename: file.name,
+                                    data: data
+                                });
                             } else {
                                 errorCount++;
                             }
@@ -3553,47 +4024,198 @@
             }
 
             Promise.all(readPromises).then(() => {
-                localStorage.setItem('df_prof_binomes', JSON.stringify(importedBinomes));
-                updateProfHomeStats();
                 event.target.value = '';
 
-                showAppAlert(
-                    "Importation Terminée",
-                    `<strong>${loadedCount}</strong> fichier(s) élève(s) ont été importés avec succès !${errorCount > 0 ? `<br><span style="color:#DC2626;">(${errorCount} fichier(s) non valide(s))</span>` : ''}`,
-                    "📥"
-                );
+                if (validDataList.length === 0) {
+                    showAppAlert(
+                        "Aucun fichier valide",
+                        `Aucun fichier élève JSON valide n'a pu être lu.${errorCount > 0 ? `<br><span style="color:#DC2626;">(${errorCount} fichier(s) non valide(s))</span>` : ''}`,
+                        "⚠️"
+                    );
+                    return;
+                }
+
+                analyzeAndProcessImport(validDataList, errorCount);
             });
         }
 
-        function addOrUpdateBinome(data) {
-            let c1 = (data.coureurs && data.coureurs[1]) || {};
-            let c2 = (data.coureurs && data.coureurs[2]) || {};
-            let name1 = (c1.prenom || 'Coureur 1').trim().toLowerCase();
-            let name2 = (c2.prenom || 'Coureur 2').trim().toLowerCase();
-            let normClasse = normalizeClasse(c1.classe || c2.classe || '');
+        function analyzeAndProcessImport(validDataList, errorCount) {
+            let existingClasses = getDistinctClasses().map(c => c.name);
+            let detectedClassesSet = new Set();
+            let conflictingClassesSet = new Set();
+            let conflictingBinomes = [];
+            let newBinomes = [];
 
-            let existingIdx = importedBinomes.findIndex(b => {
-                let bc1 = (b.coureurs && b.coureurs[1]) || {};
-                let bc2 = (b.coureurs && b.coureurs[2]) || {};
-                let bn1 = (bc1.prenom || '').trim().toLowerCase();
-                let bn2 = (bc2.prenom || '').trim().toLowerCase();
-                let bClasse = getBinomeClasse(b);
-                return (bn1 === name1 && bn2 === name2 && bClasse === normClasse);
+            validDataList.forEach(item => {
+                let c1 = getRunnerFromData(item.data.coureurs, 1);
+                let c2 = getRunnerFromData(item.data.coureurs, 2);
+                let binomeClasse = normalizeClasse(item.data.classe || c1.classe || c2.classe || '');
+                detectedClassesSet.add(binomeClasse);
+
+                if (existingClasses.includes(binomeClasse)) {
+                    conflictingClassesSet.add(binomeClasse);
+                }
+
+                let match = findMatchingBinomeIndex(importedBinomes, item.data);
+                if (match) {
+                    conflictingBinomes.push({ item: item, match: match });
+                } else {
+                    newBinomes.push(item);
+                }
             });
 
-            let binomeObj = {
-                id: Date.now() + Math.random(),
-                importDate: new Date().toLocaleDateString('fr-FR'),
-                coureurs: data.coureurs,
-                seanceConfig: data.seanceConfig || {},
-                activeSessionRuns: data.activeSessionRuns || {},
-                activeEvalGrid: data.activeEvalGrid || []
-            };
+            let detectedClasses = Array.from(detectedClassesSet);
+            let conflictingClasses = Array.from(conflictingClassesSet);
 
-            if (existingIdx >= 0) {
-                importedBinomes[existingIdx] = binomeObj;
+            // Détection de conflit si une classe existe déjà OU si au moins un binôme existe déjà
+            let hasConflict = conflictingClasses.length > 0 || conflictingBinomes.length > 0;
+
+            if (hasConflict) {
+                pendingImportBatch = {
+                    validDataList: validDataList,
+                    errorCount: errorCount,
+                    detectedClasses: detectedClasses,
+                    conflictingClasses: conflictingClasses,
+                    conflictingBinomesCount: conflictingBinomes.length,
+                    newBinomesCount: newBinomes.length
+                };
+
+                let summaryEl = document.getElementById('import-conflict-summary');
+                if (summaryEl) {
+                    summaryEl.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #E2E8F0; padding-bottom:6px;">
+                            <span style="color:#64748B; font-weight:700;">Classe(s) importée(s) :</span>
+                            <strong style="color:#B83B1D;">${detectedClasses.join(', ') || 'Sans classe'}</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #E2E8F0; padding-bottom:6px;">
+                            <span style="color:#64748B; font-weight:700;">Classe(s) déjà dans l'app :</span>
+                            <strong style="color:#D97706;">${conflictingClasses.length > 0 ? conflictingClasses.join(', ') : 'Aucune (nouvelle classe)'}</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px solid #E2E8F0; padding-bottom:6px;">
+                            <span style="color:#64748B; font-weight:700;">Binômes déjà enregistrés :</span>
+                            <strong style="color:#D97706;">${conflictingBinomes.length} binôme(s)</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:#64748B; font-weight:700;">Nouveaux binômes à créer :</span>
+                            <strong style="color:#10B981;">${newBinomes.length} binôme(s)</strong>
+                        </div>
+                    `;
+                }
+                openModal('modal-import-conflict');
             } else {
-                importedBinomes.push(binomeObj);
+                // Aucun conflit : import direct par fusion
+                applyImport(validDataList, 'merge', errorCount);
+            }
+        }
+
+        function cancelPendingImport() {
+            pendingImportBatch = null;
+            closeModal('modal-import-conflict');
+        }
+
+        function executePendingImport(action) {
+            if (!pendingImportBatch) return;
+            let batch = pendingImportBatch;
+            pendingImportBatch = null;
+            closeModal('modal-import-conflict');
+            applyImport(batch.validDataList, action, batch.errorCount);
+        }
+
+        function applyImport(validDataList, action, errorCount = 0) {
+            let mergedBinomesCount = 0;
+            let replacedBinomesCount = 0;
+            let addedBinomesCount = 0;
+            let totalNewSeances = 0;
+            let totalIgnored = 0;
+
+            let targetClassesSet = new Set();
+
+            validDataList.forEach(item => {
+                let c1 = getRunnerFromData(item.data.coureurs, 1);
+                let c2 = getRunnerFromData(item.data.coureurs, 2);
+                let binomeClasse = normalizeClasse(item.data.classe || c1.classe || c2.classe || '');
+                targetClassesSet.add(binomeClasse);
+
+                let match = findMatchingBinomeIndex(importedBinomes, item.data);
+
+                if (action === 'merge') {
+                    if (match) {
+                        let exBinome = importedBinomes[match.index];
+                        let res = mergeBinomeData(exBinome, item.data, match.inverted);
+                        totalNewSeances += res.newSeancesCount;
+                        totalIgnored += res.ignoredCount;
+                        mergedBinomesCount++;
+                    } else {
+                        let newBinome = {
+                            id: Date.now() + Math.random(),
+                            importDate: new Date().toLocaleDateString('fr-FR'),
+                            classe: binomeClasse,
+                            coureurs: {
+                                1: c1,
+                                2: c2
+                            },
+                            seanceConfig: item.data.seanceConfig || {},
+                            activeSessionRuns: item.data.activeSessionRuns || {},
+                            activeEvalGrid: item.data.activeEvalGrid || []
+                        };
+                        importedBinomes.push(newBinome);
+                        addedBinomesCount++;
+                    }
+                } else if (action === 'replace') {
+                    let replacementBinome = {
+                        id: (match && importedBinomes[match.index] && importedBinomes[match.index].id) || (Date.now() + Math.random()),
+                        importDate: new Date().toLocaleDateString('fr-FR'),
+                        classe: binomeClasse,
+                        coureurs: {
+                            1: c1,
+                            2: c2
+                        },
+                        seanceConfig: item.data.seanceConfig || {},
+                        activeSessionRuns: item.data.activeSessionRuns || {},
+                        activeEvalGrid: item.data.activeEvalGrid || []
+                    };
+
+                    if (match) {
+                        importedBinomes[match.index] = replacementBinome;
+                        replacedBinomesCount++;
+                    } else {
+                        importedBinomes.push(replacementBinome);
+                        addedBinomesCount++;
+                    }
+                }
+            });
+
+            localStorage.setItem('df_prof_binomes', JSON.stringify(importedBinomes));
+
+            if (targetClassesSet.size === 1) {
+                selectedClasse = Array.from(targetClassesSet)[0];
+            }
+
+            updateProfHomeStats();
+            renderClassesList();
+            renderBinomesList();
+
+            if (action === 'merge') {
+                showAppAlert(
+                    "Fusion Réussie !",
+                    `L'importation avec fusion a été effectuée avec succès :<br><br>` +
+                    `📂 <strong>${validDataList.length}</strong> fichier(s) élève(s) traité(s)<br>` +
+                    `👥 <strong>${mergedBinomesCount}</strong> binôme(s) existant(s) mis à jour sans doublon<br>` +
+                    `➕ <strong>${addedBinomesCount}</strong> nouveau(x) binôme(s) ajouté(s)<br>` +
+                    `🏃 <strong>${totalNewSeances}</strong> nouvelle(s) séance(s)/course(s) intégrée(s)<br>` +
+                    `🛡️ <strong>${totalIgnored}</strong> donnée(s) en doublon ignorée(s)` +
+                    (errorCount > 0 ? `<br><br><span style="color:#DC2626;">⚠️ ${errorCount} fichier(s) non valide(s) ignoré(s)</span>` : ''),
+                    "🔄"
+                );
+            } else {
+                showAppAlert(
+                    "Remplacement Effectué !",
+                    `Les données ont été remplacées par les fichiers importés :<br><br>` +
+                    `🔄 <strong>${replacedBinomesCount}</strong> binôme(s) existant(s) remplacé(s)<br>` +
+                    `➕ <strong>${addedBinomesCount}</strong> nouveau(x) binôme(s) ajouté(s)` +
+                    (errorCount > 0 ? `<br><br><span style="color:#DC2626;">⚠️ ${errorCount} fichier(s) non valide(s) ignoré(s)</span>` : ''),
+                    "✅"
+                );
             }
         }
 
@@ -3612,11 +4234,16 @@
                 container.innerHTML = `
                     <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: rgba(255,255,255,0.85); border-radius: 20px;">
                         <div style="font-size: 44px; margin-bottom: 12px;">📂</div>
-                        <h3 style="font-size: 20px; font-weight: 800; color: #1C1C1E; margin-bottom: 8px;">Aucune classe importée</h3>
-                        <p style="color: #64748B; font-size: 15px; margin-bottom: 22px;">Retournez à l'accueil et importez les fichiers élèves (.json) pour faire apparaître automatiquement vos classes ici.</p>
-                        <button class="back-btn" onclick="document.getElementById('multi-json-input').click()" style="background:#B83B1D; color:#fff; border:none; padding:12px 24px; font-weight:800; border-radius:14px; cursor:pointer;">
-                            📥 Importer des fichiers élèves (.json)
-                        </button>
+                        <h3 style="font-size: 20px; font-weight: 800; color: #1C1C1E; margin-bottom: 8px;">Aucune classe enregistrée</h3>
+                        <p style="color: #64748B; font-size: 15px; margin-bottom: 22px;">Vous pouvez créer manuellement une fiche binôme ou importer les fichiers élèves (.json).</p>
+                        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                            <button class="back-btn" onclick="openModalAddBinome()" style="background:#10B981; color:#fff; border:none; padding:12px 24px; font-weight:800; border-radius:14px; cursor:pointer; box-shadow:0 4px 12px rgba(16,185,129,0.25);">
+                                ➕ Créer une fiche binôme
+                            </button>
+                            <button class="back-btn" onclick="document.getElementById('multi-json-input').click()" style="background:#B83B1D; color:#fff; border:none; padding:12px 24px; font-weight:800; border-radius:14px; cursor:pointer;">
+                                📥 Importer des fichiers élèves (.json)
+                            </button>
+                        </div>
                     </div>`;
                 return;
             }
@@ -3668,6 +4295,15 @@
                 `;
             }
 
+            // Carte d'action : Inscrire une nouvelle fiche binôme
+            html += `
+                <div class="class-card class-card-add" onclick="openModalAddBinome()" style="border: 2px dashed #10B981; background: rgba(16, 185, 129, 0.05); cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 160px; text-align: center; transition: all 0.2s ease;">
+                    <div style="font-size: 30px; margin-bottom: 6px;">➕</div>
+                    <div style="font-family: var(--font-sport); font-size: 18px; font-weight: 900; color: #10B981;">Créer une fiche binôme</div>
+                    <div style="font-size: 12px; color: #64748B; margin-top: 4px; font-weight: 700;">Dans une classe existante ou nouvelle</div>
+                </div>
+            `;
+
             container.innerHTML = html;
         }
 
@@ -3704,6 +4340,39 @@
 
             let filterText = (document.getElementById('binome-search').value || '').toLowerCase().trim();
             container.innerHTML = '';
+
+            // Vérification et affichage des doublons existants
+            let duplicateAlertEl = document.getElementById('binomes-duplicate-alert');
+            if (duplicateAlertEl) {
+                let allDuplicates = findExistingDuplicatesInApp();
+                let relevantDuplicates = allDuplicates;
+                if (selectedClasse !== 'ALL') {
+                    relevantDuplicates = allDuplicates.filter(d => {
+                        let cA = getBinomeClasse(importedBinomes[d.primaryIdx]);
+                        return cA === selectedClasse;
+                    });
+                }
+                if (relevantDuplicates.length > 0) {
+                    duplicateAlertEl.style.display = 'block';
+                    duplicateAlertEl.innerHTML = `
+                        <div style="background:#FFFBEB; border:1.5px solid #F59E0B; border-radius:14px; padding:12px 18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; box-shadow:0 2px 8px rgba(245,158,11,0.12);">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="font-size:22px;">⚠️</span>
+                                <div>
+                                    <strong style="color:#B45309; font-size:14px;">${relevantDuplicates.length} doublon(s) de binôme détecté(s)</strong>
+                                    <div style="color:#92400E; font-size:12px; margin-top:2px;">Des binômes identiques existent dans la classe suite à une précédente importation.</div>
+                                </div>
+                            </div>
+                            <button type="button" class="back-btn" onclick="cleanExistingDuplicates()" style="background:#B83B1D; color:#FFFFFF; border-color:#B83B1D; font-size:12px; font-weight:800; padding:8px 16px;">
+                                🧹 Fusionner et nettoyer les doublons
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    duplicateAlertEl.style.display = 'none';
+                    duplicateAlertEl.innerHTML = '';
+                }
+            }
 
             if (importedBinomes.length === 0) {
                 if (subEl) subEl.innerText = '0 binôme importé';
@@ -3759,7 +4428,8 @@
                             <span class="binome-card-title">Binôme n°${realIdx + 1}</span>
                             <div style="display: flex; gap: 6px; align-items: center;">
                                 <span class="binome-badge-class" onclick="event.stopPropagation(); openModalEditEleve(${realIdx}, 1)" title="Cliquer pour modifier">${classe} ✏️</span>
-                                <button type="button" onclick="event.stopPropagation(); openModalEditEleve(${realIdx}, 1)" title="Modifier les informations (nom, prénom, classe, VMA)" style="background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 8px; padding: 3px 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; color: #475569; transition: all 0.2s;">✏️ Modifier</button>
+                                <button type="button" onclick="event.stopPropagation(); openModalEditEleve(${realIdx}, 1)" title="Modifier les informations (nom, prénom, classe, VMA)" style="background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 8px; padding: 4px 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; color: #475569; transition: all 0.2s;">✏️ Modifier</button>
+                                <button type="button" onclick="event.stopPropagation(); confirmDeleteBinome(${realIdx})" title="Supprimer définitivement ce binôme" style="background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 8px; padding: 4px 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; color: #DC2626; transition: all 0.2s;">🗑️</button>
                             </div>
                         </div>
                         <div class="binome-runners-row">
@@ -4406,8 +5076,59 @@
         let selectedCourseSetupClass = null;
 
         function saveActiveCourseState() {
-            if (currentLiveCourseState) {
+            if (currentLiveCourseState && currentLiveCourseState.isInProgress) {
                 localStorage.setItem('df_prof_active_course', JSON.stringify(currentLiveCourseState));
+            } else {
+                localStorage.removeItem('df_prof_active_course');
+            }
+        }
+
+        function stopAndDiscardActiveCourse(notify = false) {
+            if (obsTimerInterval) {
+                clearInterval(obsTimerInterval);
+                obsTimerInterval = null;
+            }
+            obsTimerRunning = false;
+            obsTimerEndTime = null;
+            obsTimerRemainingSeconds = obsTimerTotalSeconds;
+
+            currentLiveCourseState = {
+                courseNum: 1,
+                classe: '',
+                durationMin: 6,
+                interplotDist: 50,
+                plotsPerLap: 8,
+                lapDist: 400,
+                liveBinomes: [],
+                isInProgress: false,
+                timerRunning: false,
+                timerRemainingSeconds: 360
+            };
+
+            localStorage.removeItem('df_prof_active_course');
+            updateObsTimerDisplay();
+            updateProfHomeStats();
+
+            if (notify) {
+                showAppAlert("Course Abandonnée", "La course en cours a bien été arrêtée et supprimée.", "🗑️");
+            }
+        }
+
+        function handleDiscardActiveSessionOrCourse() {
+            let savedActiveCourse = JSON.parse(localStorage.getItem('df_prof_active_course') || 'null');
+            let activeSession = JSON.parse(localStorage.getItem('df_prof_active_session') || 'null');
+
+            if (savedActiveCourse && savedActiveCourse.isInProgress) {
+                let msg = `Une course est actuellement en cours (Course n°${savedActiveCourse.courseNum} - Classe ${savedActiveCourse.classe}).\n\nVoulez-vous abandonner et supprimer cette course ?\n(Ses comptages seront perdus)`;
+                if (confirm(msg)) {
+                    stopAndDiscardActiveCourse(true);
+                }
+            } else if (activeSession) {
+                confirmDiscardActiveSession();
+            } else {
+                stopAndDiscardActiveCourse(false);
+                localStorage.removeItem('df_prof_active_session');
+                updateProfHomeStats();
             }
         }
 
@@ -4567,9 +5288,14 @@
                                 Minuteur : <strong id="hub-timer-digits">${formatTimerDigits(obsTimerRemainingSeconds)}</strong> • Les comptages restent actifs en arrière-plan
                             </div>
                         </div>
-                        <button type="button" class="back-btn" onclick="resumeLiveCourseInProgress()" style="background:#B83B1D; color:#FFFFFF; border-color:#B83B1D; font-weight:800; padding:10px 20px;">
-                            ▶ Reprendre la course ➔
-                        </button>
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <button type="button" class="back-btn" onclick="resumeLiveCourseInProgress()" style="background:#B83B1D; color:#FFFFFF; border-color:#B83B1D; font-weight:800; padding:10px 18px;">
+                                ▶ Reprendre la course ➔
+                            </button>
+                            <button type="button" class="back-btn" onclick="confirmDiscardActiveCourseFromHub()" style="background:rgba(220,38,38,0.08); color:#DC2626; border-color:rgba(220,38,38,0.3); font-weight:800; padding:10px 14px;" title="Abandonner et supprimer cette course en cours">
+                                🗑️ Abandonner
+                            </button>
+                        </div>
                     </div>
                 `;
             }
@@ -4633,11 +5359,22 @@
             }
         }
 
+        // Abandonner la course active depuis le Hub de séance
+        function confirmDiscardActiveCourseFromHub() {
+            let savedActiveCourse = JSON.parse(localStorage.getItem('df_prof_active_course') || 'null');
+            let courseNum = savedActiveCourse ? savedActiveCourse.courseNum : 1;
+            if (confirm(`Voulez-vous vraiment abandonner et supprimer la Course n°${courseNum} en cours ?\nSes comptages seront perdus.`)) {
+                stopAndDiscardActiveCourse(false);
+                renderSeanceHub();
+                showAppAlert("Course Abandonnée", `La Course n°${courseNum} a bien été arrêtée et supprimée.`, "🗑️");
+            }
+        }
+
         // 5. Abandonner la séance active
         function confirmDiscardActiveSession() {
             if (confirm("Voulez-vous vraiment abandonner cette séance ?\nToutes les courses non clôturées de cette séance seront effacées.")) {
+                stopAndDiscardActiveCourse(false);
                 localStorage.removeItem('df_prof_active_session');
-                resetObsChrono();
                 updateProfHomeStats();
                 nav('view-accueil-prof');
                 showAppAlert("Séance Abandonnée", "La séance en cours a été supprimée.", "🗑️");
@@ -4976,22 +5713,52 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 11. Rendu de la grille en direct avec ENCARTS BINÔMES HORIZONTAUX
+        // Variable de tri des cartes d'observation en direct ('binome', 'name', 'vma')
+        let currentObsSortCriteria = 'binome';
+
+        function setObsSortCriteria(criteria) {
+            currentObsSortCriteria = criteria;
+            ['binome', 'name', 'vma'].forEach(c => {
+                let btn = document.getElementById('btn-sort-' + c);
+                if (btn) {
+                    if (c === criteria) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                }
+            });
+            renderObsLiveGrid();
+        }
+
+        // 11. Rendu de la grille en direct sous forme de CARTES BINÔMES CARRÉES (max 2 par ligne)
         function renderObsLiveGrid() {
             let container = document.getElementById('obs-live-binomes-container');
             if (!container) return;
+
+            // Synchronisation de l'état actif des boutons de tri
+            ['binome', 'name', 'vma'].forEach(c => {
+                let btn = document.getElementById('btn-sort-' + c);
+                if (btn) {
+                    if (c === currentObsSortCriteria) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                }
+            });
 
             let lapDist = currentLiveCourseState.lapDist || 400;
             let interDist = currentLiveCourseState.interplotDist || 50;
             let plotsPerLap = currentLiveCourseState.plotsPerLap || 8;
 
-            let html = '';
-            currentLiveCourseState.liveBinomes.forEach((item, itemIdx) => {
-                let binome = importedBinomes[item.binomeIdx];
-                if (!binome) return;
+            let liveBinomes = currentLiveCourseState.liveBinomes || [];
 
-                let c1 = (binome.coureurs && binome.coureurs[1]) || { prenom: 'Coureur 1', nom: '', vma: null };
-                let c2 = (binome.coureurs && binome.coureurs[2]) || { prenom: 'Coureur 2', nom: '', vma: null };
+            // Préparation des données pour chaque binôme avec son index d'origine
+            let preparedList = liveBinomes.map((item, originalIdx) => {
+                let binome = importedBinomes[item.binomeIdx];
+                let c1 = (binome && binome.coureurs && binome.coureurs[1]) || { prenom: 'Coureur 1', nom: '', vma: null };
+                let c2 = (binome && binome.coureurs && binome.coureurs[2]) || { prenom: 'Coureur 2', nom: '', vma: null };
 
                 if (!item.intensities) {
                     item.intensities = {};
@@ -5006,6 +5773,61 @@
                 let activeRunnerId = item.activeRunner || 1;
                 let activeRunner = activeRunnerId === 1 ? c1 : c2;
                 let currentIntensity = item.intensities[activeRunnerId] || 80;
+
+                let prenomCoureur = (activeRunner.prenom || '').trim();
+                let nomCoureur = (activeRunner.nom || '').trim();
+                let vmaCoureur = (activeRunner.vma && parseFloat(activeRunner.vma) > 0) ? parseFloat(activeRunner.vma) : 0;
+
+                return {
+                    item,
+                    originalIdx,
+                    binome,
+                    c1,
+                    c2,
+                    activeRunnerId,
+                    activeRunner,
+                    currentIntensity,
+                    prenomCoureur,
+                    nomCoureur,
+                    vmaCoureur
+                };
+            });
+
+            // Application du tri sélectionné
+            if (currentObsSortCriteria === 'name') {
+                preparedList.sort((a, b) => {
+                    let cmp = a.prenomCoureur.localeCompare(b.prenomCoureur, 'fr', { sensitivity: 'base' });
+                    if (cmp !== 0) return cmp;
+                    let cmpNom = a.nomCoureur.localeCompare(b.nomCoureur, 'fr', { sensitivity: 'base' });
+                    if (cmpNom !== 0) return cmpNom;
+                    return a.item.binomeIdx - b.item.binomeIdx;
+                });
+            } else if (currentObsSortCriteria === 'vma') {
+                preparedList.sort((a, b) => {
+                    let hasVmaA = a.vmaCoureur > 0;
+                    let hasVmaB = b.vmaCoureur > 0;
+                    if (hasVmaA && hasVmaB) {
+                        let diff = b.vmaCoureur - a.vmaCoureur; // Ordre décroissant (plus forte VMA en premier)
+                        if (diff !== 0) return diff;
+                    } else if (hasVmaA && !hasVmaB) {
+                        return -1;
+                    } else if (!hasVmaA && hasVmaB) {
+                        return 1;
+                    }
+                    // En cas de VMA identique, tri alphabétique par prénom
+                    let cmp = a.prenomCoureur.localeCompare(b.prenomCoureur, 'fr', { sensitivity: 'base' });
+                    if (cmp !== 0) return cmp;
+                    return a.item.binomeIdx - b.item.binomeIdx;
+                });
+            } else {
+                // Ordre par numéro de binôme (ordre original)
+                preparedList.sort((a, b) => a.originalIdx - b.originalIdx);
+            }
+
+            let html = '';
+            preparedList.forEach(entry => {
+                let { item, originalIdx, binome, c1, c2, activeRunnerId, activeRunner, currentIntensity } = entry;
+                if (!binome) return;
 
                 // Calcul du projet en fonction de la VMA, du temps de course et de l'intensité sélectionnée
                 let obj = calculateRunnerProject(activeRunner, currentLiveCourseState.durationMin, currentIntensity);
@@ -5051,50 +5873,53 @@
 
                 html += `
                     <div class="obs-live-card">
-                        <!-- Colonne 1 : Nom du binôme, choix du coureur, liste déroulante intensité et projet -->
-                        <div class="obs-card-left">
-                            <div class="obs-binome-name">Binôme ${item.binomeIdx + 1}</div>
+                        <!-- En-tête : Nom du binôme & Choix du coureur actif -->
+                        <div class="obs-card-header">
+                            <div class="obs-card-top-row">
+                                <span class="obs-binome-name">🏃 Binôme ${item.binomeIdx + 1}</span>
+                                <span class="obs-vma-badge" title="VMA utilisée pour le calcul du projet">${vmaDisplay}</span>
+                            </div>
                             
                             <!-- Choix du coureur entre les 2 élèves -->
                             <div class="obs-runner-switch-horizontal">
-                                <button type="button" class="obs-runner-pill ${item.activeRunner === 1 ? 'is-runner' : 'is-observer'}" onclick="setObsActiveRunner(${itemIdx}, 1)" title="Faire courir ${c1FullName}">
-                                    <span class="badge-role">${item.activeRunner === 1 ? '🏃 COUREUR' : 'COUREUR 1'}</span>
+                                <button type="button" class="obs-runner-pill ${activeRunnerId === 1 ? 'is-runner' : 'is-observer'}" onclick="setObsActiveRunner(${originalIdx}, 1)" title="Faire courir ${c1FullName}">
+                                    <span class="badge-role">${activeRunnerId === 1 ? '🏃 COUREUR' : 'ÉLÈVE 1'}</span>
                                     <span class="name">${c1FullName}</span>
                                 </button>
-                                <button type="button" class="obs-runner-pill ${item.activeRunner === 2 ? 'is-runner' : 'is-observer'}" onclick="setObsActiveRunner(${itemIdx}, 2)" title="Faire courir ${c2FullName}">
-                                    <span class="badge-role">${item.activeRunner === 2 ? '🏃 COUREUR' : 'COUREUR 2'}</span>
+                                <button type="button" class="obs-runner-pill ${activeRunnerId === 2 ? 'is-runner' : 'is-observer'}" onclick="setObsActiveRunner(${originalIdx}, 2)" title="Faire courir ${c2FullName}">
+                                    <span class="badge-role">${activeRunnerId === 2 ? '🏃 COUREUR' : 'ÉLÈVE 2'}</span>
                                     <span class="name">${c2FullName}</span>
                                 </button>
                             </div>
+                        </div>
 
-                            <!-- Petite liste déroulante d'intensité (50% à 150% par pas de 5%) -->
+                        <!-- Paramètres du coureur actif : Intensité et Projet -->
+                        <div class="obs-card-params">
                             <div class="obs-intensity-row">
-                                <label class="obs-intensity-label" for="obs-intensity-select-${itemIdx}">
-                                    <span>⚡ Intensité :</span>
+                                <label class="obs-intensity-label" for="obs-intensity-select-${originalIdx}">
+                                    <span>⚡ Intensité cible :</span>
                                 </label>
-                                <select id="obs-intensity-select-${itemIdx}" class="obs-intensity-select" onchange="setObsRunnerIntensity(${itemIdx}, this.value)" title="Choisir l'intensité de course pour ${activeRunner.prenom || 'l\'élève'}">
+                                <select id="obs-intensity-select-${originalIdx}" class="obs-intensity-select" onchange="setObsRunnerIntensity(${originalIdx}, this.value)" title="Choisir l'intensité de course pour ${activeRunner.prenom || 'l\'élève'}">
                                     ${intensityOptions}
                                 </select>
-                                <span class="obs-vma-badge" title="VMA utilisée pour le calcul du projet">${vmaDisplay}</span>
                             </div>
 
-                            <!-- Projet en tours/plots et en mètres -->
                             <div class="obs-projet-display">
                                 <span class="target-icon">🎯</span>
                                 <span>Projet : <strong>${targetTours} tour${targetTours > 1 ? 's' : ''} + ${targetPlots} plot${targetPlots > 1 ? 's' : ''}</strong> (${obj.distance} m)</span>
                             </div>
                         </div>
 
-                        <!-- Colonne 2 : Boutons pour TOURS (+ et -) et PLOTS (+ et -) -->
-                        <div class="obs-card-center">
+                        <!-- Compteurs : Tours et Plots -->
+                        <div class="obs-card-counters">
                             <div class="obs-big-counters-row">
                                 <!-- TOURS -->
                                 <div class="obs-counter-box box-tours">
                                     <div class="obs-counter-box-title">Tours (${lapDist} m)</div>
                                     <div class="obs-counter-controls">
-                                        <button type="button" class="btn-big-touch btn-big-minus" onclick="changeObsTours(${itemIdx}, -1)" title="Enlever 1 tour">−</button>
+                                        <button type="button" class="btn-big-touch btn-big-minus" onclick="changeObsTours(${originalIdx}, -1)" title="Enlever 1 tour">−</button>
                                         <span class="big-val-text">${item.tours}</span>
-                                        <button type="button" class="btn-big-touch btn-big-plus-tours" onclick="changeObsTours(${itemIdx}, 1)" title="Ajouter 1 tour">+</button>
+                                        <button type="button" class="btn-big-touch btn-big-plus-tours" onclick="changeObsTours(${originalIdx}, 1)" title="Ajouter 1 tour">+</button>
                                     </div>
                                 </div>
 
@@ -5102,23 +5927,23 @@
                                 <div class="obs-counter-box box-plots">
                                     <div class="obs-counter-box-title">Plots (+${interDist} m)</div>
                                     <div class="obs-counter-controls">
-                                        <button type="button" class="btn-big-touch btn-big-minus" onclick="changeObsPlots(${itemIdx}, -1)" title="Enlever 1 plot">−</button>
+                                        <button type="button" class="btn-big-touch btn-big-minus" onclick="changeObsPlots(${originalIdx}, -1)" title="Enlever 1 plot">−</button>
                                         <span class="big-val-text">${item.plots} <span style="font-size:11px; font-weight:700; color:#64748B;">/ ${plotsPerLap}</span></span>
-                                        <button type="button" class="btn-big-touch btn-big-plus-plots" onclick="changeObsPlots(${itemIdx}, 1)" title="Ajouter 1 plot">+</button>
+                                        <button type="button" class="btn-big-touch btn-big-plus-plots" onclick="changeObsPlots(${originalIdx}, 1)" title="Ajouter 1 plot">+</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Total réalisé en mètres & comparaison projet -->
+                            <!-- Réalisé & comparaison projet -->
                             <div class="obs-realise-bar">
                                 <span class="obs-realise-dist">Réalisé : <strong>${totalDist} m</strong></span>
                                 <span class="obs-diff-badge ${diffBadgeClass}">${diffText}</span>
                             </div>
                         </div>
 
-                        <!-- Colonne 3 : Bouton Marche comptabilisé -->
-                        <div class="obs-card-right">
-                            <button type="button" class="btn-marche-big ${marcheCount > 0 ? 'active' : ''}" onclick="incrementObsMarche(${itemIdx})" title="Appuyer pour comptabiliser un passage en marche">
+                        <!-- Bouton Marche comptabilisé -->
+                        <div class="obs-card-bottom">
+                            <button type="button" class="btn-marche-big ${marcheCount > 0 ? 'active' : ''}" onclick="incrementObsMarche(${originalIdx})" title="Appuyer pour comptabiliser un passage en marche">
                                 <span style="font-size: 18px;">🚶</span>
                                 <div class="marche-content">
                                     <span class="marche-lbl">A marché</span>
@@ -5127,7 +5952,7 @@
                                 <span style="font-size: 14px; font-weight: 900; color: ${marcheCount > 0 ? '#D97706' : '#94A3B8'};">+1</span>
                             </button>
                             ${marcheCount > 0 ? `
-                                <button type="button" class="btn-marche-sub-mini" onclick="decrementObsMarche(${itemIdx})" title="Décrémenter / corriger le nombre de marches">−</button>
+                                <button type="button" class="btn-marche-sub-mini" onclick="decrementObsMarche(${originalIdx})" title="Décrémenter / corriger le nombre de marches">−</button>
                             ` : ''}
                         </div>
                     </div>
@@ -5330,7 +6155,9 @@
             if (currentLiveCourseState) {
                 currentLiveCourseState.timerRunning = false;
                 currentLiveCourseState.timerRemainingSeconds = obsTimerTotalSeconds;
-                saveActiveCourseState();
+                if (currentLiveCourseState.isInProgress) {
+                    saveActiveCourseState();
+                }
             }
             updateObsTimerDisplay();
         }
@@ -5348,28 +6175,30 @@
         // Abandonner définitivement la course
         function confirmExitCurrentLiveCourse() {
             let hasData = currentLiveCourseState && currentLiveCourseState.liveBinomes && currentLiveCourseState.liveBinomes.some(b => b.tours > 0 || b.plots > 0 || b.marcheCount > 0);
-            if (hasData) {
-                if (!confirm("Voulez-vous vraiment abandonner et réinitialiser cette course ?\nLes comptages de cette course seront perdus.")) {
-                    return;
-                }
+            let msg = hasData
+                ? "Voulez-vous vraiment abandonner et réinitialiser cette course ?\nLes comptages de cette course seront perdus."
+                : "Voulez-vous vraiment abandonner cette course en cours ?";
+            if (!confirm(msg)) {
+                return;
             }
-            resetObsChrono();
-            if (currentLiveCourseState) {
-                currentLiveCourseState.isInProgress = false;
+            stopAndDiscardActiveCourse(false);
+            let activeSession = JSON.parse(localStorage.getItem('df_prof_active_session') || 'null');
+            if (activeSession) {
+                openActiveSessionHub();
+            } else {
+                nav('view-accueil-prof');
             }
-            localStorage.removeItem('df_prof_active_course');
-            updateProfHomeStats();
-            openActiveSessionHub();
+            showAppAlert("Course Abandonnée", "La course en cours a bien été arrêtée et supprimée.", "🗑️");
         }
 
         // Reprendre la course en cours depuis n'importe où
         function resumeLiveCourseInProgress() {
-            if (!currentLiveCourseState || !currentLiveCourseState.liveBinomes || currentLiveCourseState.liveBinomes.length === 0) {
+            if (!currentLiveCourseState || !currentLiveCourseState.liveBinomes || currentLiveCourseState.liveBinomes.length === 0 || !currentLiveCourseState.isInProgress) {
                 let saved = JSON.parse(localStorage.getItem('df_prof_active_course') || 'null');
-                if (saved) currentLiveCourseState = saved;
+                if (saved && saved.isInProgress) currentLiveCourseState = saved;
             }
 
-            if (!currentLiveCourseState || !currentLiveCourseState.liveBinomes || currentLiveCourseState.liveBinomes.length === 0) {
+            if (!currentLiveCourseState || !currentLiveCourseState.liveBinomes || currentLiveCourseState.liveBinomes.length === 0 || !currentLiveCourseState.isInProgress) {
                 showAppAlert("Aucune course", "Aucune observation en direct en cours à reprendre.", "⚠️");
                 return;
             }
@@ -5480,9 +6309,7 @@
             localStorage.setItem('df_prof_active_session', JSON.stringify(activeSession));
 
             // Fin de la course active
-            if (currentLiveCourseState) currentLiveCourseState.isInProgress = false;
-            localStorage.removeItem('df_prof_active_course');
-            resetObsChrono();
+            stopAndDiscardActiveCourse(false);
             updateProfHomeStats();
             openActiveSessionHub();
 
@@ -5669,9 +6496,8 @@
             localStorage.setItem('df_prof_observations', JSON.stringify(allObservations));
 
             // Clôture
+            stopAndDiscardActiveCourse(false);
             localStorage.removeItem('df_prof_active_session');
-            localStorage.removeItem('df_prof_active_course');
-            if (currentLiveCourseState) currentLiveCourseState.isInProgress = false;
 
             updateProfHomeStats();
             renderObservationDetail(obsRecord);
