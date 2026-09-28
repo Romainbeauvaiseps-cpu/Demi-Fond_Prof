@@ -962,6 +962,107 @@
             width: 100%;
         }
 
+        /* Option Absent / Ne court pas sur la vignette */
+        .obs-absent-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 5px 8px;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .obs-absent-row.is-absent {
+            background: #FEF2F2;
+            border-color: #FECACA;
+        }
+
+        .obs-absent-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #64748B;
+            cursor: pointer;
+            width: 100%;
+            margin: 0;
+        }
+
+        .obs-absent-row.is-absent .obs-absent-label {
+            color: #DC2626;
+            font-weight: 800;
+        }
+
+        .obs-absent-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #DC2626;
+            margin: 0;
+            flex-shrink: 0;
+        }
+
+        .obs-absent-badge {
+            font-size: 9.5px;
+            font-weight: 900;
+            color: #DC2626;
+            background: #FFFFFF;
+            border: 1px solid #FCA5A5;
+            padding: 2px 6px;
+            border-radius: 5px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        /* Vignette grisée lorsqu'absent / ne court pas */
+        .obs-live-card.is-absent {
+            background: #F1F5F9 !important;
+            border: 2px dashed #94A3B8 !important;
+            box-shadow: none !important;
+            opacity: 0.62;
+            transition: all 0.25s ease;
+        }
+
+        .obs-live-card.is-absent:hover {
+            opacity: 0.95;
+            border-color: #64748B !important;
+        }
+
+        .obs-live-card.is-absent .obs-card-params,
+        .obs-live-card.is-absent .obs-card-counters,
+        .obs-live-card.is-absent .obs-card-bottom {
+            opacity: 0.32;
+            filter: grayscale(1);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .obs-live-card.is-absent .obs-card-header {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        .obs-absent-notice {
+            background: rgba(220, 38, 38, 0.08);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            color: #DC2626;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 6px 10px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
         /* 2. Paramètres coureur : Intensité et Projet */
         .obs-card-params {
             display: flex;
@@ -2212,14 +2313,16 @@
 
     <!-- VUE INTERMÉDIAIRE : SÉLECTION DE LA CLASSE (PRÉ-PAGE) -->
     <div id="view-classes-prof" class="view">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 12px;">
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 12px;">
             <button class="back-btn" onclick="nav('view-accueil-prof')">◀ Retour Accueil</button>
             <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                 <button type="button" class="back-btn" onclick="openModalAddBinome()"
                     style="background: #10B981; color: #FFFFFF; border-color: #10B981; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);">
                     ➕ Créer une fiche binôme
                 </button>
-                <span id="badge-total-classes" class="binome-badge-class" style="font-size: 13px; padding: 6px 14px;">0 classe</span>
+                <span id="badge-total-classes" class="binome-badge-class" style="font-size: 13px; padding: 6px 14px;">0
+                    classe</span>
             </div>
         </div>
 
@@ -2268,7 +2371,8 @@
 
     <!-- VUE 3 : FICHE COUREUR & AUTO-ÉVALUATION PROF -->
     <div id="view-fiche-prof" class="view">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
             <button class="back-btn" onclick="nav('view-binomes-prof')">◀ Retour aux binômes</button>
             <button type="button" class="back-btn" onclick="confirmDeleteBinome(selectedBinomeIndex)"
                 style="background: #FEF2F2; color: #DC2626; border-color: #FCA5A5; font-size: 12.5px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;"
@@ -2784,8 +2888,11 @@
             <div
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
                 <div>
-                    <h3 style="margin: 0; font-size: 20px; font-family: var(--font-sport); color: #B83B1D;">📋 Inscrire une Fiche Binôme</h3>
-                    <p style="margin: 4px 0 0 0; font-size: 12.5px; color: #64748B;">Renseignez la classe, le nom, prénom et VMA de chaque coureur. Si la classe n'existe pas encore, une carte de classe sera créée automatiquement.</p>
+                    <h3 style="margin: 0; font-size: 20px; font-family: var(--font-sport); color: #B83B1D;">📋 Inscrire
+                        une Fiche Binôme</h3>
+                    <p style="margin: 4px 0 0 0; font-size: 12.5px; color: #64748B;">Renseignez la classe, le nom,
+                        prénom et VMA de chaque coureur. Si la classe n'existe pas encore, une carte de classe sera
+                        créée automatiquement.</p>
                 </div>
                 <button onclick="closeModal('modal-add-binome')"
                     style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748B; align-self: flex-start;">✕</button>
@@ -2818,13 +2925,15 @@
                     </div>
                     <div style="margin-bottom: 10px;">
                         <label
-                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Prénom *</label>
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Prénom
+                            *</label>
                         <input type="text" id="add-binome-p1" placeholder="Ex: Lucas"
                             style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
                     </div>
                     <div>
                         <label
-                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">VMA (km/h)</label>
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">VMA
+                            (km/h)</label>
                         <input type="number" id="add-binome-vma1" placeholder="Ex: 12.5" step="0.1" min="5" max="25"
                             style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
                     </div>
@@ -2844,13 +2953,15 @@
                     </div>
                     <div style="margin-bottom: 10px;">
                         <label
-                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Prénom *</label>
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">Prénom
+                            *</label>
                         <input type="text" id="add-binome-p2" placeholder="Ex: Emma"
                             style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
                     </div>
                     <div>
                         <label
-                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">VMA (km/h)</label>
+                            style="display: block; font-size: 11px; font-weight: 700; color: #64748B; margin-bottom: 4px;">VMA
+                            (km/h)</label>
                         <input type="number" id="add-binome-vma2" placeholder="Ex: 11.0" step="0.1" min="5" max="25"
                             style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 13px; font-weight: 700; outline: none; box-sizing: border-box;">
                     </div>
@@ -2937,7 +3048,8 @@
                     et allures cibles.</p>
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <button type="button" class="back-btn" onclick="confirmDeleteBinomeFromEditModal()"
                     style="background: #FEF2F2; color: #DC2626; border-color: #FCA5A5; font-size: 12.5px; font-weight: 800; padding: 10px 16px;"
                     title="Supprimer définitivement ce binôme">
@@ -2957,53 +3069,65 @@
 
     <!-- MODALE CONFLIT IMPORTATION CLASSE / BINÔMES (FUSION OU REMPLACEMENT) -->
     <div class="modal-overlay" id="modal-import-conflict">
-        <div class="modal-card" style="max-width: 540px; width: 92%; text-align: left; max-height: 90vh; overflow-y: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
+        <div class="modal-card"
+            style="max-width: 540px; width: 92%; text-align: left; max-height: 90vh; overflow-y: auto;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #F1F5F9; padding-bottom: 12px;">
                 <div style="display:flex; align-items:center; gap:10px;">
                     <span style="font-size: 26px;">🔄</span>
-                    <h3 style="margin: 0; font-size: 20px; font-family: var(--font-sport); color: #B83B1D;">Données déjà existantes</h3>
+                    <h3 style="margin: 0; font-size: 20px; font-family: var(--font-sport); color: #B83B1D;">Données déjà
+                        existantes</h3>
                 </div>
-                <button type="button" onclick="cancelPendingImport()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748B;">✕</button>
+                <button type="button" onclick="cancelPendingImport()"
+                    style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748B;">✕</button>
             </div>
 
             <p style="font-size: 14px; color: #334155; margin-bottom: 14px; line-height: 1.5;">
-                Des données pour cette classe ou ces binômes sont <strong>déjà présentes</strong> dans l'application (séance précédente ou saisie existante).
+                Des données pour cette classe ou ces binômes sont <strong>déjà présentes</strong> dans l'application
+                (séance précédente ou saisie existante).
             </p>
 
             <!-- Récapitulatif de détection -->
-            <div id="import-conflict-summary" style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; margin-bottom: 20px; font-size: 13px;">
+            <div id="import-conflict-summary"
+                style="background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; margin-bottom: 20px; font-size: 13px;">
                 <!-- Injecté dynamiquement -->
             </div>
 
-            <div style="font-size: 12px; font-weight: 800; color: #64748B; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+            <div
+                style="font-size: 12px; font-weight: 800; color: #64748B; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
                 Choisissez le mode d'intégration :
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
                 <!-- Option 1 : Fusionner -->
-                <div class="import-choice-card" onclick="executePendingImport('merge')" style="border: 2px solid #10B981; background: #F0FDF4;">
+                <div class="import-choice-card" onclick="executePendingImport('merge')"
+                    style="border: 2px solid #10B981; background: #F0FDF4;">
                     <div style="display: flex; align-items: flex-start; gap: 12px;">
                         <span style="font-size: 24px; line-height: 1;">🔄</span>
                         <div style="flex: 1;">
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 <strong style="font-size: 15px; color: #065F46;">Fusionner les données</strong>
-                                <span style="background: #10B981; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; text-transform: uppercase;">Recommandé</span>
+                                <span
+                                    style="background: #10B981; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 10px; text-transform: uppercase;">Recommandé</span>
                             </div>
                             <div style="font-size: 12.5px; color: #047857; margin-top: 4px; line-height: 1.4;">
-                                Conserve les binômes existants et leurs séances actuelles. Ajoute les nouveaux binômes et complète les nouvelles séances sans créer aucun doublon.
+                                Conserve les binômes existants et leurs séances actuelles. Ajoute les nouveaux binômes
+                                et complète les nouvelles séances sans créer aucun doublon.
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Option 2 : Remplacer -->
-                <div class="import-choice-card" onclick="executePendingImport('replace')" style="border: 2px solid #CBD5E1; background: #FFFFFF;">
+                <div class="import-choice-card" onclick="executePendingImport('replace')"
+                    style="border: 2px solid #CBD5E1; background: #FFFFFF;">
                     <div style="display: flex; align-items: flex-start; gap: 12px;">
                         <span style="font-size: 24px; line-height: 1;">⚠️</span>
                         <div style="flex: 1;">
                             <strong style="font-size: 15px; color: #1E293B;">Remplacer les données existantes</strong>
                             <div style="font-size: 12.5px; color: #64748B; margin-top: 4px; line-height: 1.4;">
-                                Écrase et remplace les données des binômes existants par le contenu des nouveaux fichiers importés.
+                                Écrase et remplace les données des binômes existants par le contenu des nouveaux
+                                fichiers importés.
                             </div>
                         </div>
                     </div>
@@ -3011,7 +3135,8 @@
             </div>
 
             <div style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button type="button" class="back-btn" onclick="cancelPendingImport()" style="background: #F1F5F9; color: #475569; border-color: #CBD5E1; font-weight: 700; padding: 9px 18px;">
+                <button type="button" class="back-btn" onclick="cancelPendingImport()"
+                    style="background: #F1F5F9; color: #475569; border-color: #CBD5E1; font-weight: 700; padding: 9px 18px;">
                     ✕ Annuler l'importation
                 </button>
             </div>
@@ -5665,7 +5790,9 @@
                         plots: 0,
                         marcheCount: 0,
                         marche: false,
-                        arretsCount: 0
+                        arretsCount: 0,
+                        absents: {},
+                        isAbsent: false
                     });
                 }
             });
@@ -5777,6 +5904,7 @@
                 let prenomCoureur = (activeRunner.prenom || '').trim();
                 let nomCoureur = (activeRunner.nom || '').trim();
                 let vmaCoureur = (activeRunner.vma && parseFloat(activeRunner.vma) > 0) ? parseFloat(activeRunner.vma) : 0;
+                let isAbsent = !!(item.absents && item.absents[activeRunnerId]) || !!item.isAbsent;
 
                 return {
                     item,
@@ -5789,21 +5917,23 @@
                     currentIntensity,
                     prenomCoureur,
                     nomCoureur,
-                    vmaCoureur
+                    vmaCoureur,
+                    isAbsent
                 };
             });
 
-            // Application du tri sélectionné
-            if (currentObsSortCriteria === 'name') {
-                preparedList.sort((a, b) => {
+            // Application du tri sélectionné (avec priorité : les absents/non-coureurs toujours placés en dernier)
+            preparedList.sort((a, b) => {
+                if (a.isAbsent && !b.isAbsent) return 1;
+                if (!a.isAbsent && b.isAbsent) return -1;
+
+                if (currentObsSortCriteria === 'name') {
                     let cmp = a.prenomCoureur.localeCompare(b.prenomCoureur, 'fr', { sensitivity: 'base' });
                     if (cmp !== 0) return cmp;
                     let cmpNom = a.nomCoureur.localeCompare(b.nomCoureur, 'fr', { sensitivity: 'base' });
                     if (cmpNom !== 0) return cmpNom;
                     return a.item.binomeIdx - b.item.binomeIdx;
-                });
-            } else if (currentObsSortCriteria === 'vma') {
-                preparedList.sort((a, b) => {
+                } else if (currentObsSortCriteria === 'vma') {
                     let hasVmaA = a.vmaCoureur > 0;
                     let hasVmaB = b.vmaCoureur > 0;
                     if (hasVmaA && hasVmaB) {
@@ -5818,15 +5948,15 @@
                     let cmp = a.prenomCoureur.localeCompare(b.prenomCoureur, 'fr', { sensitivity: 'base' });
                     if (cmp !== 0) return cmp;
                     return a.item.binomeIdx - b.item.binomeIdx;
-                });
-            } else {
-                // Ordre par numéro de binôme (ordre original)
-                preparedList.sort((a, b) => a.originalIdx - b.originalIdx);
-            }
+                } else {
+                    // Ordre par numéro de binôme (ordre original)
+                    return a.originalIdx - b.originalIdx;
+                }
+            });
 
             let html = '';
             preparedList.forEach(entry => {
-                let { item, originalIdx, binome, c1, c2, activeRunnerId, activeRunner, currentIntensity } = entry;
+                let { item, originalIdx, binome, c1, c2, activeRunnerId, activeRunner, currentIntensity, isAbsent, prenomCoureur } = entry;
                 if (!binome) return;
 
                 // Calcul du projet en fonction de la VMA, du temps de course et de l'intensité sélectionnée
@@ -5872,12 +6002,15 @@
                     : `VMA ~11 km/h (défaut)`;
 
                 html += `
-                    <div class="obs-live-card">
+                    <div class="obs-live-card ${isAbsent ? 'is-absent' : ''}">
                         <!-- En-tête : Nom du binôme & Choix du coureur actif -->
                         <div class="obs-card-header">
                             <div class="obs-card-top-row">
                                 <span class="obs-binome-name">🏃 Binôme ${item.binomeIdx + 1}</span>
-                                <span class="obs-vma-badge" title="VMA utilisée pour le calcul du projet">${vmaDisplay}</span>
+                                <div style="display: flex; gap: 6px; align-items: center;">
+                                    ${isAbsent ? `<span class="obs-absent-badge">🚫 NON-COUREUR</span>` : ''}
+                                    <span class="obs-vma-badge" title="VMA utilisée pour le calcul du projet">${vmaDisplay}</span>
+                                </div>
                             </div>
                             
                             <!-- Choix du coureur entre les 2 élèves -->
@@ -5891,6 +6024,20 @@
                                     <span class="name">${c2FullName}</span>
                                 </button>
                             </div>
+
+                            <!-- Option Absent / Ne court pas -->
+                            <div class="obs-absent-row ${isAbsent ? 'is-absent' : ''}">
+                                <label class="obs-absent-label" for="obs-absent-chk-${originalIdx}">
+                                    <input type="checkbox" id="obs-absent-chk-${originalIdx}" class="obs-absent-checkbox" ${isAbsent ? 'checked' : ''} onchange="toggleObsAbsent(${originalIdx}, this.checked)">
+                                    <span class="obs-absent-text">❌ Absent / Ne court pas</span>
+                                </label>
+                            </div>
+
+                            ${isAbsent ? `
+                                <div class="obs-absent-notice">
+                                    <span>🚫 <strong>${prenomCoureur || 'L\'élève'}</strong> ne court pas (vignette en fin de liste)</span>
+                                </div>
+                            ` : ''}
                         </div>
 
                         <!-- Paramètres du coureur actif : Intensité et Projet -->
@@ -5964,11 +6111,38 @@
 
         // Bascule de coureur dans le binôme
         function setObsActiveRunner(itemIdx, runnerId) {
-            if (currentLiveCourseState.liveBinomes[itemIdx]) {
-                currentLiveCourseState.liveBinomes[itemIdx].activeRunner = runnerId;
+            let item = currentLiveCourseState.liveBinomes && currentLiveCourseState.liveBinomes[itemIdx];
+            if (item) {
+                item.activeRunner = runnerId;
+                if (!item.absents) item.absents = {};
+                item.isAbsent = !!item.absents[runnerId];
                 saveActiveCourseState();
                 renderObsLiveGrid();
             }
+        }
+
+        // Marquer l'élève comme absent ou ne courant pas (grise et relègue la vignette en dernière)
+        function toggleObsAbsent(itemIdx, checked) {
+            let item = currentLiveCourseState.liveBinomes && currentLiveCourseState.liveBinomes[itemIdx];
+            if (!item) return;
+
+            if (!item.absents) {
+                item.absents = {};
+            }
+            let runnerId = item.activeRunner || 1;
+            item.absents[runnerId] = checked;
+            item.isAbsent = checked;
+
+            if (checked) {
+                item.tours = 0;
+                item.plots = 0;
+                item.marche = false;
+                item.marcheCount = 0;
+                item.arretsCount = 0;
+            }
+
+            saveActiveCourseState();
+            renderObsLiveGrid();
         }
 
         // Modification de l'intensité d'un élève
@@ -6263,6 +6437,7 @@
                 let runner = (binome.coureurs && binome.coureurs[item.activeRunner]) || {};
                 let observerId = item.activeRunner === 1 ? 2 : 1;
                 let observer = (binome.coureurs && binome.coureurs[observerId]) || {};
+                let isAbsent = !!(item.absents && item.absents[item.activeRunner]) || !!item.isAbsent;
 
                 let runnerIntensity = (item.intensities && item.intensities[item.activeRunner]) || 80;
                 let obj = calculateRunnerProject(runner, currentLiveCourseState.durationMin, runnerIntensity);
@@ -6290,7 +6465,8 @@
                     pctVma: pctVma,
                     marche: (item.marcheCount || 0) > 0 || !!item.marche,
                     marcheCount: item.marcheCount || (item.marche ? 1 : 0),
-                    arretsCount: item.arretsCount
+                    arretsCount: item.arretsCount,
+                    isAbsent: isAbsent
                 };
             });
 
@@ -6337,6 +6513,10 @@
             activeSession.courses.forEach(course => {
                 let courseNum = course.courseNum;
                 course.results.forEach(r => {
+                    if (r.isAbsent) {
+                        // Élève absent ou ne courant pas : on ne pollue pas sa fiche individuelle avec 0m
+                        return;
+                    }
                     let binome = importedBinomes[r.binomeIdx];
                     if (!binome || !binome.coureurs) return;
                     let runner = binome.coureurs[r.runnerId];
@@ -6565,6 +6745,30 @@
                 `;
 
                 runs.forEach(r => {
+                    if (r.isAbsent) {
+                        html += `
+                            <tr style="background: #F8FAFC; opacity: 0.75;">
+                                <td style="font-weight:700; color:#94A3B8;">#${r.binomeIdx + 1}</td>
+                                <td style="font-weight:700; color:#64748B;">
+                                    🏃 ${r.runnerName}
+                                    <span style="font-size:10px; font-weight:800; color:#DC2626; background:#FEE2E2; padding:2px 6px; border-radius:4px; margin-left:4px;">ABSENT / NE COURT PAS</span>
+                                </td>
+                                <td style="color:#94A3B8; font-weight:600;">
+                                    👀 ${r.observerName}
+                                </td>
+                                <td style="text-align:center; color:#94A3B8;">-</td>
+                                <td style="text-align:right; color:#94A3B8;">-</td>
+                                <td style="text-align:right; color:#94A3B8;">-</td>
+                                <td style="text-align:right; color:#94A3B8;">-</td>
+                                <td style="text-align:center; color:#94A3B8;">-</td>
+                                <td style="text-align:center;">
+                                    <span class="badge-alert-stop" style="background:#F1F5F9; color:#64748B; border:1px solid #CBD5E1;">🚫 Absent / Ne court pas</span>
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
                     let controlBadge = '';
                     if (r.arretsCount > 0) {
                         controlBadge += `<span class="badge-alert-stop">⏸️ ${r.arretsCount} arrêt(s)</span> `;
@@ -6821,6 +7025,27 @@
                 `;
 
                 runs.forEach(r => {
+                    if (r.isAbsent) {
+                        tableHtml += `
+                            <tr style="background-color: #F8FAFC; color: #64748B;">
+                                <td class="text-center bold">#${r.binomeIdx + 1}</td>
+                                <td class="bold">${r.runnerName || '-'} (Absent)</td>
+                                <td>${r.observerName || '-'}</td>
+                                <td class="text-center">-</td>
+                                <td class="text-center">-</td>
+                                <td class="text-right">-</td>
+                                <td class="text-right bold">-</td>
+                                <td class="text-right">-</td>
+                                <td class="text-right">-</td>
+                                <td class="text-center">-</td>
+                                <td class="text-center">-</td>
+                                <td class="text-center">-</td>
+                                <td class="text-center bold" style="background-color: #F1F5F9; color: #64748B;">Absent / Ne court pas</td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
                     let diff = r.objectifMeters ? (r.totalDistance - r.objectifMeters) : 0;
                     let diffStr = r.objectifMeters ? (diff > 0 ? `+${diff}` : `${diff}`) : '-';
                     let statusClass = 'regular-ok';
