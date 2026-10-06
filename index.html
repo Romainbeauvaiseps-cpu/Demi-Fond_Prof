@@ -2455,8 +2455,21 @@
 
         <!-- Tableau d'Auto-Évaluation -->
         <div class="eval-section-title">
-            <span>📊 AUTO-ÉVALUATION & BARÈME</span>
-            <span id="eval-prof-score-display" class="eval-score-prof">- / 20</span>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <span>📊 AUTO-ÉVALUATION & BARÈME</span>
+                <button type="button" class="back-btn"
+                    onclick="document.getElementById('input-import-eval-grid-prof').click()"
+                    style="background: rgba(184, 59, 29, 0.08); color: #B83B1D; border: 1.5px solid rgba(184, 59, 29, 0.3); padding: 5px 12px; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;"
+                    title="Importer une grille d'évaluation personnalisée (.xlsx ou .csv)">
+                    📥 Importer Grille (.xlsx / .csv)
+                </button>
+                <input type="file" id="input-import-eval-grid-prof" accept=".xlsx, .xls, .csv" style="display:none;"
+                    onchange="handleImportEvalGridProf(event)">
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span id="eval-prof-criteria-count" style="font-size: 12px; color: #64748B; font-weight: 700;"></span>
+                <span id="eval-prof-score-display" class="eval-score-prof">- / 20</span>
+            </div>
         </div>
 
         <table class="eval-prof-table">
@@ -3297,6 +3310,12 @@
                     tgtRunner.classe = srcRunner.classe;
                 }
 
+                // Fusion de l'auto-évaluation / évaluation si présente chez la source
+                if (srcRunner.evaluation && typeof srcRunner.evaluation === 'object') {
+                    if (!tgtRunner.evaluation) tgtRunner.evaluation = {};
+                    Object.assign(tgtRunner.evaluation, srcRunner.evaluation);
+                }
+
                 // Fusion des séances
                 let srcSeances = getCoureurSeances(srcRunner);
                 let tgtSeances = getCoureurSeances(tgtRunner);
@@ -3332,6 +3351,13 @@
 
                 tgtRunner.seances.sort((a, b) => (parseInt(a.num) || 0) - (parseInt(b.num) || 0));
             });
+
+            // Si le binôme cible n'a pas de grille d'évaluation personnalisée et la source en possède une
+            if (sourceData.activeEvalGrid && Array.isArray(sourceData.activeEvalGrid) && sourceData.activeEvalGrid.length > 0) {
+                if (!targetBinome.activeEvalGrid || targetBinome.activeEvalGrid.length === 0) {
+                    targetBinome.activeEvalGrid = sourceData.activeEvalGrid;
+                }
+            }
 
             return { newSeancesCount, ignoredCount };
         }
@@ -3977,7 +4003,8 @@
                     binomes: binomes,
                     observations: observations,
                     activeSession: activeSession,
-                    activeCourse: activeCourse
+                    activeCourse: activeCourse,
+                    customEvalGrid: JSON.parse(localStorage.getItem('df_prof_custom_eval_grid')) || null
                 }
             };
 
@@ -4033,6 +4060,9 @@
                         importedObsData = parsed.data.observations || [];
                         importedSession = parsed.data.activeSession || null;
                         importedCourse = parsed.data.activeCourse || null;
+                        if (parsed.data.customEvalGrid) {
+                            localStorage.setItem('df_prof_custom_eval_grid', JSON.stringify(parsed.data.customEvalGrid));
+                        }
                     } else if (Array.isArray(parsed)) {
                         importedBinomesData = parsed;
                     } else if (parsed && (parsed.binomes || parsed.observations)) {
@@ -4754,6 +4784,64 @@
             document.getElementById('fiche-prof-trophies-count').innerText = `${unlockedCount} / ${TROPHEES_CONFIG.length}`;
         }
 
+        // --- CALCUL ET EXTRACTION INTELLIGENTE DU % VMA SOUHAITÉ ET RÉALISÉ ---
+        function getRunVmaDetails(run, coureur) {
+            let vma = (coureur && coureur.vma && parseFloat(coureur.vma) > 0) ? parseFloat(coureur.vma) : null;
+            let durSec = run.tempsSec || (run.duree ? run.duree * 60 : 0);
+            let durMin = durSec > 0 ? (durSec / 60) : (run.duree ? parseFloat(run.duree) : 6);
+
+            // 1. Pourcentage de VMA Souhaité (Cible / Projet)
+            let pctCible = null;
+            if (run.targetIntensity !== undefined && run.targetIntensity !== null && !isNaN(run.targetIntensity)) {
+                pctCible = Math.round(parseFloat(run.targetIntensity));
+            } else if (run.pctVmaTarget !== undefined && run.pctVmaTarget !== null && !isNaN(run.pctVmaTarget)) {
+                pctCible = Math.round(parseFloat(run.pctVmaTarget));
+            } else if (run.pctVmaCible !== undefined && run.pctVmaCible !== null && !isNaN(run.pctVmaCible)) {
+                pctCible = Math.round(parseFloat(run.pctVmaCible));
+            } else if (run.vitesseCible && vma) {
+                pctCible = Math.round((parseFloat(run.vitesseCible) / vma) * 100);
+            } else if (run.objectif && vma && durMin > 0) {
+                let dist100Pct = (vma * 1000 / 60) * durMin;
+                pctCible = Math.round((parseFloat(run.objectif) / dist100Pct) * 100);
+            } else if (run.pctVMA !== undefined && run.pctVMA !== null && !isNaN(run.pctVMA)) {
+                pctCible = Math.round(parseFloat(run.pctVMA));
+            } else if (run.pctVma !== undefined && run.pctVma !== null && !isNaN(run.pctVma)) {
+                pctCible = Math.round(parseFloat(run.pctVma));
+            }
+
+            // 2. Pourcentage de VMA Réalisé (Prestation réelle)
+            let realMeters = run.realise !== undefined ? run.realise : (run.plotsTotal ? run.plotsTotal * 50 : 0);
+            let speedRealKmH = null;
+            if (run.vitesseKmH !== undefined && run.vitesseKmH !== null && parseFloat(run.vitesseKmH) > 0) {
+                speedRealKmH = parseFloat(run.vitesseKmH);
+            } else if (durSec > 0 && realMeters !== undefined) {
+                speedRealKmH = (realMeters / durSec) * 3.6;
+            } else if (run.allureMoyenne && parseFloat(run.allureMoyenne) > 0) {
+                speedRealKmH = parseFloat(run.allureMoyenne);
+            }
+
+            let pctRealise = null;
+            if (run.pctVmaRealise !== undefined && run.pctVmaRealise !== null && !isNaN(run.pctVmaRealise)) {
+                pctRealise = Math.round(parseFloat(run.pctVmaRealise));
+            } else if (speedRealKmH !== null && vma) {
+                pctRealise = Math.round((speedRealKmH / vma) * 100);
+            } else if (run.objectif && realMeters !== undefined && pctCible) {
+                pctRealise = Math.round((realMeters / run.objectif) * pctCible);
+            }
+
+            let speedCible = run.vitesseCible ? parseFloat(run.vitesseCible) : (vma && pctCible ? parseFloat(((vma * pctCible) / 100).toFixed(1)) : null);
+
+            return {
+                vma: vma,
+                pctCible: pctCible,
+                pctRealise: pctRealise,
+                speedCible: speedCible,
+                speedReal: speedRealKmH !== null ? parseFloat(speedRealKmH.toFixed(2)) : null,
+                objMeters: run.objectif || 0,
+                realMeters: realMeters
+            };
+        }
+
         // Détection intelligente de l'observation prof correspondante pour un coureur, une séance et une durée de course
         function findProfObservationForRun(binome, runnerId, seanceNum, run, rIdx) {
             if (!binome || !run) return null;
@@ -4801,7 +4889,10 @@
                                 totalDistance: foundRun.totalDistance,
                                 objectifMeters: foundRun.objectifMeters,
                                 vitesseKmH: foundRun.vitesseKmH,
+                                targetIntensity: foundRun.targetIntensity,
+                                pctVmaTarget: foundRun.targetIntensity || foundRun.pctVmaTarget,
                                 pctVma: foundRun.pctVma,
+                                pctVmaRealise: foundRun.pctVmaRealise || foundRun.pctVma,
                                 marcheCount: foundRun.marcheCount || (foundRun.marche ? 1 : 0),
                                 marche: foundRun.marche,
                                 arretsCount: foundRun.arretsCount || 0,
@@ -4857,10 +4948,39 @@
                         statusClass = "status-non-atteint";
                     }
 
-                    let pct = run.pctVMA || run.pctVma || (run.vitesseCible && coureur.vma ? Math.round((run.vitesseCible / coureur.vma) * 100) : 70);
+                    let vmaInfo = getRunVmaDetails(run, coureur);
+                    let pctCible = vmaInfo.pctCible;
+                    let pctRealise = vmaInfo.pctRealise;
+
                     let timeSec = run.tempsSec || (run.duree ? run.duree * 60 : 0);
                     let timeStr = timeSec ? formatTime(timeSec) : (run.duree ? run.duree + " min" : "-");
-                    let vitesseCibleStr = run.vitesseCible ? run.vitesseCible.toFixed(1) + " km/h" : (run.allureMoyenne ? run.allureMoyenne + " km/h" : "-");
+                    let vitesseCibleStr = run.vitesseCible ? parseFloat(run.vitesseCible).toFixed(1) + " km/h" : (vmaInfo.speedCible ? vmaInfo.speedCible.toFixed(1) + " km/h" : "-");
+                    let vitesseReelleStr = vmaInfo.speedReal !== null ? vmaInfo.speedReal.toFixed(1) + " km/h" : (run.allureMoyenne ? parseFloat(run.allureMoyenne).toFixed(1) + " km/h" : "-");
+
+                    let diffPct = (pctRealise !== null && pctCible !== null) ? (pctRealise - pctCible) : null;
+                    let pctRealColor = '#1C1C1E';
+                    let pctRealBg = '#F8FAFC';
+                    let pctRealBorder = '#E2E8F0';
+                    let pctRealLabelColor = '#64748B';
+
+                    if (diffPct !== null) {
+                        if (Math.abs(diffPct) <= 5) {
+                            pctRealColor = '#059669';
+                            pctRealBg = '#ECFDF5';
+                            pctRealBorder = '#A7F3D0';
+                            pctRealLabelColor = '#047857';
+                        } else if (diffPct > 5) {
+                            pctRealColor = '#D97706';
+                            pctRealBg = '#FFFBEB';
+                            pctRealBorder = '#FDE68A';
+                            pctRealLabelColor = '#B45309';
+                        } else {
+                            pctRealColor = '#DC2626';
+                            pctRealBg = '#FEF2F2';
+                            pctRealBorder = '#FECACA';
+                            pctRealLabelColor = '#B91C1C';
+                        }
+                    }
 
                     let marcheBadge = '';
                     if (run.abandon) {
@@ -4922,6 +5042,12 @@
                             compMsg += `<div style="margin-top:6px; font-size:11px; font-weight:700; color:#B45309;">⚠️ Contrôle comportemental : Le professeur a relevé ${profObs.marcheCount ? profObs.marcheCount + ' phase(s) de marche' : ''} ${profObs.arretsCount ? profObs.arretsCount + ' arrêt(s)' : ''} non comptabilisés par l'observateur élève.</div>`;
                         }
 
+                        let profIntensityDisplay = '';
+                        if (profObs.pctVma) {
+                            let profCibleDisplay = profObs.targetIntensity || profObs.pctVmaTarget || pctCible;
+                            profIntensityDisplay = ` (${profCibleDisplay ? `Cible : ${profCibleDisplay}% • ` : ''}Réalisé : ${profObs.pctVma}%)`;
+                        }
+
                         comparisonBlockHtml = `
                             <div style="margin-top: 14px; background: #FFFFFF; border: 2px solid #B83B1D; border-radius: 14px; padding: 14px; box-shadow: 0 4px 14px rgba(184, 59, 29, 0.08);">
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
@@ -4952,7 +5078,7 @@
                                             ${profObs.totalDistance} m <small style="font-size: 11px; font-weight: 700; color: #475569;">(${profObs.tours} T + ${profObs.plots} P)</small>
                                         </div>
                                         <div style="font-size: 11px; color: #475569; margin-top: 3px;">
-                                            Allure : <strong>${profObs.vitesseKmH ? profObs.vitesseKmH.toFixed(2) + ' km/h' : '-'} (${profObs.pctVma ? profObs.pctVma + '%' : '-'})</strong> • Marche : <strong>${profObs.marcheCount || 0}</strong> • Arrêts : <strong>${profObs.arretsCount || 0}</strong>
+                                            Allure : <strong>${profObs.vitesseKmH ? profObs.vitesseKmH.toFixed(2) + ' km/h' : '-'}${profIntensityDisplay}</strong> • Marche : <strong>${profObs.marcheCount || 0}</strong> • Arrêts : <strong>${profObs.arretsCount || 0}</strong>
                                         </div>
                                     </div>
                                 </div>
@@ -4979,25 +5105,31 @@
                                     <div class="val">${timeStr}</div>
                                 </div>
                                 <div class="seance-stat-card">
-                                    <div class="label">Intensité (% VMA)</div>
-                                    <div class="val">${pct}%</div>
+                                    <div class="label">Arrêts / Marche</div>
+                                    <div class="val" style="color:${(run.arretsCount || run.marche) ? '#D97706' : '#10B981'};">
+                                        ${run.arretsCount ? run.arretsCount + ' arrêt(s) (' + (run.arretTotalSec ? formatTime(run.arretTotalSec) : '0s') + ')' : (run.marche ? 'Oui' : 'Aucun')}
+                                    </div>
                                 </div>
-                                <div class="seance-stat-card">
-                                    <div class="label">Vitesse Cible</div>
-                                    <div class="val">${vitesseCibleStr}</div>
+                                <div class="seance-stat-card" style="background: #F0F9FF; border-color: #BAE6FD;">
+                                    <div class="label" style="color: #0369A1;">🎯 % VMA Souhaité</div>
+                                    <div class="val" style="color: #0284C7;">${pctCible !== null ? pctCible + '%' : '-'}</div>
+                                    <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Vitesse cible : <strong>${vitesseCibleStr}</strong></div>
+                                </div>
+                                <div class="seance-stat-card" style="background: ${pctRealBg}; border-color: ${pctRealBorder};">
+                                    <div class="label" style="color: ${pctRealLabelColor};">⚡ % VMA Réalisé</div>
+                                    <div class="val" style="color: ${pctRealColor};">${pctRealise !== null ? pctRealise + '%' : '-'}</div>
+                                    <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Allure réelle : <strong>${vitesseReelleStr}</strong></div>
                                 </div>
                                 <div class="seance-stat-card">
                                     <div class="label">Distance Objectif</div>
                                     <div class="val">${objMeters} m</div>
+                                    <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Projet initial</div>
                                 </div>
                                 <div class="seance-stat-card">
                                     <div class="label">Distance Réalisée</div>
                                     <div class="val" style="color:#B83B1D;">${realMeters} m</div>
-                                </div>
-                                <div class="seance-stat-card">
-                                    <div class="label">Arrêts / Marche</div>
-                                    <div class="val" style="color:${(run.arretsCount || run.marche) ? '#D97706' : 'inherit'};">
-                                        ${run.arretsCount ? run.arretsCount + ' arrêt(s) (' + (run.arretTotalSec ? formatTime(run.arretTotalSec) : '0s') + ')' : (run.marche ? 'Oui' : 'Aucun')}
+                                    <div style="font-size: 11px; font-weight: 700; color: ${Math.abs(diff) <= 25 ? '#10B981' : (diff > 25 ? '#D97706' : '#DC2626')}; margin-top: 2px;">
+                                        Écart : <strong>${diff >= 0 ? '+' + diff : diff} m</strong>
                                     </div>
                                 </div>
                             </div>
@@ -5012,16 +5144,43 @@
                     `;
                 });
 
-                // Moyenne VMA de la séance
-                let totalVMA = 0;
+                // Moyennes VMA de la séance
+                let totalTargetVMA = 0;
+                let countTarget = 0;
+                let totalRealVMA = 0;
+                let countReal = 0;
+
                 seance.runs.forEach(r => {
-                    totalVMA += (r.pctVMA || r.pctVma || (r.vitesseCible && coureur.vma ? Math.round((r.vitesseCible / coureur.vma) * 100) : 70));
+                    let d = getRunVmaDetails(r, coureur);
+                    if (d.pctCible !== null) {
+                        totalTargetVMA += d.pctCible;
+                        countTarget++;
+                    }
+                    if (d.pctRealise !== null) {
+                        totalRealVMA += d.pctRealise;
+                        countReal++;
+                    }
                 });
-                let avgVMA = Math.round(totalVMA / seance.runs.length);
+                let avgTargetVMA = countTarget > 0 ? Math.round(totalTargetVMA / countTarget) : null;
+                let avgRealVMA = countReal > 0 ? Math.round(totalRealVMA / countReal) : null;
 
                 contentHTML += `
-                    <div class="seance-course-box" style="margin-top: 15px; background: rgba(184, 59, 29, 0.08); border: 1.5px solid rgba(184, 59, 29, 0.3); text-align: center; padding: 12px;">
-                        <div style="color: #B83B1D; font-size: 14px; font-weight: 800;">🔥 Moyenne d'intensité de la séance : <span style="font-size: 18px; color: #B83B1D;">${avgVMA}% VMA</span></div>
+                    <div class="seance-course-box" style="margin-top: 15px; background: rgba(184, 59, 29, 0.08); border: 1.5px solid rgba(184, 59, 29, 0.3); text-align: center; padding: 14px;">
+                        <div style="color: #B83B1D; font-size: 14px; font-weight: 800; margin-bottom: 6px;">🔥 Moyennes d'intensité de la séance</div>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap;">
+                            ${avgTargetVMA !== null ? `
+                                <div style="background: rgba(2, 132, 199, 0.08); border: 1.5px solid rgba(2, 132, 199, 0.3); border-radius: 10px; padding: 6px 14px;">
+                                    <span style="font-size: 13px; font-weight: 700; color: #0284C7;">🎯 Cible (Souhaitée) : </span>
+                                    <strong style="font-size: 17px; color: #0284C7;">${avgTargetVMA}% VMA</strong>
+                                </div>
+                            ` : ''}
+                            ${avgRealVMA !== null ? `
+                                <div style="background: rgba(184, 59, 29, 0.08); border: 1.5px solid rgba(184, 59, 29, 0.3); border-radius: 10px; padding: 6px 14px;">
+                                    <span style="font-size: 13px; font-weight: 700; color: #B83B1D;">⚡ Réalisée : </span>
+                                    <strong style="font-size: 17px; color: #B83B1D;">${avgRealVMA}% VMA</strong>
+                                </div>
+                            ` : ''}
+                        </div>
                     </div>
                 `;
             }
@@ -5116,38 +5275,218 @@
             renderEvalProfTable(binome, coureur);
         }
 
+        // --- GRILLE D'ÉVALUATION PAR DÉFAUT & CALCUL DE NOTE COHÉRENT /20 ---
+        const DEFAULT_EVAL_GRID = [
+            {
+                competence: "Préparer-planifier-se représenter une action avant de la réaliser",
+                n1: "Les projets ne sont pas respectés, l’élève est en dessous de son projet sur chaque course.",
+                n2: "Les projets ne sont pas respectés sur l’ensemble des courses. L’élève est constamment soit au dessus, soit en dessous de son projet.",
+                n3: "Les projets sont respectés dans au moins 2 courses, sur la 3e l’élève est soit en dessous soit au dessus.",
+                n4: "Les projets sont respectés à un plot près sur toutes les courses.",
+                poids: "25 %"
+            },
+            {
+                competence: "Préparer-planifier-se représenter une action avant de la réaliser",
+                n1: "Je ne connais pas mon projet. Je ne sais plus ou j’en suis dans la course. Je marche beaucoup.",
+                n2: "Je ne suis pas sur de mon projet, je me trompe. Je ne sais pas toujours ou j’en suis dans ma course. J’alterne régulièrement course et marche dans ma course.",
+                n3: "Je connais mon projet. J’oublie parfois ou j’en suis dans ma course, l’observateur m’aide. Mon allure de course est irrégulière ponctuée de course rapide et course lente.",
+                n4: "Je connais mon projet. Je sais ou j’en suis dans ma course, mon allure de course est régulière.",
+                poids: "20 %"
+            },
+            {
+                competence: "Adapter l’intensité de son engagement physique à ses possibilités pour ne pas se mettre en danger",
+                n1: "L’intensité moyenne des courses est inférieure à 90%",
+                n2: "L’intensité moyenne des courses est comprise entre 90 et 94%",
+                n3: "L’intensité moyenne des courses est comprise entre 95 et 99%",
+                n4: "L’intensité moyenne des course est supérieur ou égal à 100%. L’élève court avec fluidité, régulièrement à la même vitesse tout au long de la course.",
+                poids: "20 %"
+            },
+            {
+                competence: "Prendre et assumer des responsabilités au sein d’un collectif pour réaliser un projet ou remplir un contrat",
+                n1: "L’observation n’est pas fiable. L’observateur se trompe car il n’est pas concentré ou triche pour faire correspondre le projet et la réalisation du projet.",
+                n2: "L’observateur n’est pas totalement fiable, il se trompe parfois d’un ou deux plots. C’est l’enseignant ou le coureur qui le corrige.",
+                n3: "L’observateur est fiable et concentré.",
+                n4: "L’observateur est fiable et concentré et est capable de donné des indications précises pour aider le coureur à varier son allure.",
+                poids: "20 %"
+            },
+            {
+                competence: "Connaitre les effets d’une pratique physique régulière sur son état de bien-être et de santé",
+                n1: "Ne s’échauffe pas ou pas sérieusement sur l’ensemble de l’échauffement.",
+                n2: "L’élève ne s’échauffe pas sérieusement, l’échauffement est incomplet. L’élève rigole, joue ou est passif pendant une partie de l’échauffement.",
+                n3: "L’élève s’échauffe sérieusement mais à besoin de cadre pour faire l’échauffement complètement (par son camarade ou l’enseignant).",
+                n4: "L’élève s’échauffe sérieusement et en autonomie. Il est leader de son binôme.",
+                poids: "15 %"
+            }
+        ];
+
+        // Extraction robuste du pourcentage de la dernière case
+        function parseWeightVal(val) {
+            if (val === undefined || val === null) return null;
+            let str = val.toString().replace(/[\u00A0\s%]/g, '').replace(',', '.').trim();
+            if (!str) return null;
+            let n = parseFloat(str);
+            if (!isNaN(n) && n > 0) {
+                if (n <= 1 && str.includes('.')) n = Math.round(n * 100 * 100) / 100;
+                return n;
+            }
+            return null;
+        }
+
+        function getRowWeightPct(row, gridLength) {
+            if (!row) return 100 / (gridLength || 1);
+            if (Array.isArray(row)) {
+                for (let c = row.length - 1; c >= 1; c--) {
+                    let p = parseWeightVal(row[c]);
+                    if (p !== null) return p;
+                }
+            }
+            let keys = ['poids', '%', 'pourcentage', 'ponderation', 'poidsNum', 'weight', 'valeur'];
+            for (let k of keys) {
+                if (row[k] !== undefined && row[k] !== null) {
+                    let p = parseWeightVal(row[k]);
+                    if (p !== null) return p;
+                }
+            }
+            let allKeys = Object.keys(row);
+            for (let i = allKeys.length - 1; i >= 0; i--) {
+                let k = allKeys[i];
+                if (['competence', 'n1', 'n2', 'n3', 'n4'].includes(k.toLowerCase())) continue;
+                let p = parseWeightVal(row[k]);
+                if (p !== null) return p;
+            }
+            return 100 / (gridLength || 5);
+        }
+
+        // Nettoyage et validation de la grille d'évaluation (supprime les lignes vides de fin de feuille)
+        function cleanEvalGrid(grid) {
+            if (!Array.isArray(grid) || grid.length === 0) return DEFAULT_EVAL_GRID;
+            let valid = grid.filter(row => {
+                if (!row) return false;
+                if (Array.isArray(row)) {
+                    return row.some(cell => cell !== null && cell !== undefined && cell.toString().trim() !== '');
+                }
+                let comp = (row.competence || '').toString().trim();
+                let hasDesc = (row.n1 || row.n2 || row.n3 || row.n4 || '').toString().trim();
+                return comp.length > 0 || hasDesc.length > 0;
+            });
+            return valid.length > 0 ? valid : DEFAULT_EVAL_GRID;
+        }
+
+        // Calcul exact de la note /20 selon les pondérations de chaque ligne
+        function calculateEvalNote(evalGrid, selections) {
+            let cleanGrid = cleanEvalGrid(evalGrid);
+            if (!cleanGrid || cleanGrid.length === 0) {
+                return { totalScore: 0, evaluatedCount: 0, totalCriteria: 0, totalGridWeight: 100, details: [] };
+            }
+
+            let totalGridWeight = 0;
+            cleanGrid.forEach(row => {
+                totalGridWeight += getRowWeightPct(row, cleanGrid.length);
+            });
+            if (totalGridWeight <= 0) totalGridWeight = 100;
+
+            let totalScore = 0;
+            let evaluatedCount = 0;
+            let details = [];
+
+            cleanGrid.forEach((row, rIdx) => {
+                let rawSel = selections ? (selections[rIdx] ?? selections[String(rIdx)]) : null;
+                let selectedLevel = rawSel !== null && rawSel !== undefined ? parseInt(rawSel, 10) : null;
+                if (isNaN(selectedLevel)) selectedLevel = null;
+
+                let weightPct = getRowWeightPct(row, cleanGrid.length);
+
+                // Valeur maximale en points de cette ligne sur une note globale de 20
+                // Ex : 20% représente 4.0 pts / 20 ; 25% représente 5.0 pts / 20 ; 15% représente 3.0 pts / 20
+                let lineMaxPoints = (weightPct / totalGridWeight) * 20;
+
+                // Points obtenus sur la ligne selon le niveau de 1 à 4
+                // Niveau 1 = 1/4 (25% des points de la ligne)
+                // Niveau 2 = 2/4 (50% des points de la ligne)
+                // Niveau 3 = 3/4 (75% des points de la ligne)
+                // Niveau 4 = 4/4 (100% des points de la ligne)
+                let lineEarnedPoints = 0;
+                if (selectedLevel !== null && selectedLevel >= 1 && selectedLevel <= 4) {
+                    evaluatedCount++;
+                    lineEarnedPoints = (selectedLevel / 4) * lineMaxPoints;
+                    totalScore += lineEarnedPoints;
+                }
+
+                details.push({
+                    rIdx: rIdx,
+                    selectedLevel: selectedLevel,
+                    weightPct: weightPct,
+                    lineMaxPoints: lineMaxPoints,
+                    lineEarnedPoints: lineEarnedPoints
+                });
+            });
+
+            return {
+                totalScore: parseFloat(totalScore.toFixed(2)),
+                evaluatedCount: evaluatedCount,
+                totalCriteria: cleanGrid.length,
+                totalGridWeight: totalGridWeight,
+                details: details
+            };
+        }
+
         function renderEvalProfTable(binome, coureur) {
             let tbody = document.getElementById('eval-prof-tbody');
             if (!tbody) return;
 
-            let evalGrid = binome.activeEvalGrid || [];
-            if (!evalGrid || evalGrid.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 30px; color:#64748B;">Aucune grille d'évaluation personnalisée importée dans ce fichier élève.</td></tr>`;
-                document.getElementById('eval-prof-score-display').innerText = "- / 20";
-                return;
+            // Récupération et assainissement de la grille active (du binôme, personnalisée de l'app ou par défaut)
+            let rawGrid = (binome && binome.activeEvalGrid && binome.activeEvalGrid.length > 0)
+                ? binome.activeEvalGrid
+                : (JSON.parse(localStorage.getItem('df_prof_custom_eval_grid')) || DEFAULT_EVAL_GRID);
+
+            let evalGrid = cleanEvalGrid(rawGrid);
+            if (binome) {
+                binome.activeEvalGrid = evalGrid;
             }
 
-            let selections = coureur.evaluation || {};
+            let selections = (coureur && coureur.evaluation) ? coureur.evaluation : {};
+            let evalResult = calculateEvalNote(evalGrid, selections);
             let html = '';
-            let totalScore = 0;
 
             evalGrid.forEach((row, rIdx) => {
-                let selectedLevel = selections[rIdx] || null;
-                let weightRaw = row.poids ? row.poids.toString().replace('%', '').replace(',', '.').trim() : '';
-                let weightNum = parseFloat(weightRaw) || (100 / evalGrid.length);
+                let detail = evalResult.details[rIdx] || {
+                    selectedLevel: null,
+                    weightPct: getRowWeightPct(row, evalGrid.length),
+                    lineMaxPoints: (getRowWeightPct(row, evalGrid.length) / evalResult.totalGridWeight) * 20,
+                    lineEarnedPoints: 0
+                };
 
+                let selectedLevel = detail.selectedLevel;
+                let weightPct = detail.weightPct;
+                let lineMaxPoints = detail.lineMaxPoints;
+                let lineEarnedPoints = detail.lineEarnedPoints;
+
+                let scoreBadge = '';
                 if (selectedLevel) {
-                    totalScore += (selectedLevel * 5) * (weightNum / 100);
+                    scoreBadge = `<div style="font-size:11px; font-weight:800; color:#10B981; margin-top:3px;">+${lineEarnedPoints.toFixed(1)} / ${lineMaxPoints.toFixed(1)} pt${lineMaxPoints > 1 ? 's' : ''}</div>`;
+                } else {
+                    scoreBadge = `<div style="font-size:10px; color:#64748B; margin-top:2px;">max ${lineMaxPoints.toFixed(1)} pt${lineMaxPoints > 1 ? 's' : ''}</div>`;
                 }
 
                 html += `
                     <tr>
                         <td style="font-weight:700; color:#1C1C1E;">${row.competence || ('Critère ' + (rIdx + 1))}</td>
-                        <td class="eval-cell-level ${selectedLevel == 1 ? 'selected-n1' : ''}" onclick="selectProfEvalCell(${rIdx}, 1)">${row.n1 || '-'}</td>
-                        <td class="eval-cell-level ${selectedLevel == 2 ? 'selected-n2' : ''}" onclick="selectProfEvalCell(${rIdx}, 2)">${row.n2 || '-'}</td>
-                        <td class="eval-cell-level ${selectedLevel == 3 ? 'selected-n3' : ''}" onclick="selectProfEvalCell(${rIdx}, 3)">${row.n3 || '-'}</td>
-                        <td class="eval-cell-level ${selectedLevel == 4 ? 'selected-n4' : ''}" onclick="selectProfEvalCell(${rIdx}, 4)">${row.n4 || '-'}</td>
-                        <td style="text-align:center; font-weight:800; color:#B83B1D;">${row.poids || (weightNum + '%')}</td>
+                        <td class="eval-cell-level ${selectedLevel == 1 ? 'selected-n1' : ''}" onclick="selectProfEvalCell(${rIdx}, 1)" title="Niveau 1 : 25% (${(lineMaxPoints * 0.25).toFixed(1)} pt)">
+                            ${row.n1 || '-'}
+                        </td>
+                        <td class="eval-cell-level ${selectedLevel == 2 ? 'selected-n2' : ''}" onclick="selectProfEvalCell(${rIdx}, 2)" title="Niveau 2 : 50% (${(lineMaxPoints * 0.50).toFixed(1)} pt${lineMaxPoints * 0.5 > 1 ? 's' : ''})">
+                            ${row.n2 || '-'}
+                        </td>
+                        <td class="eval-cell-level ${selectedLevel == 3 ? 'selected-n3' : ''}" onclick="selectProfEvalCell(${rIdx}, 3)" title="Niveau 3 : 75% (${(lineMaxPoints * 0.75).toFixed(1)} pts)">
+                            ${row.n3 || '-'}
+                        </td>
+                        <td class="eval-cell-level ${selectedLevel == 4 ? 'selected-n4' : ''}" onclick="selectProfEvalCell(${rIdx}, 4)" title="Niveau 4 : 100% (${lineMaxPoints.toFixed(1)} pt${lineMaxPoints > 1 ? 's' : ''})">
+                            ${row.n4 || '-'}
+                        </td>
+                        <td style="text-align:center; font-weight:800; color:#B83B1D;">
+                            <div style="font-size:14px;">${weightPct}%</div>
+                            ${scoreBadge}
+                        </td>
                     </tr>
                 `;
             });
@@ -5155,8 +5494,35 @@
             tbody.innerHTML = html;
 
             let scoreDisplay = document.getElementById('eval-prof-score-display');
+            let countDisplay = document.getElementById('eval-prof-criteria-count');
+
             if (scoreDisplay) {
-                scoreDisplay.innerText = `${totalScore.toFixed(1)} / 20`;
+                if (evalResult.evaluatedCount === 0) {
+                    scoreDisplay.innerText = "- / 20";
+                    scoreDisplay.style.background = "#64748B";
+                    scoreDisplay.style.color = "#FFFFFF";
+                } else {
+                    scoreDisplay.innerText = `${evalResult.totalScore.toFixed(1)} / 20`;
+                    if (evalResult.totalScore >= 16) {
+                        scoreDisplay.style.background = "#10B981";
+                        scoreDisplay.style.color = "#FFFFFF";
+                    } else if (evalResult.totalScore >= 12) {
+                        scoreDisplay.style.background = "#059669";
+                        scoreDisplay.style.color = "#FFFFFF";
+                    } else if (evalResult.totalScore >= 10) {
+                        scoreDisplay.style.background = "#D97706";
+                        scoreDisplay.style.color = "#FFFFFF";
+                    } else {
+                        scoreDisplay.style.background = "#DC2626";
+                        scoreDisplay.style.color = "#FFFFFF";
+                    }
+                }
+            }
+
+            if (countDisplay) {
+                countDisplay.innerText = evalResult.evaluatedCount > 0
+                    ? `(${evalResult.evaluatedCount} / ${evalResult.totalCriteria} critère${evalResult.totalCriteria > 1 ? 's' : ''})`
+                    : '';
             }
         }
 
@@ -5167,7 +5533,8 @@
             if (!coureur) return;
 
             if (!coureur.evaluation) coureur.evaluation = {};
-            if (coureur.evaluation[rowIdx] === level) {
+            let curLevel = parseInt(coureur.evaluation[rowIdx], 10);
+            if (curLevel === level) {
                 delete coureur.evaluation[rowIdx];
             } else {
                 coureur.evaluation[rowIdx] = level;
@@ -5175,6 +5542,154 @@
 
             localStorage.setItem('df_prof_binomes', JSON.stringify(importedBinomes));
             renderEvalProfTable(binome, coureur);
+        }
+
+        // --- IMPORTATION D'UNE NOUVELLE GRILLE D'ÉVALUATION (.XLSX / .CSV) PAR LE PROFESSEUR ---
+        function handleImportEvalGridProf(event) {
+            let file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            let fileName = file.name.toLowerCase();
+            let reader = new FileReader();
+
+            if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+                reader.onload = function (e) {
+                    try {
+                        let data = new Uint8Array(e.target.result);
+                        if (typeof XLSX !== 'undefined') {
+                            let workbook = XLSX.read(data, { type: 'array' });
+                            let firstSheet = workbook.SheetNames[0];
+                            let sheet = workbook.Sheets[firstSheet];
+                            let rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                            processImportedEvalRowsProf(rows);
+                        } else {
+                            showAppAlert("Erreur Bibliothèque", "La bibliothèque Excel n'est pas disponible. Utilisez un fichier .CSV.", "⚠️");
+                        }
+                    } catch (err) {
+                        showAppAlert("Erreur de Lecture", `Impossible de lire le fichier Excel : ${err.message}`, "⚠️");
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            } else {
+                reader.onload = function (e) {
+                    try {
+                        let text = e.target.result;
+                        // Parser CSV robuste qui respecte les guillemets et les retours à la ligne dans les cellules
+                        let rows = [];
+                        let currentRow = [''];
+                        let inQuotes = false;
+                        let delim = text.includes(';') ? ';' : (text.includes('\t') ? '\t' : ',');
+
+                        for (let i = 0; i < text.length; i++) {
+                            let c = text[i];
+                            let next = text[i + 1];
+                            if (c === '"') {
+                                if (inQuotes && next === '"') {
+                                    currentRow[currentRow.length - 1] += '"';
+                                    i++;
+                                } else {
+                                    inQuotes = !inQuotes;
+                                }
+                            } else if (!inQuotes && (c === ';' || c === '\t' || (delim === ',' && c === ','))) {
+                                currentRow.push('');
+                            } else if (!inQuotes && (c === '\r' || c === '\n')) {
+                                if (c === '\r' && next === '\n') i++;
+                                rows.push(currentRow);
+                                currentRow = [''];
+                            } else {
+                                currentRow[currentRow.length - 1] += c;
+                            }
+                        }
+                        if (currentRow.length > 1 || (currentRow.length === 1 && currentRow[0].trim())) {
+                            rows.push(currentRow);
+                        }
+
+                        let cleanedRows = rows.map(r => r.map(c => c.replace(/^"|"$/g, '').trim())).filter(r => r.some(c => c.length > 0));
+                        processImportedEvalRowsProf(cleanedRows);
+                    } catch (err) {
+                        showAppAlert("Erreur de Lecture", `Impossible de lire le fichier CSV : ${err.message}`, "⚠️");
+                    }
+                };
+                reader.readAsText(file, 'UTF-8');
+            }
+
+            event.target.value = '';
+        }
+
+        function processImportedEvalRowsProf(rows) {
+            if (!rows || rows.length < 2) {
+                showAppAlert("Fichier vide", "Le fichier ne contient pas assez de données pour constituer une grille d'évaluation.", "⚠️");
+                return;
+            }
+
+            let newGrid = [];
+            let startIdx = 0;
+            let firstRowStr = (rows[0] || []).join(' ').toLowerCase();
+            if (firstRowStr.includes('compétence') || firstRowStr.includes('pronote') || firstRowStr.includes('objectifs') || firstRowStr.includes('niveau')) {
+                startIdx = 1;
+            }
+
+            for (let i = startIdx; i < rows.length; i++) {
+                let r = rows[i];
+                if (!r || !Array.isArray(r)) continue;
+
+                // Ignorer les lignes vides ou celles n'ayant pas de texte de compétence
+                let compText = (r[0] || '').toString().trim();
+                let allCellsEmpty = r.every(cell => !cell || cell.toString().trim() === '');
+                if (allCellsEmpty || !compText) continue;
+
+                // Ignorer une éventuelle ligne d'en-tête résiduelle
+                if (compText.toLowerCase().includes('compétence') || compText.toLowerCase().includes('pronote') || compText.toLowerCase().includes('objectifs')) continue;
+
+                // Trouver la dernière cellule non vide contenant le pourcentage de pondération
+                let weightNum = null;
+                let weightStr = '';
+                for (let c = r.length - 1; c >= 1; c--) {
+                    let p = parseWeightVal(r[c]);
+                    if (p !== null) {
+                        weightNum = p;
+                        weightStr = `${p} %`;
+                        break;
+                    }
+                }
+
+                newGrid.push({
+                    competence: compText,
+                    n1: (r[1] || '').toString().trim(),
+                    n2: (r[2] || '').toString().trim(),
+                    n3: (r[3] || '').toString().trim(),
+                    n4: (r[4] || '').toString().trim(),
+                    poids: weightStr || (weightNum !== null ? `${weightNum} %` : '')
+                });
+            }
+
+            if (newGrid.length === 0) {
+                showAppAlert("Format Invalide", "Aucune compétence n'a pu être extraite. Vérifiez que le tableau dispose d'au moins 5 colonnes.", "⚠️");
+                return;
+            }
+
+            // Enregistrement global et mise à jour de tous les binômes
+            localStorage.setItem('df_prof_custom_eval_grid', JSON.stringify(newGrid));
+            importedBinomes.forEach(b => {
+                b.activeEvalGrid = newGrid;
+            });
+            localStorage.setItem('df_prof_binomes', JSON.stringify(importedBinomes));
+
+            if (selectedBinomeIndex !== null && importedBinomes[selectedBinomeIndex]) {
+                let binome = importedBinomes[selectedBinomeIndex];
+                let coureur = binome.coureurs[activeRunnerId];
+                renderEvalProfTable(binome, coureur);
+            }
+
+            showAppAlert(
+                "Grille Importée !",
+                `La grille d'évaluation a été mise à jour avec succès :<br><br>` +
+                `📋 <strong>${newGrid.length} compétences</strong> enregistrées.<br>` +
+                `⚖️ Le calcul des notes est automatiquement ajusté /20 selon les nouveaux pourcentages.`,
+                "✅"
+            );
+
+            return newGrid;
         }
 
 
@@ -5541,13 +6056,15 @@
                                 <th style="text-align:center;">Tours & Plots</th>
                                 <th style="text-align:right;">Distance</th>
                                 <th style="text-align:right;">Allure</th>
-                                <th style="text-align:center;">% VMA</th>
+                                <th style="text-align:center;">% VMA Cible</th>
+                                <th style="text-align:center;">% VMA Réalisé</th>
                             </tr>
                         </thead>
                         <tbody>
             `;
 
             c.results.forEach(r => {
+                let targetPct = r.targetIntensity || r.pctVmaTarget;
                 html += `
                     <tr>
                         <td style="font-weight:700;">#${r.binomeIdx + 1}</td>
@@ -5556,7 +6073,8 @@
                         <td style="text-align:center;">${r.tours} T + ${r.plots} P</td>
                         <td style="text-align:right; font-weight:800; color:#B83B1D;">${r.totalDistance} m</td>
                         <td style="text-align:right; font-weight:700;">${r.vitesseKmH} km/h</td>
-                        <td style="text-align:center; font-weight:800;">${r.pctVma ? r.pctVma + '%' : '-'}</td>
+                        <td style="text-align:center; font-weight:700; color:#0284C7;">${targetPct ? targetPct + '%' : '-'}</td>
+                        <td style="text-align:center; font-weight:800; color:#B83B1D;">${r.pctVma ? r.pctVma + '%' : '-'}</td>
                     </tr>
                 `;
             });
@@ -6455,6 +6973,7 @@
                     observerName: `${observer.prenom || ''} ${observer.nom || ''}`.trim() || `Observateur`,
                     runnerVma: runner.vma || null,
                     targetIntensity: runnerIntensity,
+                    pctVmaTarget: runnerIntensity,
                     objectifMeters: obj.distance,
                     vitesseCible: obj.speed,
                     tours: item.tours,
@@ -6463,6 +6982,7 @@
                     totalDistance: totalDist,
                     vitesseKmH: parseFloat(speedKmH.toFixed(2)),
                     pctVma: pctVma,
+                    pctVmaRealise: pctVma,
                     marche: (item.marcheCount || 0) > 0 || !!item.marche,
                     marcheCount: item.marcheCount || (item.marche ? 1 : 0),
                     arretsCount: item.arretsCount,
@@ -6526,6 +7046,8 @@
                         runner.seances = [];
                     }
 
+                    let targetPctVal = r.targetIntensity || (r.vitesseCible && r.runnerVma ? Math.round((r.vitesseCible / r.runnerVma) * 100) : (r.pctVmaTarget || 80));
+
                     let profObsData = {
                         courseNum: courseNum,
                         durationMin: course.durationMin,
@@ -6539,7 +7061,10 @@
                         objectifMeters: r.objectifMeters,
                         vitesseKmH: r.vitesseKmH,
                         vitesseCible: r.vitesseCible,
+                        targetIntensity: targetPctVal,
+                        pctVmaTarget: targetPctVal,
                         pctVma: r.pctVma,
+                        pctVmaRealise: r.pctVmaRealise || r.pctVma,
                         marche: r.marche,
                         marcheCount: r.marcheCount || (r.marche ? 1 : 0),
                         arretsCount: r.arretsCount || 0,
@@ -6573,7 +7098,10 @@
                                 objectif: r.objectifMeters || r.totalDistance,
                                 allureMoyenne: r.vitesseKmH,
                                 vitesseCible: r.vitesseCible || r.vitesseKmH,
-                                pctVMA: r.pctVma,
+                                pctVMA: targetPctVal,
+                                targetIntensity: targetPctVal,
+                                pctVmaTarget: targetPctVal,
+                                pctVmaRealise: r.pctVma,
                                 marche: r.marche,
                                 marcheCount: r.marcheCount || (r.marche ? 1 : 0),
                                 arretsCount: r.arretsCount || 0,
@@ -6597,7 +7125,10 @@
                             objectif: r.objectifMeters || r.totalDistance,
                             allureMoyenne: r.vitesseKmH,
                             vitesseCible: r.vitesseCible || r.vitesseKmH,
-                            pctVMA: r.pctVma,
+                            pctVMA: targetPctVal,
+                            targetIntensity: targetPctVal,
+                            pctVmaTarget: targetPctVal,
+                            pctVmaRealise: r.pctVma,
                             marche: r.marche,
                             marcheCount: r.marcheCount || (r.marche ? 1 : 0),
                             arretsCount: r.arretsCount || 0,
@@ -6737,7 +7268,8 @@
                                         <th style="text-align:right;">Objectif</th>
                                         <th style="text-align:right;">Réalisé (m)</th>
                                         <th style="text-align:right;">Allure (km/h)</th>
-                                        <th style="text-align:center;">% VMA</th>
+                                        <th style="text-align:center;">% VMA Souhaité</th>
+                                        <th style="text-align:center;">% VMA Réalisé</th>
                                         <th style="text-align:center;">Régularité / Contrôle</th>
                                     </tr>
                                 </thead>
@@ -6745,6 +7277,9 @@
                 `;
 
                 runs.forEach(r => {
+                    let targetIntensityVal = r.targetIntensity || r.pctVmaTarget;
+                    let realIntensityVal = r.pctVmaRealise || r.pctVma;
+
                     if (r.isAbsent) {
                         html += `
                             <tr style="background: #F8FAFC; opacity: 0.75;">
@@ -6760,6 +7295,7 @@
                                 <td style="text-align:right; color:#94A3B8;">-</td>
                                 <td style="text-align:right; color:#94A3B8;">-</td>
                                 <td style="text-align:right; color:#94A3B8;">-</td>
+                                <td style="text-align:center; color:#94A3B8;">-</td>
                                 <td style="text-align:center; color:#94A3B8;">-</td>
                                 <td style="text-align:center;">
                                     <span class="badge-alert-stop" style="background:#F1F5F9; color:#64748B; border:1px solid #CBD5E1;">🚫 Absent / Ne court pas</span>
@@ -6817,8 +7353,11 @@
                             <td style="text-align:right; font-weight:700;">
                                 ${r.vitesseKmH ? r.vitesseKmH.toFixed(2) : '-'} km/h
                             </td>
-                            <td style="text-align:center; font-weight:800;">
-                                ${r.pctVma ? r.pctVma + '%' : '-'}
+                            <td style="text-align:center; font-weight:800; color:#0284C7;">
+                                ${targetIntensityVal ? targetIntensityVal + '%' : '-'}
+                            </td>
+                            <td style="text-align:center; font-weight:800; color:#B83B1D;">
+                                ${realIntensityVal ? realIntensityVal + '%' : '-'}
                             </td>
                             <td style="text-align:center;">
                                 ${controlBadge}
@@ -6998,14 +7537,14 @@
                             <td class="meta-label">Circuit :</td>
                             <td colspan="2">${obs.plotsPerLap} plots de ${obs.interplotDist} m</td>
                         </tr>
-                        <tr><td colspan="13"></td></tr>
+                        <tr><td colspan="14"></td></tr>
             `;
 
             courseKeys.forEach(courseKey => {
                 let runs = obs.courses[courseKey] || [];
                 tableHtml += `
                     <tr>
-                        <td colspan="13" class="course-header">COURSE N° ${courseKey} (${obs.durationMin} MIN) — ${runs.length} COUREUR(S)</td>
+                        <td colspan="14" class="course-header">COURSE N° ${courseKey} (${obs.durationMin} MIN) — ${runs.length} COUREUR(S)</td>
                     </tr>
                     <tr>
                         <th>N° Binôme</th>
@@ -7017,7 +7556,8 @@
                         <th>Distance Réalisée (m)</th>
                         <th>Écart (m)</th>
                         <th>Allure (km/h)</th>
-                        <th>% VMA</th>
+                        <th>% VMA Souhaité</th>
+                        <th>% VMA Réalisé</th>
                         <th>Marche(s)</th>
                         <th>Arrêt(s)</th>
                         <th>Contrôle de Régularité</th>
@@ -7025,6 +7565,9 @@
                 `;
 
                 runs.forEach(r => {
+                    let targetIntensityVal = r.targetIntensity || r.pctVmaTarget;
+                    let realIntensityVal = r.pctVmaRealise || r.pctVma;
+
                     if (r.isAbsent) {
                         tableHtml += `
                             <tr style="background-color: #F8FAFC; color: #64748B;">
@@ -7037,6 +7580,7 @@
                                 <td class="text-right bold">-</td>
                                 <td class="text-right">-</td>
                                 <td class="text-right">-</td>
+                                <td class="text-center">-</td>
                                 <td class="text-center">-</td>
                                 <td class="text-center">-</td>
                                 <td class="text-center">-</td>
@@ -7070,7 +7614,8 @@
                             <td class="text-right bold" style="color:#B83B1D;">${r.totalDistance} m</td>
                             <td class="text-right bold">${diffStr}</td>
                             <td class="text-right">${r.vitesseKmH ? r.vitesseKmH.toFixed(2) + ' km/h' : '-'}</td>
-                            <td class="text-center bold">${r.pctVma ? r.pctVma + ' %' : '-'}</td>
+                            <td class="text-center bold" style="color:#0284C7;">${targetIntensityVal ? targetIntensityVal + ' %' : '-'}</td>
+                            <td class="text-center bold" style="color:#B83B1D;">${realIntensityVal ? realIntensityVal + ' %' : '-'}</td>
                             <td class="text-center">${r.marcheCount || (r.marche ? 1 : 0)}</td>
                             <td class="text-center">${r.arretsCount || 0}</td>
                             <td class="${statusClass}">${statusLabel}</td>
@@ -7078,7 +7623,7 @@
                     `;
                 });
 
-                tableHtml += `<tr><td colspan="13"></td></tr>`;
+                tableHtml += `<tr><td colspan="14"></td></tr>`;
             });
 
             tableHtml += `
