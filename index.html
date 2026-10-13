@@ -2716,10 +2716,17 @@
                 </div>
                 <div class="fiche-student-name" id="fiche-prof-fullname" onclick="openModalEditEleve()"
                     style="cursor: pointer;" title="Cliquer pour modifier">-</div>
-                <div>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
                     <div class="fiche-student-class" id="fiche-prof-class" onclick="openModalEditEleve()"
                         title="Cliquer pour modifier la classe ou les infos">
                         Classe : 3e A ✏️
+                    </div>
+                    <div id="fiche-prof-team-badge-container" style="display: none;">
+                        <span id="fiche-prof-team-name-badge" onclick="openModalEditEleve()"
+                            style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; color: #4338CA; background: #EEF2FF; padding: 4px 12px; border-radius: 10px; border: 1.5px solid #C7D2FE;"
+                            title="Cliquer pour modifier le nom de l'équipe">
+                            🏆 <span id="fiche-prof-team-name-val">Équipe : -</span> ✏️
+                        </span>
                     </div>
                 </div>
                 <div class="fiche-vma-box" onclick="openModalEditEleve()" style="cursor: pointer;"
@@ -2775,7 +2782,7 @@
                 <div class="fatb-icon" style="background: rgba(124, 58, 237, 0.12); color: #7C3AED;">🏆</div>
                 <div class="fatb-content">
                     <div class="fatb-title" id="lbl-toggle-trophies-team">Trophées d'Équipe</div>
-                    <div class="fatb-sub" id="sub-toggle-trophies-team">Collectif des élèves</div>
+                    <div class="fatb-sub" id="sub-toggle-trophies-team">0 / 20 débloqués</div>
                 </div>
                 <div class="fatb-arrow" id="arrow-toggle-trophies-team">▼ Afficher</div>
             </button>
@@ -2827,7 +2834,7 @@
                             Équipe</span>
                     </div>
                     <span id="fiche-prof-team-trophies-count"
-                        style="font-size: 14px; color: #7C3AED; font-weight: 900;">0 / 15</span>
+                        style="font-size: 14px; color: #7C3AED; font-weight: 900;">0 / 20</span>
                 </div>
                 <div id="fiche-prof-team-trophies-runners-summary"
                     style="margin-top: 6px; margin-bottom: 14px; font-size: 12px; color: #64748B;">
@@ -3450,6 +3457,19 @@
                 </div>
             </div>
 
+            <!-- Champ Nom d'Équipe (si mode Équipe de 4) -->
+            <div id="add-binome-teamname-box"
+                style="display: none; margin-bottom: 18px; background: #EEF2FF; border: 1.5px solid #C7D2FE; border-radius: 14px; padding: 14px;">
+                <label
+                    style="display: block; font-size: 11px; font-weight: 800; color: #4338CA; text-transform: uppercase; margin-bottom: 4px;">
+                    🏆 Nom de l'équipe (optionnel) :
+                </label>
+                <input type="text" id="add-binome-teamname" placeholder="Ex: Les Gazelles, Team Lightning..."
+                    style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #A5B4FC; font-size: 14px; font-weight: 700; color: #312E81; background: #FFFFFF; outline: none; box-sizing: border-box;">
+                <div style="font-size: 11px; color: #6366F1; margin-top: 4px;">Donnez un nom collectif à cette équipe de
+                    4 coureurs.</div>
+            </div>
+
             <!-- BINÔME 1 (COUREURS 1 ET 2) -->
             <div id="add-binome-1-title"
                 style="font-size: 12px; font-weight: 900; color: #0284C7; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
@@ -3681,6 +3701,19 @@
 
                 <!-- Aperçu dynamique -->
                 <div id="assemble-equipe-preview-box" style="margin-bottom: 18px;"></div>
+
+                <!-- Nom d'équipe optionnel lors de l'assemblage -->
+                <div
+                    style="margin-bottom: 16px; background: #FAF5FF; border: 1.5px solid #E9D5FF; border-radius: 12px; padding: 12px;">
+                    <label
+                        style="display: block; font-size: 11px; font-weight: 800; color: #7C3AED; text-transform: uppercase; margin-bottom: 4px;">
+                        🏆 Nom de l'équipe (optionnel) :
+                    </label>
+                    <input type="text" id="assemble-equipe-teamname" placeholder="Ex: Les Guépards, Team Éclair..."
+                        style="width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #D8B4FE; font-size: 13.5px; font-weight: 700; color: #4C1D95; background: #FFFFFF; outline: none; box-sizing: border-box;">
+                    <div style="font-size: 11px; color: #7C3AED; margin-top: 4px;">Vous pourrez également le modifier à
+                        tout moment sur la fiche.</div>
+                </div>
             </div>
 
             <div id="assemble-equipe-not-enough-msg"
@@ -3718,6 +3751,19 @@
                     <button type="button" id="modal-edit-eleve-tab-2" class="tab-btn"
                         onclick="switchModalEditEleveRunner(2)">2. Coureur 2</button>
                 </div>
+            </div>
+
+            <!-- Bloc Nom d'équipe dans l'édition (affiché si équipe de 4 ou nom existant) -->
+            <div id="modal-edit-eleve-teamname-box"
+                style="display: none; margin-bottom: 14px; background: #EEF2FF; border: 1.5px solid #C7D2FE; border-radius: 12px; padding: 12px;">
+                <label
+                    style="display: block; font-size: 11px; font-weight: 800; color: #4338CA; text-transform: uppercase; margin-bottom: 4px;">
+                    🏆 Nom de l'équipe :
+                </label>
+                <input type="text" id="modal-edit-eleve-teamname" placeholder="Ex: Les Gazelles, Team Lightning..."
+                    style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1.5px solid #A5B4FC; font-size: 14px; font-weight: 700; color: #312E81; background: #FFFFFF; outline: none; box-sizing: border-box;">
+                <div style="font-size: 11px; color: #6366F1; margin-top: 4px;">Ce nom s'applique à l'ensemble du
+                    collectif de l'équipe.</div>
             </div>
 
             <div style="margin-bottom: 12px;">
@@ -4108,6 +4154,8 @@
         function isItemEquipe(item) {
             if (!item) return false;
             if (item.isEquipe) return true;
+            if (item.teamName && typeof item.teamName === 'string' && item.teamName.trim().length > 0) return true;
+            if (item.equipeTrophies && typeof item.equipeTrophies === 'object' && Object.keys(item.equipeTrophies).length > 0) return true;
             if (item.coureurs) {
                 let c3 = item.coureurs[3];
                 let c4 = item.coureurs[4];
@@ -4124,6 +4172,8 @@
         function isEquipeData(data) {
             if (!data) return false;
             if (data.isEquipe || data.type === 'equipe' || data.mode === 'equipe') return true;
+            if (data.teamName || data.nomEquipe || data.nom_equipe || data.equipeNom) return true;
+            if (data.equipeTrophies && typeof data.equipeTrophies === 'object' && Object.keys(data.equipeTrophies).length > 0) return true;
             if (data.binomes && Array.isArray(data.binomes) && data.binomes.length >= 2) return true;
             if (data.binome1 && data.binome2) return true;
             let c3 = getRunnerFromData(data.coureurs, 3);
@@ -4140,6 +4190,30 @@
                 }
             }
             return false;
+        }
+
+        // Helper : Extraction tolérante du nom d'équipe depuis n'importe quel fichier JSON
+        function extractTeamName(data) {
+            if (!data) return '';
+            if (typeof data.teamName === 'string' && data.teamName.trim()) return data.teamName.trim();
+            if (typeof data.nomEquipe === 'string' && data.nomEquipe.trim()) return data.nomEquipe.trim();
+            if (typeof data.nom_equipe === 'string' && data.nom_equipe.trim()) return data.nom_equipe.trim();
+            if (typeof data.equipeNom === 'string' && data.equipeNom.trim()) return data.equipeNom.trim();
+            if (data.equipe && typeof data.equipe.nom === 'string' && data.equipe.nom.trim()) return data.equipe.nom.trim();
+            if (data.binome1 && typeof data.binome1.teamName === 'string' && data.binome1.teamName.trim()) return data.binome1.teamName.trim();
+            if (data.binome2 && typeof data.binome2.teamName === 'string' && data.binome2.teamName.trim()) return data.binome2.teamName.trim();
+            return '';
+        }
+
+        // Helper : Extraction tolérante des trophées collectifs d'équipe depuis n'importe quel fichier JSON
+        function extractEquipeTrophies(data) {
+            if (!data) return {};
+            if (data.equipeTrophies && typeof data.equipeTrophies === 'object') return data.equipeTrophies;
+            if (data.teamTrophies && typeof data.teamTrophies === 'object') return data.teamTrophies;
+            if (data.tropheesEquipe && typeof data.tropheesEquipe === 'object') return data.tropheesEquipe;
+            if (data.binome1 && data.binome1.equipeTrophies && typeof data.binome1.equipeTrophies === 'object') return data.binome1.equipeTrophies;
+            if (data.binome2 && data.binome2.equipeTrophies && typeof data.binome2.equipeTrophies === 'object') return data.binome2.equipeTrophies;
+            return {};
         }
 
         // Extrait les coureurs de n'importe quel format (élève 1&2 = binome 1, élève 3&4 = binome 2)
@@ -4162,6 +4236,14 @@
                 c2 = getRunnerFromData(data.coureurs, 2);
                 c3 = getRunnerFromData(data.coureurs, 3);
                 c4 = getRunnerFromData(data.coureurs, 4);
+            }
+
+            // Récupération des données d'échauffement structurées si disponibles
+            if (data.echauffementsParCoureur && typeof data.echauffementsParCoureur === 'object') {
+                if (c1 && !c1.echauffements && data.echauffementsParCoureur[1]) c1.echauffements = data.echauffementsParCoureur[1];
+                if (c2 && !c2.echauffements && data.echauffementsParCoureur[2]) c2.echauffements = data.echauffementsParCoureur[2];
+                if (c3 && !c3.echauffements && data.echauffementsParCoureur[3]) c3.echauffements = data.echauffementsParCoureur[3];
+                if (c4 && !c4.echauffements && data.echauffementsParCoureur[4]) c4.echauffements = data.echauffementsParCoureur[4];
             }
 
             let isEq = isEquipeData(data) || !!(c3 && (c3.prenom || c3.nom || c3.vma || (c3.seances && c3.seances.length > 0))) || !!(c4 && (c4.prenom || c4.nom || c4.vma || (c4.seances && c4.seances.length > 0)));
@@ -4372,6 +4454,33 @@
                     Object.assign(tgtRunner.evaluation, srcRunner.evaluation);
                 }
 
+                // Fusion des trophées individuels du coureur
+                if (srcRunner.trophies && typeof srcRunner.trophies === 'object') {
+                    if (!tgtRunner.trophies) tgtRunner.trophies = {};
+                    Object.keys(srcRunner.trophies).forEach(tId => {
+                        let srcT = srcRunner.trophies[tId];
+                        let tgtT = tgtRunner.trophies[tId];
+                        if (!tgtT) {
+                            tgtRunner.trophies[tId] = JSON.parse(JSON.stringify(srcT));
+                        } else {
+                            let sCount = (typeof srcT === 'object') ? (srcT.count !== undefined ? srcT.count : 1) : (typeof srcT === 'number' ? srcT : 1);
+                            let tCount = (typeof tgtT === 'object') ? (tgtT.count !== undefined ? tgtT.count : 1) : (typeof tgtT === 'number' ? tgtT : 1);
+                            let sDate = (typeof srcT === 'object' && srcT.lastDate) ? srcT.lastDate : '';
+                            let tDate = (typeof tgtT === 'object' && tgtT.lastDate) ? tgtT.lastDate : '';
+                            tgtRunner.trophies[tId] = {
+                                count: Math.max(sCount, tCount),
+                                lastDate: sDate || tDate || ''
+                            };
+                        }
+                    });
+                }
+
+                // Fusion des échauffements
+                if (srcRunner.echauffements && typeof srcRunner.echauffements === 'object') {
+                    if (!tgtRunner.echauffements) tgtRunner.echauffements = {};
+                    Object.assign(tgtRunner.echauffements, srcRunner.echauffements);
+                }
+
                 // Fusion des séances
                 let srcSeances = getCoureurSeances(srcRunner);
                 let tgtSeances = getCoureurSeances(tgtRunner);
@@ -4406,7 +4515,35 @@
                 tgtRunner.seances.sort((a, b) => (parseInt(a.num) || 0) - (parseInt(b.num) || 0));
             });
 
-            if (extracted.isEquipe || Object.keys(targetBinome.coureurs).length >= 3) {
+            // Fusion du nom d'équipe si présent
+            let incomingTeamName = extractTeamName(sourceData);
+            if (incomingTeamName) {
+                targetBinome.teamName = incomingTeamName;
+            }
+
+            // Fusion des trophées d'équipe collectifs
+            let incomingEqTrophies = extractEquipeTrophies(sourceData);
+            if (incomingEqTrophies && typeof incomingEqTrophies === 'object' && Object.keys(incomingEqTrophies).length > 0) {
+                if (!targetBinome.equipeTrophies) targetBinome.equipeTrophies = {};
+                Object.keys(incomingEqTrophies).forEach(tId => {
+                    let srcT = incomingEqTrophies[tId];
+                    let tgtT = targetBinome.equipeTrophies[tId];
+                    if (!tgtT) {
+                        targetBinome.equipeTrophies[tId] = JSON.parse(JSON.stringify(srcT));
+                    } else {
+                        let sCount = (typeof srcT === 'object') ? (srcT.count !== undefined ? srcT.count : 1) : (typeof srcT === 'number' ? srcT : 1);
+                        let tCount = (typeof tgtT === 'object') ? (tgtT.count !== undefined ? tgtT.count : 1) : (typeof tgtT === 'number' ? tgtT : 1);
+                        let sDate = (typeof srcT === 'object' && srcT.lastDate) ? srcT.lastDate : '';
+                        let tDate = (typeof tgtT === 'object' && tgtT.lastDate) ? tgtT.lastDate : '';
+                        targetBinome.equipeTrophies[tId] = {
+                            count: Math.max(sCount, tCount),
+                            lastDate: sDate || tDate || ''
+                        };
+                    }
+                });
+            }
+
+            if (extracted.isEquipe || Object.keys(targetBinome.coureurs).length >= 3 || targetBinome.teamName) {
                 targetBinome.isEquipe = true;
             }
 
@@ -4756,6 +4893,7 @@
             let b1Title = document.getElementById('add-binome-1-title');
             let lC1 = document.getElementById('add-binome-lbl-c1');
             let lC2 = document.getElementById('add-binome-lbl-c2');
+            let teamBox = document.getElementById('add-binome-teamname-box');
 
             if (btnBi) btnBi.classList.toggle('active', type === 'binome');
             if (btnAtt) btnAtt.classList.toggle('active', type === 'attribuer');
@@ -4763,6 +4901,7 @@
 
             if (attContainer) attContainer.style.display = (type === 'attribuer') ? 'block' : 'none';
             if (b2Container) b2Container.style.display = (type === 'equipe') ? 'block' : 'none';
+            if (teamBox) teamBox.style.display = (type === 'equipe' || type === 'attribuer') ? 'block' : 'none';
 
             if (type === 'attribuer') {
                 if (b1Title) b1Title.innerText = "🏃 LES 2 ÉLÈVES DU NOUVEAU BINÔME (REJOIGNENT L'ÉQUIPE COMME BINÔME 2)";
@@ -4959,6 +5098,9 @@
             let newClassInput = document.getElementById('add-binome-new-classe-input');
             if (newClassInput) newClassInput.value = '';
 
+            let teamNameInp = document.getElementById('add-binome-teamname');
+            if (teamNameInp) teamNameInp.value = '';
+
             if (distinctClasses.length === 0) {
                 setClasseSelectionMode('new');
             } else {
@@ -5015,6 +5157,14 @@
                 let targetBinome = importedBinomes[partnerIdx];
                 if (!targetBinome.coureurs) targetBinome.coureurs = {};
 
+                let customTeamName = (document.getElementById('add-binome-teamname') ? document.getElementById('add-binome-teamname').value : '').trim();
+                if (customTeamName) {
+                    targetBinome.teamName = customTeamName;
+                } else if (!targetBinome.teamName) {
+                    targetBinome.teamName = '';
+                }
+                if (!targetBinome.equipeTrophies) targetBinome.equipeTrophies = {};
+
                 targetBinome.isEquipe = true;
                 targetBinome.coureurs[3] = {
                     prenom: p1 || 'Coureur 3',
@@ -5043,10 +5193,11 @@
                 let b1p2 = (targetBinome.coureurs[2] && targetBinome.coureurs[2].prenom) || 'Coureur 2';
                 let b2p1 = targetBinome.coureurs[3].prenom;
                 let b2p2 = targetBinome.coureurs[4].prenom;
+                let teamStr = targetBinome.teamName ? ` (Équipe <strong>"${targetBinome.teamName}"</strong>)` : '';
 
                 showAppAlert(
                     "Équipe Assemblée avec Succès !",
-                    `Le nouveau binôme (<strong>${b2p1} & ${b2p2}</strong>) a été associé au Binôme n°${partnerIdx + 1} (<strong>${b1p1} & ${b1p2}</strong>) dans la classe <strong>${classeNorm}</strong>.<br><br>` +
+                    `Le nouveau binôme (<strong>${b2p1} & ${b2p2}</strong>) a été associé au Binôme n°${partnerIdx + 1} (<strong>${b1p1} & ${b1p2}</strong>) dans la classe <strong>${classeNorm}</strong>${teamStr}.<br><br>` +
                     `🏆 Ils forment désormais une <strong>Équipe de 4 coureurs</strong> :<br>` +
                     `🤝 Binôme 1 (${b1p1} & ${b1p2}) + Binôme 2 (${b2p1} & ${b2p2}) = Équipe !`,
                     "🤝"
@@ -5057,6 +5208,8 @@
             // CAS 2 : ÉQUIPE COMPLÈTE DIRECTE OU BINÔME SIMPLE
             let isEq = (currentAddBinomeType === 'equipe');
             let p3 = '', n3 = '', vma3Raw = NaN, p4 = '', n4 = '', vma4Raw = NaN;
+            let customTeamName = isEq ? ((document.getElementById('add-binome-teamname') ? document.getElementById('add-binome-teamname').value : '').trim()) : '';
+
             if (isEq) {
                 p3 = (document.getElementById('add-binome-p3').value || '').trim();
                 n3 = (document.getElementById('add-binome-n3').value || '').trim();
@@ -5077,6 +5230,8 @@
                 importDate: new Date().toLocaleDateString('fr-FR'),
                 classe: classeNorm,
                 isEquipe: isEq,
+                teamName: customTeamName,
+                equipeTrophies: {},
                 coureurs: {
                     1: {
                         prenom: p1 || 'Coureur 1',
@@ -5126,7 +5281,7 @@
             renderBinomesList();
 
             let recapNames = isEq
-                ? `Binôme 1 (<strong>${newBinome.coureurs[1].prenom} & ${newBinome.coureurs[2].prenom}</strong>) + Binôme 2 (<strong>${newBinome.coureurs[3].prenom} & ${newBinome.coureurs[4].prenom}</strong>)`
+                ? `${customTeamName ? `<strong>"${customTeamName}"</strong> - ` : ''}Binôme 1 (<strong>${newBinome.coureurs[1].prenom} & ${newBinome.coureurs[2].prenom}</strong>) + Binôme 2 (<strong>${newBinome.coureurs[3].prenom} & ${newBinome.coureurs[4].prenom}</strong>)`
                 : `<strong>${newBinome.coureurs[1].prenom} & ${newBinome.coureurs[2].prenom}</strong>`;
 
             showAppAlert(
@@ -5168,6 +5323,12 @@
                 if (c.name === targetClass) opt.selected = true;
                 classeSelect.appendChild(opt);
             });
+
+            let teamNameInp = document.getElementById('assemble-equipe-teamname');
+            if (teamNameInp) {
+                let prefilledTeam = (preselectedBinomeAssembleIdx !== null && importedBinomes[preselectedBinomeAssembleIdx]) ? (importedBinomes[preselectedBinomeAssembleIdx].teamName || '') : '';
+                teamNameInp.value = prefilledTeam;
+            }
 
             onAssembleEquipeClasseChange();
             openModal('modal-assemble-equipe');
@@ -5334,21 +5495,47 @@
             let b2n1 = c1_of_b2.prenom || 'Coureur 3';
             let b2n2 = c2_of_b2.prenom || 'Coureur 4';
 
-            // Transformer b1 en équipe avec b2 devenant runners 3 & 4
+            // Nom d'équipe
+            let customTeamName = (document.getElementById('assemble-equipe-teamname') ? document.getElementById('assemble-equipe-teamname').value : '').trim();
+            b1.teamName = customTeamName || b1.teamName || b2.teamName || '';
+
+            // Fusion des trophées d'équipe existants
+            if (!b1.equipeTrophies) b1.equipeTrophies = {};
+            if (b2.equipeTrophies) {
+                Object.keys(b2.equipeTrophies).forEach(k => {
+                    if (!b1.equipeTrophies[k]) {
+                        b1.equipeTrophies[k] = b2.equipeTrophies[k];
+                    } else {
+                        let cnt1 = (typeof b1.equipeTrophies[k] === 'object') ? (b1.equipeTrophies[k].count || 1) : (parseInt(b1.equipeTrophies[k]) || 1);
+                        let cnt2 = (typeof b2.equipeTrophies[k] === 'object') ? (b2.equipeTrophies[k].count || 1) : (parseInt(b2.equipeTrophies[k]) || 1);
+                        let d1 = (typeof b1.equipeTrophies[k] === 'object') ? (b1.equipeTrophies[k].lastDate || '') : '';
+                        let d2 = (typeof b2.equipeTrophies[k] === 'object') ? (b2.equipeTrophies[k].lastDate || '') : '';
+                        b1.equipeTrophies[k] = { count: Math.max(cnt1, cnt2), lastDate: d1 || d2 || '' };
+                    }
+                });
+            }
+
+            // Transformer b1 en équipe avec b2 devenant runners 3 & 4 (en préservant trophies, evaluation, echauffements)
             b1.isEquipe = true;
             b1.coureurs[3] = {
                 prenom: c1_of_b2.prenom || 'Coureur 3',
                 nom: c1_of_b2.nom || '',
                 classe: cl,
                 vma: c1_of_b2.vma || null,
-                seances: c1_of_b2.seances || []
+                seances: c1_of_b2.seances || [],
+                trophies: c1_of_b2.trophies || {},
+                evaluation: c1_of_b2.evaluation || {},
+                echauffements: c1_of_b2.echauffements || []
             };
             b1.coureurs[4] = {
                 prenom: c2_of_b2.prenom || 'Coureur 4',
                 nom: c2_of_b2.nom || '',
                 classe: cl,
                 vma: c2_of_b2.vma || null,
-                seances: c2_of_b2.seances || []
+                seances: c2_of_b2.seances || [],
+                trophies: c2_of_b2.trophies || {},
+                evaluation: c2_of_b2.evaluation || {},
+                echauffements: c2_of_b2.echauffements || []
             };
 
             // Fusionner d'éventuelles observations ou courses actives de b2
@@ -5368,9 +5555,10 @@
             renderClassesList();
             renderBinomesList();
 
+            let teamStr = b1.teamName ? ` (Équipe <strong>"${b1.teamName}"</strong>)` : '';
             showAppAlert(
                 "Équipe Assemblée !",
-                `Les deux binômes ont été assemblés avec succès en une <strong>Équipe de 4 coureurs</strong> dans la classe <strong>${cl}</strong> :<br><br>` +
+                `Les deux binômes ont été assemblés avec succès en une <strong>Équipe de 4 coureurs</strong> dans la classe <strong>${cl}</strong>${teamStr} :<br><br>` +
                 `🔹 <strong>Binôme 1 :</strong> ${b1n1} & ${b1n2}<br>` +
                 `🔹 <strong>Binôme 2 :</strong> ${b2n1} & ${b2n2}<br><br>` +
                 `🤝 <strong>Binôme 1 + Binôme 2 = Équipe</strong>`,
@@ -5408,6 +5596,16 @@
             if (!b.coureurs) b.coureurs = {};
             let isEq = isItemEquipe(b);
             let coureur = b.coureurs[editingEleveRunnerId] || {};
+
+            // Affichage du champ Nom d'équipe pour toute équipe ou tout binôme ayant déjà un nom
+            let teamBox = document.getElementById('modal-edit-eleve-teamname-box');
+            let teamInp = document.getElementById('modal-edit-eleve-teamname');
+            if (teamBox) {
+                teamBox.style.display = (isEq || b.teamName) ? 'block' : 'none';
+            }
+            if (teamInp) {
+                teamInp.value = b.teamName || '';
+            }
 
             let tabsContainer = document.getElementById('modal-edit-eleve-tabs-container');
             if (tabsContainer) {
@@ -5520,6 +5718,12 @@
             if (!prenom && !nom) {
                 showAppAlert("Champ requis", "Veuillez renseigner au moins le prénom ou le nom de l'élève.", "⚠️");
                 return;
+            }
+
+            // Mise à jour du nom d'équipe si présent
+            let teamInp = document.getElementById('modal-edit-eleve-teamname');
+            if (teamInp && (isEq || b.teamName || teamInp.value.trim())) {
+                b.teamName = teamInp.value.trim();
             }
 
             coureur.prenom = prenom || `Coureur ${editingEleveRunnerId}`;
@@ -6073,6 +6277,9 @@
                     ? item.data.activeEvalGrid
                     : ((item.data.binome1 && item.data.binome1.activeEvalGrid) || (item.data.binome2 && item.data.binome2.activeEvalGrid) || []);
 
+                let incomingTeamName = extractTeamName(item.data);
+                let incomingEquipeTrophies = extractEquipeTrophies(item.data);
+
                 if (action === 'merge') {
                     if (match) {
                         let exBinome = importedBinomes[match.index];
@@ -6086,6 +6293,8 @@
                             importDate: new Date().toLocaleDateString('fr-FR'),
                             classe: binomeClasse,
                             isEquipe: isEq,
+                            teamName: incomingTeamName || '',
+                            equipeTrophies: incomingEquipeTrophies || {},
                             coureurs: coureursObj,
                             seanceConfig: item.data.seanceConfig || {},
                             activeSessionRuns: item.data.activeSessionRuns || {},
@@ -6095,11 +6304,14 @@
                         addedBinomesCount++;
                     }
                 } else if (action === 'replace') {
+                    let ex = match && importedBinomes[match.index];
                     let replacementBinome = {
-                        id: (match && importedBinomes[match.index] && importedBinomes[match.index].id) || (Date.now() + Math.random()),
+                        id: (ex && ex.id) || (Date.now() + Math.random()),
                         importDate: new Date().toLocaleDateString('fr-FR'),
                         classe: binomeClasse,
                         isEquipe: isEq,
+                        teamName: incomingTeamName || (ex && ex.teamName) || '',
+                        equipeTrophies: (incomingEquipeTrophies && Object.keys(incomingEquipeTrophies).length > 0) ? incomingEquipeTrophies : ((ex && ex.equipeTrophies) || {}),
                         coureurs: coureursObj,
                         seanceConfig: item.data.seanceConfig || {},
                         activeSessionRuns: item.data.activeSessionRuns || {},
@@ -6399,7 +6611,8 @@
                 let rawC3 = ((c3.classe || '') + '').toLowerCase();
                 let rawC4 = ((c4.classe || '') + '').toLowerCase();
 
-                let fullStr = `${p1} ${n1} ${p2} ${n2} ${isEq ? `${p3} ${n3} ${p4} ${n4}` : ''} ${classe} ${rawC1} ${rawC2} ${rawC3} ${rawC4}`.toLowerCase();
+                let teamNameLower = (b.teamName || '').toLowerCase();
+                let fullStr = `${p1} ${n1} ${p2} ${n2} ${isEq ? `${p3} ${n3} ${p4} ${n4}` : ''} ${teamNameLower} ${classe} ${rawC1} ${rawC2} ${rawC3} ${rawC4}`.toLowerCase();
                 if (filterText && !fullStr.includes(filterText)) return;
 
                 visibleCount++;
@@ -6409,12 +6622,14 @@
 
                 if (isEq) {
                     // Carte spéciale ÉQUIPE DE 4 ÉLÈVES (2 BINÔMES)
+                    let displayTitle = b.teamName ? `🏆 ${b.teamName}` : `🏆 Équipe n°${realIdx + 1}`;
+                    let displayIndicator = b.teamName ? `Équipe n°${realIdx + 1} • 4 Élèves` : `4 Élèves`;
                     cardHtml = `
                         <div class="binome-card equipe-card" onclick="openFicheProf(${realIdx}, 1)">
                             <div class="binome-card-header">
                                 <div style="display:flex; align-items:center; gap:8px;">
-                                    <span class="equipe-card-title">🏆 Équipe n°${realIdx + 1}</span>
-                                    <span class="badge-equipe-indicator">4 Élèves</span>
+                                    <span class="equipe-card-title">${displayTitle}</span>
+                                    <span class="badge-equipe-indicator">${displayIndicator}</span>
                                 </div>
                                 <div style="display: flex; gap: 6px; align-items: center;">
                                     <span class="binome-badge-class" onclick="event.stopPropagation(); openModalEditEleve(${realIdx}, 1)" title="Cliquer pour modifier">${classe} ✏️</span>
@@ -6463,16 +6678,17 @@
 
                             <!-- Pied de carte : relation demandée -->
                             <div class="equipe-footer-badge">
-                                <span>🤝 <strong>Binôme 1</strong> (Élèves 1 et 2) + <strong>Binôme 2</strong> (Élèves 3 et 4) = <strong>Équipe</strong></span>
+                                <span>🤝 <strong>Binôme 1</strong> (Élèves 1 et 2) + <strong>Binôme 2</strong> (Élèves 3 et 4) = <strong>Équipe${b.teamName ? ' ' + b.teamName : ''}</strong></span>
                             </div>
                         </div>
                     `;
                 } else {
                     // Carte classique BINÔME (2 ÉLÈVES)
+                    let biTitle = b.teamName ? `Binôme n°${realIdx + 1} (${b.teamName})` : `Binôme n°${realIdx + 1}`;
                     cardHtml = `
                         <div class="binome-card" onclick="openFicheProf(${realIdx}, 1)">
                             <div class="binome-card-header">
-                                <span class="binome-card-title">Binôme n°${realIdx + 1}</span>
+                                <span class="binome-card-title">${biTitle}</span>
                                 <div style="display: flex; gap: 6px; align-items: center;">
                                     <span class="binome-badge-class" onclick="event.stopPropagation(); openModalEditEleve(${realIdx}, 1)" title="Cliquer pour modifier">${classe} ✏️</span>
                                     <button type="button" onclick="event.stopPropagation(); openModalAssembleEquipe(${realIdx})" title="Associer ce binôme à un autre pour former une équipe de 4" style="background: #F3E8FF; border: 1px solid #D8B4FE; border-radius: 8px; padding: 4px 8px; font-size: 11.5px; font-weight: 800; cursor: pointer; color: #7C3AED; transition: all 0.2s;">🤝 En équipe</button>
@@ -6732,44 +6948,182 @@
             if (countEl) countEl.innerText = `${unlockedCount} / ${TROPHEES_CONFIG.length}`;
         }
 
+        // --- CATALOGUE DES TROPHÉES D'ÉQUIPE (20 TROPHÉES COLLECTIFS DONT 21, 25, 30, 35, 42 KM) ---
+        const TROPHEES_EQUIPE_CONFIG = [
+            // 7 Trophées de défis collectifs
+            { id: 'course_parfaite_equipe', title: "Course parfaite d'équipe", description: "Tous les coureurs de l'équipe ont réussi leur objectif sans aucun arrêt", image: "trophée/course_parfaite_equipe.svg", fallbackImage: "trophée/course_parfaite.png" },
+            { id: 'sans_pause_equipe', title: "Sans pause d'équipe", description: "Tous les coureurs de l'équipe ont couru sans faire aucun arrêt", image: "trophée/sans_pause_equipe.svg", fallbackImage: "trophée/sans_pause.png" },
+            { id: 'equipe_reguliere', title: "Équipe régulière", description: "L'équipe a validé au moins 3 courses parfaites collectives", image: "trophée/coureur_regulier.png" },
+            { id: 'objectif_collectif_x12', title: "Objectif collectif x12", description: "Au moins 12 courses réussies au cumul de l'équipe", image: "trophée/objectif_reussi_x3.png" },
+            { id: 'pro_effort_equipe', title: "Pros de l'intensité", description: "Moyenne d'intensité >= 100% VMA sur la séance pour l'équipe", image: "trophée/Pro_effort.png" },
+            { id: 'pro_echauffement_equipe', title: "Pros de l'échauffement", description: "Tous les coureurs de l'équipe ont validé leur échauffement", image: "trophée/pro_echauffement.png" },
+            { id: 'maitre_echauffement_equipe', title: "Maîtres de l'échauffement", description: "L'équipe a obtenu 5 fois le trophée Pros de l'échauffement", image: "trophée/maitre_echauffement.png" },
+            // 13 Trophées de distance collective (dont les 5 nouveaux : 21, 25, 30, 35, 42 km)
+            { id: 'dist_1km_equipe', title: "Cap des 1 km (Équipe)", description: "1 000 m cumulés par l'équipe", distMeters: 1000, image: "trophée/1km.png" },
+            { id: 'dist_2km_equipe', title: "Cap des 2 km (Équipe)", description: "2 000 m cumulés par l'équipe", distMeters: 2000, image: "trophée/2km.png" },
+            { id: 'dist_5km_equipe', title: "Cap des 5 km (Équipe)", description: "5 000 m cumulés par l'équipe", distMeters: 5000, image: "trophée/5km.png" },
+            { id: 'dist_8km_equipe', title: "Cap des 8 km (Équipe)", description: "8 000 m cumulés par l'équipe", distMeters: 8000, image: "trophée/8km.png" },
+            { id: 'dist_10km_equipe', title: "Cap des 10 km (Équipe)", description: "10 000 m cumulés par l'équipe", distMeters: 10000, image: "trophée/10km.png" },
+            { id: 'dist_12km_equipe', title: "Cap des 12 km (Équipe)", description: "12 000 m cumulés par l'équipe", distMeters: 12000, image: "trophée/12km.png" },
+            { id: 'dist_15km_equipe', title: "Cap des 15 km (Équipe)", description: "15 000 m cumulés par l'équipe", distMeters: 15000, image: "trophée/15km.png" },
+            { id: 'dist_20km_equipe', title: "Semi-marathon (20 km)", description: "20 000 m cumulés par l'équipe", distMeters: 20000, image: "trophée/20km.png" },
+            { id: 'dist_21km_equipe', title: "Cap des 21 km (Équipe)", description: "21 000 m cumulés par l'équipe", distMeters: 21000, image: "trophée/21km.png" },
+            { id: 'dist_25km_equipe', title: "Cap des 25 km (Équipe)", description: "25 000 m cumulés par l'équipe", distMeters: 25000, image: "trophée/25km.png" },
+            { id: 'dist_30km_equipe', title: "Cap des 30 km (Équipe)", description: "30 000 m cumulés par l'équipe", distMeters: 30000, image: "trophée/30km.png" },
+            { id: 'dist_35km_equipe', title: "Cap des 35 km (Équipe)", description: "35 000 m cumulés par l'équipe", distMeters: 35000, image: "trophée/35km.png" },
+            { id: 'dist_42km_equipe', title: "Marathon d'équipe (42 km)", description: "42 000 m cumulés par l'équipe", distMeters: 42000, image: "trophée/42km.png" }
+        ];
+
         // --- STATISTIQUES ET ARMOIRE À TROPHÉES D'ÉQUIPE (COLLECTIF DES 4 ÉLÈVES / BINÔME) ---
         function getTeamTrophyStats(binome) {
-            if (!binome || !binome.coureurs) return { totalUnlocked: 0, trophies: {}, runnersList: [] };
+            if (!binome || !binome.coureurs) return { totalUnlocked: 0, trophies: {}, runnersList: [], totalCumulativeMeters: 0, teamName: '' };
             let runnersList = [];
+            let totalCumulativeMeters = 0;
+            let totalSuccessfulRuns = 0;
+
             [1, 2, 3, 4].forEach(id => {
                 let c = binome.coureurs[id];
                 if (c && (c.prenom || c.nom || c.vma || (c.runs && c.runs.length > 0) || (c.seances && c.seances.length > 0))) {
                     let prenom = (c.prenom || '').trim();
                     let nom = (c.nom || '').trim();
                     let name = (prenom || nom) ? `${prenom} ${nom}`.trim() : `Élève ${id}`;
-                    runnersList.push({ id, name, prenom: prenom || name, coureur: c });
+                    let seances = getCoureurSeances(c);
+                    let runnerDist = 0;
+                    let runnerRuns = 0;
+                    let runnerSuccess = 0;
+
+                    seances.forEach(s => {
+                        (s.runs || []).forEach(r => {
+                            runnerRuns++;
+                            let d = r.realise !== undefined ? r.realise : (r.plotsTotal ? r.plotsTotal * 50 : 0);
+                            runnerDist += d;
+                            if (r.objectif && d >= (r.objectif - 50) && !r.arret) {
+                                runnerSuccess++;
+                            }
+                        });
+                    });
+
+                    totalCumulativeMeters += runnerDist;
+                    totalSuccessfulRuns += runnerSuccess;
+
+                    runnersList.push({
+                        id,
+                        name,
+                        prenom: prenom || name,
+                        coureur: c,
+                        totalDist: runnerDist,
+                        totalRuns: runnerRuns,
+                        totalSuccess: runnerSuccess
+                    });
                 }
             });
+
+            // Récupération des trophées d'équipe stockés dans binome.equipeTrophies
+            let eqTrophies = binome.equipeTrophies || {};
+
+            function findImportedTeamTrophy(tid) {
+                if (!eqTrophies) return null;
+                // Test clé exacte (ex: dist_21km_equipe)
+                if (eqTrophies[tid] !== undefined && eqTrophies[tid] !== null) return eqTrophies[tid];
+                // Test clé sans _equipe (ex: dist_21km)
+                let stripped = tid.replace('_equipe', '');
+                if (eqTrophies[stripped] !== undefined && eqTrophies[stripped] !== null) return eqTrophies[stripped];
+                // Test clé sans dist_ et sans _equipe (ex: 21km)
+                let rawKm = stripped.replace('dist_', '');
+                if (eqTrophies[rawKm] !== undefined && eqTrophies[rawKm] !== null) return eqTrophies[rawKm];
+                return null;
+            }
 
             let stats = {};
             let totalUnlocked = 0;
 
-            TROPHEES_CONFIG.forEach(t => {
+            TROPHEES_EQUIPE_CONFIG.forEach(t => {
+                let imported = findImportedTeamTrophy(t.id);
+                let isUnlocked = false;
+                let count = 0;
+                let lastDate = '';
                 let contributors = [];
-                let totalTrophyCount = 0;
-                runnersList.forEach(r => {
-                    let cnt = getTrophyCount(r.coureur, t.id);
-                    if (cnt > 0) {
-                        contributors.push({ runner: r, count: cnt });
-                        totalTrophyCount += cnt;
+
+                if (imported) {
+                    isUnlocked = true;
+                    if (typeof imported === 'number') {
+                        count = imported;
+                    } else if (typeof imported === 'object') {
+                        count = imported.count !== undefined ? imported.count : 1;
+                        lastDate = imported.lastDate || '';
+                    } else if (typeof imported === 'string') {
+                        count = 1;
+                        lastDate = imported;
+                    } else {
+                        count = 1;
                     }
-                });
-                let isUnlocked = contributors.length > 0;
+                }
+
+                if (t.distMeters) {
+                    // Palier de distance d'équipe
+                    if (totalCumulativeMeters >= t.distMeters) {
+                        isUnlocked = true;
+                        if (count < 1) count = 1;
+                    }
+                    if (isUnlocked) {
+                        runnersList.forEach(r => {
+                            if (r.totalDist > 0) contributors.push({ runner: r, dist: r.totalDist });
+                        });
+                    }
+                } else {
+                    // Défis collectifs
+                    let relatedIndivId = t.id.replace('_equipe', '');
+                    let indivContribs = [];
+                    let sumIndiv = 0;
+
+                    runnersList.forEach(r => {
+                        let cCnt = getTrophyCount(r.coureur, relatedIndivId);
+                        if (cCnt > 0) {
+                            indivContribs.push({ runner: r, count: cCnt });
+                            sumIndiv += cCnt;
+                            if (!lastDate) lastDate = getTrophyLastDate(r.coureur, relatedIndivId);
+                        }
+                    });
+
+                    if (t.id === 'objectif_collectif_x12' && totalSuccessfulRuns >= 12) {
+                        isUnlocked = true;
+                        if (count < 1) count = 1;
+                    }
+
+                    if (indivContribs.length > 0 && !isUnlocked) {
+                        if (indivContribs.length >= Math.min(2, runnersList.length) || sumIndiv >= 2) {
+                            isUnlocked = true;
+                            if (count < 1) count = Math.max(1, Math.floor(sumIndiv / 2));
+                        }
+                    }
+
+                    if (isUnlocked) {
+                        if (indivContribs.length > 0) {
+                            contributors = indivContribs;
+                        } else {
+                            runnersList.forEach(r => contributors.push({ runner: r, count: 1 }));
+                        }
+                    }
+                }
+
                 if (isUnlocked) totalUnlocked++;
+
                 stats[t.id] = {
                     trophy: t,
                     isUnlocked,
-                    totalCount: totalTrophyCount,
+                    totalCount: count,
+                    lastDate,
                     contributors
                 };
             });
 
-            return { totalUnlocked, trophies: stats, runnersList };
+            return {
+                totalUnlocked,
+                trophies: stats,
+                runnersList,
+                totalCumulativeMeters,
+                teamName: binome.teamName || ''
+            };
         }
 
         function renderArmoireTrophiesTeamProf(binome) {
@@ -6779,7 +7133,7 @@
             let stats = getTeamTrophyStats(binome);
             let countEl = document.getElementById('fiche-prof-team-trophies-count');
             if (countEl) {
-                countEl.innerText = `${stats.totalUnlocked} / ${TROPHEES_CONFIG.length}`;
+                countEl.innerText = `${stats.totalUnlocked} / ${TROPHEES_EQUIPE_CONFIG.length}`;
             }
 
             let summaryEl = document.getElementById('fiche-prof-team-trophies-runners-summary');
@@ -6787,31 +7141,50 @@
                 let isEq = isItemEquipe(binome);
                 let runnersStr = stats.runnersList.map(r => `<strong>${r.name}</strong>`).join(', ');
                 let labelType = isEq ? "l'équipe" : "le binôme";
-                summaryEl.innerHTML = `Membres de ${labelType} : ${runnersStr || 'Aucun élève'} • <em>Cumul des réussites de tous les coureurs au sein du collectif</em>`;
+                let teamNameBadge = binome.teamName ? `<span style="background:#EEF2FF; color:#4338CA; border:1px solid #C7D2FE; padding:2px 8px; border-radius:6px; font-weight:900;">🏆 ${binome.teamName}</span> • ` : '';
+                let kmStr = (stats.totalCumulativeMeters / 1000).toFixed(2);
+                summaryEl.innerHTML = `${teamNameBadge}Membres de ${labelType} : ${runnersStr || 'Aucun élève'} • <em>Cumul : <strong>${kmStr} km</strong> parcourus au collectif</em>`;
             }
 
             let badgeEl = document.getElementById('fiche-prof-team-trophies-badge');
             if (badgeEl) {
-                badgeEl.innerText = isItemEquipe(binome) ? "Collectif Équipe (4)" : "Collectif Binôme";
+                let eqName = binome.teamName ? ` "${binome.teamName}"` : '';
+                badgeEl.innerText = isItemEquipe(binome) ? `Collectif Équipe (4)${eqName}` : `Collectif Binôme${eqName}`;
             }
 
             let html = '';
-            TROPHEES_CONFIG.forEach(t => {
-                let s = stats.trophies[t.id] || { isUnlocked: false, totalCount: 0, contributors: [] };
+            TROPHEES_EQUIPE_CONFIG.forEach(t => {
+                let s = stats.trophies[t.id] || { isUnlocked: false, totalCount: 0, lastDate: '', contributors: [] };
                 let isUnlocked = s.isUnlocked;
 
                 let contribText = '';
                 if (isUnlocked) {
-                    let parts = s.contributors.map(c => `${c.runner.prenom}${c.count > 1 ? ` (x${c.count})` : ''}`);
-                    contribText = `🏆 Débloqué par : ${parts.join(', ')}`;
+                    if (s.lastDate) {
+                        contribText = `🏆 Obtenu le ${s.lastDate}`;
+                    } else if (t.distMeters) {
+                        contribText = `🏆 Validé : ${(stats.totalCumulativeMeters / 1000).toFixed(1)} km au collectif`;
+                    } else if (s.contributors && s.contributors.length > 0) {
+                        let parts = s.contributors.map(c => `${c.runner.prenom}${c.count && c.count > 1 ? ` (x${c.count})` : ''}`);
+                        contribText = `🏆 Débloqué (${parts.join(', ')})`;
+                    } else {
+                        contribText = `🏆 Débloqué au collectif`;
+                    }
                 } else {
-                    contribText = '🔒 À débloquer par l\'équipe';
+                    if (t.distMeters) {
+                        let curKm = (stats.totalCumulativeMeters / 1000).toFixed(2);
+                        let targetKm = (t.distMeters / 1000).toFixed(0);
+                        contribText = `🔒 Progression : ${curKm} / ${targetKm} km`;
+                    } else {
+                        contribText = '🔒 À débloquer par l\'équipe';
+                    }
                 }
+
+                let fallback = t.fallbackImage || DEFAULT_TROPHY_SVG;
 
                 html += `
                 <div class="trophy-badge-card ${isUnlocked ? 'unlocked team-unlocked' : 'locked'}">
                     ${isUnlocked && s.totalCount > 1 ? `<div class="trophy-count-badge" style="background: linear-gradient(135deg, #7C3AED, #6D28D9);">x${s.totalCount}</div>` : ''}
-                    <img class="trophy-img" src="${t.image}" onerror="this.src='${DEFAULT_TROPHY_SVG}'" alt="${t.title}">
+                    <img class="trophy-img" src="${t.image}" onerror="this.src='${fallback}'" alt="${t.title}">
                     <div class="trophy-title">${t.title}</div>
                     <div class="trophy-desc">${t.description}</div>
                     <div class="trophy-date" style="${isUnlocked ? 'background: #EDE9FE; color: #6D28D9; font-weight:700;' : 'background:none; color: #64748B;'}">${contribText}</div>
@@ -6847,10 +7220,10 @@
             let lblTeam = document.getElementById('lbl-toggle-trophies-team');
             let subTeam = document.getElementById('sub-toggle-trophies-team');
             if (lblTeam) {
-                lblTeam.innerText = isEq ? "Trophées d'Équipe" : "Trophées du Binôme";
+                lblTeam.innerText = binome.teamName ? `Trophées d'Équipe (${binome.teamName})` : (isEq ? "Trophées d'Équipe" : "Trophées du Binôme");
             }
             if (subTeam) {
-                subTeam.innerText = `${teamStats.totalUnlocked} / ${TROPHEES_CONFIG.length} débloqué${teamStats.totalUnlocked > 1 ? 's' : ''} au collectif`;
+                subTeam.innerText = `${teamStats.totalUnlocked} / ${TROPHEES_EQUIPE_CONFIG.length} débloqué${teamStats.totalUnlocked > 1 ? 's' : ''} au collectif`;
             }
 
             // 3. Bouton Grille d'évaluation
@@ -7298,16 +7671,18 @@
             let selectorContainer = document.getElementById('runner-selector-container');
             if (selectorContainer) {
                 if (isEq) {
+                    let teamBannerTitle = binome.teamName ? `ÉQUIPE : ${binome.teamName.toUpperCase()}` : `ÉQUIPE DE 4 ÉLÈVES`;
+                    let teamBannerBadge = binome.teamName ? `${binome.teamName} • Équipe n°${selectedBinomeIndex + 1}` : `Équipe n°${selectedBinomeIndex + 1}`;
                     selectorContainer.innerHTML = `
                         <div class="fiche-equipe-banner">
                             <div style="display:flex; align-items:center; gap:8px;">
                                 <span style="font-size:22px;">🏆</span>
                                 <div>
-                                    <div style="font-size:14px; font-weight:900; color:#3730A3;">ÉQUIPE DE 4 ÉLÈVES</div>
+                                    <div style="font-size:14px; font-weight:900; color:#3730A3;">${teamBannerTitle}</div>
                                     <div style="font-size:11.5px; opacity:0.9; font-weight:700; color:#4338CA;"> Binôme 1 (Élèves 1 et 2) + Binôme 2 (Élèves 3 et 4)</div>
                                 </div>
                             </div>
-                            <span class="badge-equipe-indicator">Équipe n°${selectedBinomeIndex + 1}</span>
+                            <span class="badge-equipe-indicator">${teamBannerBadge}</span>
                         </div>
                         <div class="fiche-tabs-group">
                             <div style="margin-bottom:8px;">
@@ -7327,7 +7702,9 @@
                         </div>
                     `;
                 } else {
+                    let teamBannerTitle = binome.teamName ? `<div style="font-size:13px; font-weight:900; color:#4338CA; margin-bottom:6px; text-transform:uppercase;">🏆 Nom d'équipe : ${binome.teamName}</div>` : '';
                     selectorContainer.innerHTML = `
+                        ${teamBannerTitle}
                         <div class="runner-selector-tab">
                             <button id="tab-c1" class="tab-btn ${activeRunnerId === 1 ? 'active' : ''}" onclick="switchFicheRunner(1)">1. ${p1}${n1 ? ' ' + n1 : ''}</button>
                             <button id="tab-c2" class="tab-btn ${activeRunnerId === 2 ? 'active' : ''}" onclick="switchFicheRunner(2)">2. ${p2}${n2 ? ' ' + n2 : ''}</button>
@@ -7357,6 +7734,21 @@
             }
             document.getElementById('fiche-prof-class').innerText = `Classe : ${coureurClasse} ✏️`;
             document.getElementById('fiche-prof-vma').innerText = `${coureur.vma || 10}`;
+
+            // Affichage du badge Nom d'équipe dans la carte de profil
+            let teamContainer = document.getElementById('fiche-prof-team-badge-container');
+            let teamVal = document.getElementById('fiche-prof-team-name-val');
+            if (teamContainer) {
+                if (binome.teamName) {
+                    teamContainer.style.display = 'inline-block';
+                    if (teamVal) teamVal.innerText = `Équipe : ${binome.teamName}`;
+                } else if (isEq) {
+                    teamContainer.style.display = 'inline-block';
+                    if (teamVal) teamVal.innerText = `Équipe n°${selectedBinomeIndex + 1}`;
+                } else {
+                    teamContainer.style.display = 'none';
+                }
+            }
 
             // Récapitulatif des courses
             let seances = getCoureurSeances(coureur);
